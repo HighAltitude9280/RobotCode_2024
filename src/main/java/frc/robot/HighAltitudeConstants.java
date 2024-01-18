@@ -5,4 +5,11 @@
 package frc.robot;
 
 /** Add your docs here. */
-public class HighAltitudeConstants {}
+public class HighAltitudeConstants {
+    public static final double kWheelDiameterMeters = ;
+    public static final double kDriveMotorGearRatio = (5.05968);
+    public static final double kTurningMotorGearRatio = ();
+    public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
+    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter;
+    public static final double kTurningEncoderRot2Rad = kTurningEncoderRot2Rad;
+}
