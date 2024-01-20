@@ -246,6 +246,11 @@ public class SwerveDriveTrain extends SubsystemBase {
     frontRight.putEncoderValuesInvertedApplied("FR");
     backLeft.putEncoderValuesInvertedApplied("BL");
     backRight.putEncoderValuesInvertedApplied("BR");
+
+    frontLeft.putTestPID("FL");
+    frontRight.putTestPID("FR");
+    backLeft.putTestPID("BL");
+    backRight.putTestPID("BR");
   }
 
 }
