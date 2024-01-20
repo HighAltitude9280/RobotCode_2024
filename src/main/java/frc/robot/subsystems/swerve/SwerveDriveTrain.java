@@ -247,10 +247,9 @@ public class SwerveDriveTrain extends SubsystemBase {
     backLeft.putEncoderValuesInvertedApplied("BL");
     backRight.putEncoderValuesInvertedApplied("BR");
 
-    frontLeft.putTestPID("FL");
-    frontRight.putTestPID("FR");
-    backLeft.putTestPID("BL");
-    backRight.putTestPID("BR");
+    frontLeft.putTestPID("FL", new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    frontRight.putTestPID("FR", new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    backLeft.putTestPID("BL", new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    backRight.putTestPID("BR", new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
-
 }

@@ -178,7 +178,8 @@ public class HighAltitudeSwerveModule {
         SmartDashboard.putNumber(identifier + "DirOut", directionMotor.getOutput());
     }
 
-    public void putTestPID(String identifier){
-        SmartDashboard.putNumber (identifier + "PID", 0.0);
+    public void putTestPID(String identifier, SwerveModuleState state){
+        state = SwerveModuleState.optimize(state, getState().angle);
+        SmartDashboard.putNumber (identifier + "PID", state.angle.getRadians());
     }
 }
