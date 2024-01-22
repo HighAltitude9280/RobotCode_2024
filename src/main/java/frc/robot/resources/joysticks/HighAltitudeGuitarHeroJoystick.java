@@ -504,4 +504,21 @@ public class HighAltitudeGuitarHeroJoystick {
         }
     }
 
+    public double getDriveZ() {
+        switch (currentDriveLayout) {
+            case ALEX_S:
+                double speed = getAxis(AxisType.PICKUP_SWITCH);
+                double direction;
+                if (getButtonObj(ButtonType.BLUE).getAsBoolean())
+                    direction = -1;
+                else if (getButtonObj(ButtonType.ORANGE).getAsBoolean())
+                    direction = 1;
+                else
+                    direction = 0;
+
+                return speed * direction;
+            default:
+                return 0;
+        }
+    }
 }

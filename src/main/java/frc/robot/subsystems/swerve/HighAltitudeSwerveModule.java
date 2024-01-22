@@ -38,15 +38,15 @@ public class HighAltitudeSwerveModule {
 
         driveMotor = new HighAltitudeMotorController(driveMotorPort, driveTypeOfMotor);
         driveMotor.setInverted(isDriveMotorReversed);
-        driveMotor.setBrakeMode(false);
+        driveMotor.setBrakeMode(true);
         this.isDriveEncoderReversed = isDriveEncoderReversed;
 
         directionMotor = new HighAltitudeMotorController(directionMotorPort, directionTypeOfMotor);
         directionMotor.setInverted(isDirectionMotorReversed);
-        directionMotor.setBrakeMode(false);
+        directionMotor.setBrakeMode(true);
         this.isDirectionEncoderReversed = isDirectionEncoderReversed;
 
-        directionPIDController = new PIDController(2, 0.0, 0.0);
+        directionPIDController = new PIDController(0.1, 0.0, 0.0);
         directionPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
         absoluteEncoderController = new CANcoder(encodedTalonPort);
@@ -54,7 +54,7 @@ public class HighAltitudeSwerveModule {
         this.encoderOffsetPulses = encoderOffsetPulses;
         //resetEncoders();
     }
-
+//este es el bueno
     public double getAbsoluteEncoderRad() {
 /*
         double angleRadians = absoluteEncoderController.getPosition().getValueAsDouble()
@@ -122,11 +122,11 @@ public class HighAltitudeSwerveModule {
     // Getters for the position and state of the module
 
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(getDriveDistance(), Rotation2d.fromRadians(getDirection()));
+        return new SwerveModulePosition(getDriveDistance(), Rotation2d.fromRadians(getAbsoluteEncoderRad()));
     }
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getDirection()));
+        return new SwerveModuleState(getDriveVelocity(), Rotation2d.fromRadians(getAbsoluteEncoderRad()));
     }
 
     // STATE SETTER
@@ -139,13 +139,17 @@ public class HighAltitudeSwerveModule {
 
         state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(state.speedMetersPerSecond / HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND);
-        directionMotor.set(directionPIDController.calculate(getDirection(), state.angle.getRadians()));
+        directionMotor.set(directionPIDController.calculate(getAbsoluteEncoderRad(), state.angle.getRadians()));
+    }
+
+    public PIDController getPIDController(){
+        return directionPIDController;
     }
 
     public void setStateRegardlessOfSpeed(SwerveModuleState state) {
         state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(state.speedMetersPerSecond / HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND);
-        directionMotor.set(directionPIDController.calculate(getDirection(), state.angle.getRadians()));
+        directionMotor.set(directionPIDController.calculate(getAbsoluteEncoderRad(), state.angle.getRadians()));
     }
 
     public void stop() {
@@ -180,6 +184,6 @@ public class HighAltitudeSwerveModule {
 
     public void putTestPID(String identifier, SwerveModuleState state){
         state = SwerveModuleState.optimize(state, getState().angle);
-        SmartDashboard.putNumber (identifier + "PID", state.angle.getRadians());
+        SmartDashboard.putNumber (identifier + "PID", state.angle.getDegrees());
     }
 }

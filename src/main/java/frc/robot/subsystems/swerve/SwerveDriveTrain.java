@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
@@ -238,6 +239,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public void putAllInfoInSmartDashboard(){
+    /* 
     frontLeft.putProcessedValues("FL");
     frontRight.putProcessedValues("FR");
     backLeft.putProcessedValues("BL");
@@ -247,9 +249,22 @@ public class SwerveDriveTrain extends SubsystemBase {
     backLeft.putEncoderValuesInvertedApplied("BL");
     backRight.putEncoderValuesInvertedApplied("BR");
 
-    frontLeft.putTestPID("FL", new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    frontRight.putTestPID("FR", new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    backLeft.putTestPID("BL", new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    backRight.putTestPID("BR", new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    SmartDashboard.putNumber("FL Steer Power", frontLeft.getDirectionMotor().getOutput());
+    SmartDashboard.putNumber("FR Steer Power", frontRight.getDirectionMotor().getOutput());
+    SmartDashboard.putNumber("BL Steer Power", backLeft.getDirectionMotor().getOutput());
+    SmartDashboard.putNumber("BR Steer Power", backRight.getDirectionMotor().getOutput());
+*/
+    SmartDashboard.putNumber("FL Target", frontLeft.getPIDController().getSetpoint());
+    SmartDashboard.putNumber("FL Current", frontLeft.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("FR Target", frontRight.getPIDController().getSetpoint());
+    SmartDashboard.putNumber("FR Current", frontRight.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("BL Target", backLeft.getPIDController().getSetpoint());
+    SmartDashboard.putNumber("BL Current", backLeft.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("BR Target", backRight.getPIDController().getSetpoint());
+    SmartDashboard.putNumber("BR Current", backRight.getAbsoluteEncoderRad());
+    //frontLeft.putTestPID("FL", frontLeft.getState());
+    //frontRight.putTestPID("FR", frontRight.getState());
+    //backLeft.putTestPID("BL", backLeft.getState());
+    //backRight.putTestPID("BR", backRight.getState());
   }
 }

@@ -4,8 +4,13 @@
 
 package frc.robot;
 
+import frc.robot.Human_Drivers.HumanDrivers;
+import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
+import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
+import frc.robot.resources.joysticks.HighAltitudeGuitarHeroJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
+import frc.robot.resources.joysticks.HighAltitudeJoystick.ButtonType;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.JoystickType;
 
 /** Add your docs here. */
@@ -13,14 +18,29 @@ public class OI {
     public static OI instance;
 
     
-    private HighAltitudeJoystick chassis;
+    private HighAltitudeJoystick pilot;
+    private HighAltitudeGuitarHeroJoystick pilotG;
 
     public void ConfigureButtonBindings() {
-        chassis = new HighAltitudeJoystick(0, JoystickType.XBOX);
-        chassis.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
-        chassis.setAxisDeadzone(AxisType.LEFT_X, 0.1);
-        chassis.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
+
+        if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.DefaultUser){
+        pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+    
+        pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.08);
+        pilot.setAxisDeadzone(AxisType.LEFT_X, 0.08);
+        pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.08);
+
+        pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+        pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+
+        pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
     }
+        else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
+        pilotG = new HighAltitudeGuitarHeroJoystick(0);
+        }
+        else{ pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);}
+    }
+
     
     public static OI getInstance() {
         if (instance == null) {
@@ -30,15 +50,39 @@ public class OI {
     }
 
     public double getDefaultSwerveDriveSpeed() {
-        return -chassis.getAxis(AxisType.LEFT_Y);
+        if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.DefaultUser){
+            return -pilot.getAxis(AxisType.LEFT_Y);
+        }
+        else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
+            return -pilotG.getDriveY();
+        }
+        else{
+            return -pilot.getAxis(AxisType.LEFT_Y);
+        }
     }
 
     public double getDefaultSwerveDriveStrafe() {
-        return -chassis.getAxis(AxisType.LEFT_X);
+        if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.DefaultUser){
+            return -pilot.getAxis(AxisType.LEFT_X);
+        }
+        else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
+            return -pilotG.getDriveX();
+        }
+        else{
+            return -pilot.getAxis(AxisType.LEFT_X);
+        }
     }
 
     public double getDefaultSwerveDriveTurn() {
-        return chassis.getAxis(AxisType.RIGHT_X);
+        if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.DefaultUser){
+            return -pilot.getAxis(AxisType.RIGHT_X);
+        }
+        else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
+            return -pilotG.getDriveZ();
+        }
+        else{
+            return -pilot.getAxis(AxisType.RIGHT_X);
+        }
     }
 
 }

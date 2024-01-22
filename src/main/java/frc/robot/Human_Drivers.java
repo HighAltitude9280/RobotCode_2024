@@ -5,4 +5,14 @@
 package frc.robot;
 
 /** Add your docs here. */
-public class Human_Drivers {}
+public class Human_Drivers {
+    
+    /////////////////// Who is Driving now? ///////////////////
+
+    public enum HumanDrivers {
+        DefaultUser,
+        // Pilot use a default configuration for its joystick
+        MACGwithGuitar
+        // Joakin use a specific configuration for his joystick
+    }
+}

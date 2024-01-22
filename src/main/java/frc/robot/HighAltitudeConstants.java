@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import frc.robot.Human_Drivers.HumanDrivers;
 
 /** Add your docs here. */
 public class HighAltitudeConstants {
@@ -109,4 +110,7 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_BRAKING_RADIANS = (Math.PI * 2) / 4; // 2pi/3
         public static final double SWERVE_DIRECTION_KP = 0.0;
         public static final double SWERVE_DIRECTION_KD = 0.0;
+
+        /////Pilot
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.DefaultUser;
 }
