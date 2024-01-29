@@ -112,5 +112,5 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_KD = 0.0;
 
         /////Pilot
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.DefaultUser;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.MACGwithGuitar;
 }

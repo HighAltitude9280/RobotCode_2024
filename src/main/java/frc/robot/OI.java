@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Human_Drivers.HumanDrivers;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
+import frc.robot.commands.swerve.swerveParameters.ToggleIsFieldOriented;
 import frc.robot.resources.joysticks.HighAltitudeGuitarHeroJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
@@ -37,8 +38,10 @@ public class OI {
     }
         else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
         pilotG = new HighAltitudeGuitarHeroJoystick(0);
+
+        pilotG.onTrue(HighAltitudeGuitarHeroJoystick.ButtonType.START, new ToggleIsFieldOriented());
         }
-        else{ pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);}
+        else{pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);}
     }
 
     

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -231,6 +232,24 @@ public class SwerveDriveTrain extends SubsystemBase {
       System.out.println("BrakeMode: " + doBrake);
     }
   }
+
+    public ChassisSpeeds getChassisSpeeds() {
+    return HighAltitudeConstants.SWERVE_KINEMATICS.toChassisSpeeds(
+      // supplier for chassisSpeed, order of motors need to be the same as the consumer of ChassisSpeed
+      frontLeft.getState(), 
+      backLeft.getState(),
+      frontRight.getState(),
+      backRight.getState()
+      );
+  }
+
+  //see drive constants for details
+  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
+    setModuleStates(
+      HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
+  }
+
+
 
   @Override
   public void periodic() {
