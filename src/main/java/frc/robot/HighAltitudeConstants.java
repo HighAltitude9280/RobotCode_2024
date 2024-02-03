@@ -6,13 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import frc.robot.Human_Drivers.HumanDrivers;
 
 /** Add your docs here. */
 public class HighAltitudeConstants {
-         ////////////////////////// SWERVE //////////////////////////
-
-        // TODO: UPDATE ALL CONSTANTS
+        
+        ////////////////////////// SWERVE //////////////////////////
 
         /////////// KINEMATICS
         // Distance left - right (meters)
@@ -111,6 +109,50 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_KP = 0.0;
         public static final double SWERVE_DIRECTION_KD = 0.0;
 
-        /////Pilot
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.MACGwithGuitar;
+        ////////////////////////// SHOOTER //////////////////////////
+
+        public static final boolean SHOOTER_MOTORS_BRAKING_MODE = false;
+
+        ////////////////////////// INTAKE //////////////////////////
+
+        public static final boolean INTAKE_MOTOR_BRAKING_MODE = false;
+
+        ////////////////////////// PIVOTS //////////////////////////
+
+        ///// SHOOTER PIVOT
+
+        public static final boolean SHOOTER_PIVOT_MOTOR_BRAKING_MODE = true;
+
+
+        // The reported encoder position after one revolution, check encoder
+        // specifications.
+        public static final double SHOOTER_PIVOT_PULSES_PER_REVOLUTION = 40;
+
+        // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
+        // NUMBERS. MOTOR REVS / SHOOTER REVS
+        public static final double SHOOTER_PIVOT_RATIO = ( (12.0 * 18.0 * 12.0) / (72.0 * 72.0 * 24.0) );
+
+        public static final double SHOOTER_PIVOT_DEGREES_PER_PULSE = 360 / (SHOOTER_PIVOT_PULSES_PER_REVOLUTION * SHOOTER_PIVOT_RATIO);
+
+        public static final double SHOOTER_PIVOT_BRAKING_DEGREES = 90;
+
+        public static final double SHOOTER_PIVOT_ARRIVE_OFFSET = 3;
+
+        ///// INTAKE PIVOT
+
+        public static final boolean INTAKE_PIVOT_MOTOR_BRAKING_MODE = true;
+
+        // The reported encoder position after one revolution, check encoder
+        // specifications.
+        public static final double INTAKE_PIVOT_PULSES_PER_REVOLUTION = 40;
+
+        // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
+        // NUMBERS. MOTOR REVS / SHOOTER REVS
+        public static final double INTAKE_PIVOT_RATIO = ( (12.0 * 18.0 * 12.0) / (72.0 * 72.0 * 26.0) );
+
+        public static final double INTAKE_PIVOT_DEGREES_PER_PULSE = 360 / (INTAKE_PIVOT_PULSES_PER_REVOLUTION * INTAKE_PIVOT_RATIO);
+
+        public static final double INTAKE_PIVOT_BRAKING_DEGREES = 90;
+
+        public static final double INTAKE_PIVOT_ARRIVE_OFFSET = 3;
 }

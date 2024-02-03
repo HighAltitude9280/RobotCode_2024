@@ -253,5 +253,4 @@ public class HighAltitudeMotorController {
     public boolean isInverted() {
         return inverted;
     }
-
 }

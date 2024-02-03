@@ -4,10 +4,8 @@
 
 package frc.robot;
 
-import frc.robot.Human_Drivers.HumanDrivers;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
-import frc.robot.commands.swerve.swerveParameters.ToggleIsFieldOriented;
 import frc.robot.resources.joysticks.HighAltitudeGuitarHeroJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
@@ -18,30 +16,105 @@ import frc.robot.resources.joysticks.HighAltitudeJoystick.JoystickType;
 public class OI {
     public static OI instance;
 
-    
     private HighAltitudeJoystick pilot;
+    private HighAltitudeJoystick copilot;
+
     private HighAltitudeGuitarHeroJoystick pilotG;
+    private HighAltitudeGuitarHeroJoystick copilotG;
 
     public void ConfigureButtonBindings() {
 
-        if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.DefaultUser){
-        pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
-    
-        pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.08);
-        pilot.setAxisDeadzone(AxisType.LEFT_X, 0.08);
-        pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.08);
+        ////////////////////////// PILOT //////////////////////////
 
-        pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
-        pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+        switch(Robot.getRobotContainer().CURRENT_PILOT){
 
-        pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
-    }
-        else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
-        pilotG = new HighAltitudeGuitarHeroJoystick(0);
+            case DefaultUser:
 
-        pilotG.onTrue(HighAltitudeGuitarHeroJoystick.ButtonType.START, new ToggleIsFieldOriented());
+            pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+            pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+            pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+
+            pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+
+            break;
+
+            case Joakin:
+
+            pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+            pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+            pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+
+            pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+
+            break;
+
+            case MACG:
+
+            pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+            pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+            pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+
+            pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+
+            break;
+            
+            case MACGwithGuitar:
+
+            pilotG = new HighAltitudeGuitarHeroJoystick(0);
+
+            break;
+
+            default:
+
+            pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+            pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+            pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+
+            pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+
+            break;
+
         }
-        else{pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);}
+
+        ///////////////////////// COPILOT /////////////////////////
+
+        switch(Robot.getRobotContainer().CURRENT_COPILOT){
+
+            case DefaultUser:
+
+            copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+
+            break;
+
+            case Joakin:
+
+            copilotG = new HighAltitudeGuitarHeroJoystick(1);
+
+            break;
+
+            case MACG:
+
+            copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+
+            break;
+            
+            case MACGwithGuitar:
+
+            copilotG = new HighAltitudeGuitarHeroJoystick(1);
+
+            break;
+
+            default:
+
+            copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+
+            break;
+
+        }
     }
 
     
@@ -53,39 +126,48 @@ public class OI {
     }
 
     public double getDefaultSwerveDriveSpeed() {
-        if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.DefaultUser){
+
+        switch(Robot.getRobotContainer().CURRENT_PILOT){
+
+            case DefaultUser:
             return -pilot.getAxis(AxisType.LEFT_Y);
-        }
-        else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
-            return -pilotG.getDriveY();
-        }
-        else{
+
+            case Joakin:
             return -pilot.getAxis(AxisType.LEFT_Y);
+
+            default:
+            return -pilot.getAxis(AxisType.LEFT_Y);
+
         }
     }
 
     public double getDefaultSwerveDriveStrafe() {
-        if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.DefaultUser){
+
+        switch(Robot.getRobotContainer().CURRENT_PILOT){
+
+            case DefaultUser:
             return -pilot.getAxis(AxisType.LEFT_X);
-        }
-        else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
-            return -pilotG.getDriveX();
-        }
-        else{
+
+            case Joakin:
+            return -pilot.getAxis(AxisType.LEFT_X);
+
+            default:
             return -pilot.getAxis(AxisType.LEFT_X);
         }
     }
 
     public double getDefaultSwerveDriveTurn() {
-        if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.DefaultUser){
+
+        switch(Robot.getRobotContainer().CURRENT_PILOT){
+
+            case DefaultUser:
             return -pilot.getAxis(AxisType.RIGHT_X);
-        }
-        else if(HighAltitudeConstants.CURRENT_PILOT == HumanDrivers.MACGwithGuitar){
-            return -pilotG.getDriveZ();
-        }
-        else{
+
+            case Joakin:
+            return -pilot.getAxis(AxisType.RIGHT_X);
+
+            default:
             return -pilot.getAxis(AxisType.RIGHT_X);
         }
     }
-
 }

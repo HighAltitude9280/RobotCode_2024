@@ -23,7 +23,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     robotContainer = new RobotContainer();
-    robotContainer.config();
+    getRobotContainer().ConfigureButtonBindings();
+    getRobotContainer().ConfigureDrivers();
+    
   }
 
   @Override
@@ -45,7 +47,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    getRobotContainer().putDriverChoosers();
+  }
 
   @Override
   public void disabledPeriodic() {}
