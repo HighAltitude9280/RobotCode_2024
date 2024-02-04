@@ -52,24 +52,29 @@ public class HighAltitudeSwerveModule {
         absoluteEncoderController = new CANcoder(encodedTalonPort);
         this.isTalonEncoderReversed = isTalonEncoderReversed;
         this.encoderOffsetPulses = encoderOffsetPulses;
-        //resetEncoders();
+        // resetEncoders();
     }
-//este es el bueno
+
+    // este es el bueno
     public double getAbsoluteEncoderRad() {
-/*
-        double angleRadians = absoluteEncoderController.getPosition().getValueAsDouble()
-                * HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE;
-        angleRadians -= encoderOffsetPulses * HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE;
-        return angleRadians * (isTalonEncoderReversed ? -1.0 : 1.0);
-  */
+        /*
+         * double angleRadians =
+         * absoluteEncoderController.getPosition().getValueAsDouble()
+         * HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE;
+         * angleRadians -= encoderOffsetPulses *
+         * HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE;
+         * return angleRadians * (isTalonEncoderReversed ? -1.0 : 1.0);
+         */
         double angle = absoluteEncoderController.getPosition().getValueAsDouble() - encoderOffsetPulses;
-        return angle * HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE * (isTalonEncoderReversed ? -1.0 : 1.0);
+        return angle * HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE
+                * (isTalonEncoderReversed ? -1.0 : 1.0);
     }
 
     public void resetEncoders() {
         driveMotor.setEncoderPosition(0);
-        //recalculateWheelDirection();
+        // recalculateWheelDirection();
     }
+
     // voy a hacer como q no existe
     public void recalculateWheelDirection() {
         directionMotor
@@ -142,7 +147,7 @@ public class HighAltitudeSwerveModule {
         directionMotor.set(directionPIDController.calculate(getAbsoluteEncoderRad(), state.angle.getRadians()));
     }
 
-    public PIDController getPIDController(){
+    public PIDController getPIDController() {
         return directionPIDController;
     }
 
@@ -168,7 +173,8 @@ public class HighAltitudeSwerveModule {
     public void putEncoderValuesInvertedApplied(String identifier) {
         SmartDashboard.putNumber(identifier + "DriveEncPos", getDriveEncoder());
         SmartDashboard.putNumber(identifier + "DirEncPos", getDirectionEncoder());
-        SmartDashboard.putNumber(identifier + "AbsEncPos", absoluteEncoderController.getPosition().getValueAsDouble() * (isTalonEncoderReversed?-1.0 : 1.0));
+        SmartDashboard.putNumber(identifier + "AbsEncPos",
+                absoluteEncoderController.getPosition().getValueAsDouble() * (isTalonEncoderReversed ? -1.0 : 1.0));
     }
 
     public void putProcessedValues(String identifier) {
@@ -182,8 +188,8 @@ public class HighAltitudeSwerveModule {
         SmartDashboard.putNumber(identifier + "DirOut", directionMotor.getOutput());
     }
 
-    public void putTestPID(String identifier, SwerveModuleState state){
+    public void putTestPID(String identifier, SwerveModuleState state) {
         state = SwerveModuleState.optimize(state, getState().angle);
-        SmartDashboard.putNumber (identifier + "PID", state.angle.getDegrees());
+        SmartDashboard.putNumber(identifier + "PID", state.angle.getDegrees());
     }
 }

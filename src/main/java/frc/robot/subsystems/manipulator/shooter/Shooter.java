@@ -15,10 +15,10 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public Shooter() {
     shooterMotors = new HighAltitudeMotorGroup(RobotMap.SHOOTER_MOTOR_PORTS, RobotMap.SHOOTER_INVERTED_MOTORS_PORTS,
-     RobotMap.SHOOTER_MOTOR_TYPES);
-     
-     shooterMotors.setEncoderInverted(RobotMap.SHOOTER_ENCODER_IS_INVERTED);
-     shooterMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_MOTORS_BRAKING_MODE);
+        RobotMap.SHOOTER_MOTOR_TYPES);
+
+    shooterMotors.setEncoderInverted(RobotMap.SHOOTER_ENCODER_IS_INVERTED);
+    shooterMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_MOTORS_BRAKING_MODE);
   }
 
   public void driveShooter(double speed) {
@@ -48,7 +48,7 @@ public class Shooter extends SubsystemBase {
   public void driveBottom(double speed) {
     shooterMotors.setSpecificMotorSpeed(14, speed);
   }
-  
+
   public void stopBottom() {
     shooterMotors.setSpecificMotorSpeed(14, 0);
   }

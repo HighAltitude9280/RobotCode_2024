@@ -168,7 +168,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
   }
-  
+
   public void resetPose(Pose2d pose) {
     swerveDrivePoseEstimator.resetPosition(getRotation2dCCWPositive(), new SwerveModulePosition[] {
         frontLeft.getPosition(),
@@ -233,23 +233,21 @@ public class SwerveDriveTrain extends SubsystemBase {
     }
   }
 
-    public ChassisSpeeds getChassisSpeeds() {
+  public ChassisSpeeds getChassisSpeeds() {
     return HighAltitudeConstants.SWERVE_KINEMATICS.toChassisSpeeds(
-      // supplier for chassisSpeed, order of motors need to be the same as the consumer of ChassisSpeed
-      frontLeft.getState(), 
-      backLeft.getState(),
-      frontRight.getState(),
-      backRight.getState()
-      );
+        // supplier for chassisSpeed, order of motors need to be the same as the
+        // consumer of ChassisSpeed
+        frontLeft.getState(),
+        backLeft.getState(),
+        frontRight.getState(),
+        backRight.getState());
   }
 
-  //see drive constants for details
+  // see drive constants for details
   public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
     setModuleStates(
-      HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
+        HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
   }
-
-
 
   @Override
   public void periodic() {
@@ -257,8 +255,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     putAllInfoInSmartDashboard();
   }
 
-  public void putAllInfoInSmartDashboard(){
-    /* 
+  public void putAllInfoInSmartDashboard() {
     frontLeft.putProcessedValues("FL");
     frontRight.putProcessedValues("FR");
     backLeft.putProcessedValues("BL");
@@ -268,11 +265,15 @@ public class SwerveDriveTrain extends SubsystemBase {
     backLeft.putEncoderValuesInvertedApplied("BL");
     backRight.putEncoderValuesInvertedApplied("BR");
 
-    SmartDashboard.putNumber("FL Steer Power", frontLeft.getDirectionMotor().getOutput());
-    SmartDashboard.putNumber("FR Steer Power", frontRight.getDirectionMotor().getOutput());
-    SmartDashboard.putNumber("BL Steer Power", backLeft.getDirectionMotor().getOutput());
-    SmartDashboard.putNumber("BR Steer Power", backRight.getDirectionMotor().getOutput());
-*/
+    SmartDashboard.putNumber("FL Steer Power",
+        frontLeft.getDirectionMotor().getOutput());
+    SmartDashboard.putNumber("FR Steer Power",
+        frontRight.getDirectionMotor().getOutput());
+    SmartDashboard.putNumber("BL Steer Power",
+        backLeft.getDirectionMotor().getOutput());
+    SmartDashboard.putNumber("BR Steer Power",
+        backRight.getDirectionMotor().getOutput());
+
     SmartDashboard.putNumber("FL Target", frontLeft.getPIDController().getSetpoint());
     SmartDashboard.putNumber("FL Current", frontLeft.getAbsoluteEncoderRad());
     SmartDashboard.putNumber("FR Target", frontRight.getPIDController().getSetpoint());
@@ -281,9 +282,5 @@ public class SwerveDriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("BL Current", backLeft.getAbsoluteEncoderRad());
     SmartDashboard.putNumber("BR Target", backRight.getPIDController().getSetpoint());
     SmartDashboard.putNumber("BR Current", backRight.getAbsoluteEncoderRad());
-    //frontLeft.putTestPID("FL", frontLeft.getState());
-    //frontRight.putTestPID("FR", frontRight.getState());
-    //backLeft.putTestPID("BL", backLeft.getState());
-    //backRight.putTestPID("BR", backRight.getState());
   }
 }

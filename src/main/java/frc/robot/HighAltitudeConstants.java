@@ -9,7 +9,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 /** Add your docs here. */
 public class HighAltitudeConstants {
-        
+
         ////////////////////////// SWERVE //////////////////////////
 
         /////////// KINEMATICS
@@ -123,16 +123,16 @@ public class HighAltitudeConstants {
 
         public static final boolean SHOOTER_PIVOT_MOTOR_BRAKING_MODE = true;
 
-
         // The reported encoder position after one revolution, check encoder
         // specifications.
         public static final double SHOOTER_PIVOT_PULSES_PER_REVOLUTION = 40;
 
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
         // NUMBERS. MOTOR REVS / SHOOTER REVS
-        public static final double SHOOTER_PIVOT_RATIO = ( (12.0 * 18.0 * 12.0) / (72.0 * 72.0 * 24.0) );
+        public static final double SHOOTER_PIVOT_RATIO = ((12.0 * 18.0 * 12.0) / (72.0 * 72.0 * 24.0));
 
-        public static final double SHOOTER_PIVOT_DEGREES_PER_PULSE = 360 / (SHOOTER_PIVOT_PULSES_PER_REVOLUTION * SHOOTER_PIVOT_RATIO);
+        public static final double SHOOTER_PIVOT_DEGREES_PER_PULSE = 360
+                        / (SHOOTER_PIVOT_PULSES_PER_REVOLUTION * SHOOTER_PIVOT_RATIO);
 
         public static final double SHOOTER_PIVOT_BRAKING_DEGREES = 90;
 
@@ -148,9 +148,10 @@ public class HighAltitudeConstants {
 
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
         // NUMBERS. MOTOR REVS / SHOOTER REVS
-        public static final double INTAKE_PIVOT_RATIO = ( (12.0 * 18.0 * 12.0) / (72.0 * 72.0 * 26.0) );
+        public static final double INTAKE_PIVOT_RATIO = ((12.0 * 18.0 * 12.0) / (72.0 * 72.0 * 26.0));
 
-        public static final double INTAKE_PIVOT_DEGREES_PER_PULSE = 360 / (INTAKE_PIVOT_PULSES_PER_REVOLUTION * INTAKE_PIVOT_RATIO);
+        public static final double INTAKE_PIVOT_DEGREES_PER_PULSE = 360
+                        / (INTAKE_PIVOT_PULSES_PER_REVOLUTION * INTAKE_PIVOT_RATIO);
 
         public static final double INTAKE_PIVOT_BRAKING_DEGREES = 90;
 

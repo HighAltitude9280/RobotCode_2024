@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.manipulator.shooter.DriveShooter;
 import frc.robot.commands.swerve.DefaultSwerveDrive;
 import frc.robot.resources.components.Navx;
 import frc.robot.subsystems.manipulator.intake.Intake;
@@ -17,15 +18,15 @@ import frc.robot.subsystems.swerve.SwerveDriveTrain;
 /** Add your docs here. */
 public class RobotContainer {
 
-    public enum HumanDrivers{
+    public enum HumanDrivers {
 
         ///// DRIVERS /////
-        DefaultUser,      //DefaultUser use a default configuration for his joystick
-        Joakin,           //Joakin use a specific configuration for his joystick
+        DefaultUser, // DefaultUser use a default configuration for his joystick
+        Joakin, // Joakin use a specific configuration for his joystick
 
         ///// PROGRAMMING /////
-        MACG,             //MACG use a specific configuration for testing features
-        MACGwithGuitar,   //MACG use a specific configuration for testing features
+        MACG, // MACG use a specific configuration for testing features
+        MACGwithGuitar, // MACG use a specific configuration for testing features
     }
 
     SendableChooser<HumanDrivers> Pilot = new SendableChooser<>();
@@ -38,24 +39,23 @@ public class RobotContainer {
     private IntakePivot intakePivot;
     private ShooterPivot shooterPivot;
 
-    public HumanDrivers CURRENT_PILOT;
-    public HumanDrivers CURRENT_COPILOT; 
+    private HumanDrivers CURRENT_PILOT = HumanDrivers.DefaultUser;
+    private HumanDrivers CURRENT_COPILOT = HumanDrivers.DefaultUser;
 
-    public RobotContainer(){
+    public RobotContainer() {
 
         navx = new Navx();
         swerveDriveTrain = new SwerveDriveTrain();
-
-        CURRENT_PILOT = Pilot.getSelected();
-        CURRENT_COPILOT = Copilot.getSelected();
     }
 
-    public void ConfigureButtonBindings(){
+    public void ConfigureButtonBindings() {
         OI.getInstance().ConfigureButtonBindings();
         swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
+        shooter.setDefaultCommand(new DriveShooter());
     }
 
-    public void ConfigureDrivers(){
+    public void ConfigureDrivers() {
+
         Pilot.setDefaultOption("Default", HumanDrivers.DefaultUser);
         Pilot.addOption("Joakin", HumanDrivers.Joakin);
         Pilot.addOption("MACG", HumanDrivers.MACG);
@@ -67,32 +67,54 @@ public class RobotContainer {
         Copilot.addOption("MACG with Guitar", HumanDrivers.MACGwithGuitar);
     }
 
-    public void putDriverChoosers(){
+    public void putDriverChoosers() {
         SmartDashboard.putData("Curent Pilot", Pilot);
         SmartDashboard.putData("Current Copilot", Copilot);
     }
 
-    public Navx getNavx(){
+    public void setDrivers() {
+        setCurrentPilot(Pilot.getSelected());
+        setCurrentCopilot(Copilot.getSelected());
+    }
+
+    public Navx getNavx() {
         return navx;
     }
 
-    public SwerveDriveTrain getSwerveDriveTrain(){
+    public SwerveDriveTrain getSwerveDriveTrain() {
         return swerveDriveTrain;
     }
 
-    public Intake getIntake(){
+    public Intake getIntake() {
         return intake;
     }
 
-    public Shooter getShooter(){
+    public Shooter getShooter() {
         return shooter;
     }
 
-    public IntakePivot getIntakePivot(){
+    public IntakePivot getIntakePivot() {
         return intakePivot;
     }
 
-    public ShooterPivot getShooterPivot(){
+    public ShooterPivot getShooterPivot() {
         return shooterPivot;
     }
+
+    public HumanDrivers getCurrentPilot() {
+        return CURRENT_PILOT;
+    }
+
+    public void setCurrentPilot(HumanDrivers Pilot) {
+        CURRENT_PILOT = Pilot;
+    }
+
+    public HumanDrivers getCurrentCopilot() {
+        return CURRENT_COPILOT;
+    }
+
+    public void setCurrentCopilot(HumanDrivers Copilot) {
+        CURRENT_COPILOT = Copilot;
+    }
+
 }

@@ -34,20 +34,19 @@ public class TestSwerve extends Command {
   public void execute() {
     double speed = OI.getInstance().getDefaultSwerveDriveSpeed();
     double turn = OI.getInstance().getDefaultSwerveDriveTurn();
-     
 
     for (HighAltitudeSwerveModule swerveModule : modules) {
       swerveModule.getDriveMotor().set(speed);
       swerveModule.getDirectionMotor().set(turn);
     }
-    
+
     /*
-    for (HighAltitudeSwerveModule swerveModule : modules) {
-      swerveModule.getDriveMotor().set(0);
-      swerveModule.getDirectionMotor().set(0.08);
-    }
-    */
-    //swerveDriveTrain.getBackRight().getDirectionMotor().set(turn);
+     * for (HighAltitudeSwerveModule swerveModule : modules) {
+     * swerveModule.getDriveMotor().set(0);
+     * swerveModule.getDirectionMotor().set(0.08);
+     * }
+     */
+    // swerveDriveTrain.getBackRight().getDirectionMotor().set(turn);
   }
 
   // Called once the command ends or is interrupted.

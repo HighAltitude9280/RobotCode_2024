@@ -19,43 +19,53 @@ public class ShooterPivot extends SubsystemBase {
   /** Creates a new ShooterPivot. */
   public ShooterPivot() {
 
-    shooterPivotMotors = new HighAltitudeMotorGroup(RobotMap.SHOOTER_PIVOT_MOTOR_PORTS, RobotMap.SHOOTER_PIVOT_INVERTED_MOTORS_PORTS, 
-    RobotMap.SHOOTER_PIVOT_MOTOR_TYPES);
+    shooterPivotMotors = new HighAltitudeMotorGroup(RobotMap.SHOOTER_PIVOT_MOTOR_PORTS,
+        RobotMap.SHOOTER_PIVOT_INVERTED_MOTORS_PORTS,
+        RobotMap.SHOOTER_PIVOT_MOTOR_TYPES);
 
     shooterPivotMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_PIVOT_MOTOR_BRAKING_MODE);
 
-    if (RobotMap.SHOOTER_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE){
+    if (RobotMap.SHOOTER_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.SHOOTER_PIVOT_TOP_LIMIT_SWITCH_PORT);
     }
 
-    if (RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE){
+    if (RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
     }
   }
 
-  public void driveShooterPivot(double speed){
+  public void driveShooterPivot(double speed) {
     shooterPivotMotors.setAll(speed);
   }
 
   public boolean getShooterPivotTopLimitSwitch() {
-    if (RobotMap.SHOOTER_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE)
+    if (RobotMap.SHOOTER_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE) {
       return topLimitSwitch.get();
-    return false;
+    } else {
+      return false;
+    }
   }
 
   public boolean getShooterPivotBottomLimitSwitch() {
-    if (RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE)
+    if (RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
       return bottomLimitSwitch.get();
-    return false;
+    } else {
+      return false;
+    }
   }
 
   public void resetEncoders() {
     shooterPivotMotors.resetEncoder();
   }
 
+  public double getshooterPivotPositionInDegres() {
+    return shooterPivotPositionDegrees;
+  }
+
   @Override
   public void periodic() {
     currentShooterPivotEncoderPosition = shooterPivotMotors.getEncoderPosition();
-    shooterPivotPositionDegrees = currentShooterPivotEncoderPosition * HighAltitudeConstants.SHOOTER_PIVOT_DEGREES_PER_PULSE;
+    shooterPivotPositionDegrees = currentShooterPivotEncoderPosition
+        * HighAltitudeConstants.SHOOTER_PIVOT_DEGREES_PER_PULSE;
   }
 }

@@ -16,24 +16,31 @@ public class IntakePivot extends SubsystemBase {
   DigitalInput topLimitSwitch;
   DigitalInput bottomLimitSwitch;
 
+  IntakePosition currentPosition;
+
+  public enum IntakePosition {
+    LOWERED, STORED
+  }
+
   /** Creates a new IntakePivot. */
   public IntakePivot() {
 
-    intakePivotMotors = new HighAltitudeMotorGroup(RobotMap.INTAKE_PIVOT_MOTOR_PORTS, RobotMap.INTAKE_PIVOT_INVERTED_MOTORS_PORTS,
-     RobotMap.INTAKE_PIVOT_MOTOR_TYPES);
+    intakePivotMotors = new HighAltitudeMotorGroup(RobotMap.INTAKE_PIVOT_MOTOR_PORTS,
+        RobotMap.INTAKE_PIVOT_INVERTED_MOTORS_PORTS,
+        RobotMap.INTAKE_PIVOT_MOTOR_TYPES);
 
     intakePivotMotors.setBrakeMode(HighAltitudeConstants.INTAKE_PIVOT_MOTOR_BRAKING_MODE);
 
-    if (RobotMap.INTAKE_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE){
+    if (RobotMap.INTAKE_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.INTAKE_PIVOT_TOP_LIMIT_SWITCH_PORT);
     }
 
-    if (RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE){
+    if (RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
     }
   }
 
-  public void driveIntakePivot(double speed){
+  public void driveIntakePivot(double speed) {
     intakePivotMotors.setAll(speed);
   }
 
@@ -53,9 +60,14 @@ public class IntakePivot extends SubsystemBase {
     intakePivotMotors.resetEncoder();
   }
 
+  public double getIntakePivotPositionInDegres() {
+    return intakePivotPositionDegrees;
+  }
+
   @Override
   public void periodic() {
     currentIntakePivotEncoderPosition = intakePivotMotors.getEncoderPosition();
-    intakePivotPositionDegrees = currentIntakePivotEncoderPosition * HighAltitudeConstants.INTAKE_PIVOT_DEGREES_PER_PULSE;
+    intakePivotPositionDegrees = currentIntakePivotEncoderPosition
+        * HighAltitudeConstants.INTAKE_PIVOT_DEGREES_PER_PULSE;
   }
 }

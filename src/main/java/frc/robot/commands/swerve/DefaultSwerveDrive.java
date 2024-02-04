@@ -39,11 +39,11 @@ public class DefaultSwerveDrive extends Command {
     double speed = OI.getInstance().getDefaultSwerveDriveSpeed();
     double strafe = OI.getInstance().getDefaultSwerveDriveStrafe();
     double turn = OI.getInstance().getDefaultSwerveDriveTurn();
-    /* 
-    double speed = 0;
-    double strafe = 0.25;
-    double turn = 0.0;
-    */
+    /*
+     * double speed = 0;
+     * double strafe = 0.25;
+     * double turn = 0.0;
+     */
     // 2. Limit the inputs' acceleration as to make driving smoother
     speed = speedLimiter.calculate(speed);
     strafe = strafeLimiter.calculate(strafe);
@@ -67,26 +67,26 @@ public class DefaultSwerveDrive extends Command {
     SwerveModuleState[] moduleStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
     swerveDriveTrain.setModuleStates(moduleStates);
 
-    //6. Print for debugging
-    //Robot.putNumberInSmartDashboard("processed speed", speed);
-    //Robot.putNumberInSmartDashboard("processed strafe", strafe);
-    //Robot.putNumberInSmartDashboard("processed turn", turn);
-    //Robot.putNumberInSmartDashboard("FrontLeftSpeed",
-    //moduleStates[0].speedMetersPerSecond);
-    //Robot.putNumberInSmartDashboard("FrontLeftAngle",
-    //moduleStates[0].angle.getDegrees());
-    //Robot.putNumberInSmartDashboard("FrontRightSpeed",
-    //moduleStates[1].speedMetersPerSecond);
-    //Robot.putNumberInSmartDashboard("FrontRightAngle",
-    //moduleStates[1].angle.getDegrees());
-    //Robot.putNumberInSmartDashboard("BackLeftSpeed",
-    //moduleStates[2].speedMetersPerSecond);
-    //Robot.putNumberInSmartDashboard("BackLeftAngle",
-    //moduleStates[2].angle.getDegrees());
-    //Robot.putNumberInSmartDashboard("BackRightSpeed",
-    //moduleStates[3].speedMetersPerSecond);
-    //Robot.putNumberInSmartDashboard("BackRightAngle",
-    //moduleStates[3].angle.getDegrees());
+    // 6. Print for debugging
+    // Robot.putNumberInSmartDashboard("processed speed", speed);
+    // Robot.putNumberInSmartDashboard("processed strafe", strafe);
+    // Robot.putNumberInSmartDashboard("processed turn", turn);
+    // Robot.putNumberInSmartDashboard("FrontLeftSpeed",
+    // moduleStates[0].speedMetersPerSecond);
+    // Robot.putNumberInSmartDashboard("FrontLeftAngle",
+    // moduleStates[0].angle.getDegrees());
+    // Robot.putNumberInSmartDashboard("FrontRightSpeed",
+    // moduleStates[1].speedMetersPerSecond);
+    // Robot.putNumberInSmartDashboard("FrontRightAngle",
+    // moduleStates[1].angle.getDegrees());
+    // Robot.putNumberInSmartDashboard("BackLeftSpeed",
+    // moduleStates[2].speedMetersPerSecond);
+    // Robot.putNumberInSmartDashboard("BackLeftAngle",
+    // moduleStates[2].angle.getDegrees());
+    // Robot.putNumberInSmartDashboard("BackRightSpeed",
+    // moduleStates[3].speedMetersPerSecond);
+    // Robot.putNumberInSmartDashboard("BackRightAngle",
+    // moduleStates[3].angle.getDegrees());
 
   }
 

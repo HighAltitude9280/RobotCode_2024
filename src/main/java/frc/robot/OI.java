@@ -26,98 +26,97 @@ public class OI {
 
         ////////////////////////// PILOT //////////////////////////
 
-        switch(Robot.getRobotContainer().CURRENT_PILOT){
+        switch (Robot.getRobotContainer().getCurrentPilot()) {
 
             case DefaultUser:
 
-            pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-            pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
-            pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
 
-            pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+                pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
 
-            break;
+                break;
 
             case Joakin:
 
-            pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-            pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
-            pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
 
-            pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+                pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
 
-            break;
+                break;
 
             case MACG:
 
-            pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-            pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
-            pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
 
-            pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+                pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
 
-            break;
-            
+                break;
+
             case MACGwithGuitar:
 
-            pilotG = new HighAltitudeGuitarHeroJoystick(0);
+                pilotG = new HighAltitudeGuitarHeroJoystick(0);
 
-            break;
+                break;
 
             default:
 
-            pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-            pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
-            pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
 
-            pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+                pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
 
-            break;
+                break;
 
         }
 
         ///////////////////////// COPILOT /////////////////////////
 
-        switch(Robot.getRobotContainer().CURRENT_COPILOT){
+        switch (Robot.getRobotContainer().getCurrentCopilot()) {
 
             case DefaultUser:
 
-            copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+                copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
-            break;
+                break;
 
             case Joakin:
 
-            copilotG = new HighAltitudeGuitarHeroJoystick(1);
+                copilotG = new HighAltitudeGuitarHeroJoystick(1);
 
-            break;
+                break;
 
             case MACG:
 
-            copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+                copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
-            break;
-            
+                break;
+
             case MACGwithGuitar:
 
-            copilotG = new HighAltitudeGuitarHeroJoystick(1);
+                copilotG = new HighAltitudeGuitarHeroJoystick(1);
 
-            break;
+                break;
 
             default:
 
-            copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+                copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
-            break;
+                break;
 
         }
     }
 
-    
     public static OI getInstance() {
         if (instance == null) {
             instance = new OI();
@@ -127,47 +126,61 @@ public class OI {
 
     public double getDefaultSwerveDriveSpeed() {
 
-        switch(Robot.getRobotContainer().CURRENT_PILOT){
+        switch (Robot.getRobotContainer().getCurrentPilot()) {
 
             case DefaultUser:
-            return -pilot.getAxis(AxisType.LEFT_Y);
+                return -pilot.getAxis(AxisType.LEFT_Y);
 
             case Joakin:
-            return -pilot.getAxis(AxisType.LEFT_Y);
+                return -pilot.getAxis(AxisType.LEFT_Y);
 
             default:
-            return -pilot.getAxis(AxisType.LEFT_Y);
+                return -pilot.getAxis(AxisType.LEFT_Y);
 
         }
     }
 
     public double getDefaultSwerveDriveStrafe() {
 
-        switch(Robot.getRobotContainer().CURRENT_PILOT){
+        switch (Robot.getRobotContainer().getCurrentPilot()) {
 
             case DefaultUser:
-            return -pilot.getAxis(AxisType.LEFT_X);
+                return -pilot.getAxis(AxisType.LEFT_X);
 
             case Joakin:
-            return -pilot.getAxis(AxisType.LEFT_X);
+                return -pilot.getAxis(AxisType.LEFT_X);
 
             default:
-            return -pilot.getAxis(AxisType.LEFT_X);
+                return -pilot.getAxis(AxisType.LEFT_X);
         }
     }
 
     public double getDefaultSwerveDriveTurn() {
 
-        switch(Robot.getRobotContainer().CURRENT_PILOT){
+        switch (Robot.getRobotContainer().getCurrentPilot()) {
 
             case DefaultUser:
-            return -pilot.getAxis(AxisType.RIGHT_X);
+                return -pilot.getAxis(AxisType.RIGHT_X);
 
             case Joakin:
-            return -pilot.getAxis(AxisType.RIGHT_X);
+                return -pilot.getAxis(AxisType.RIGHT_X);
 
             default:
-            return -pilot.getAxis(AxisType.RIGHT_X);
+                return -pilot.getAxis(AxisType.RIGHT_X);
+        }
+    }
+
+    public HighAltitudeJoystick getPilot() {
+        switch (Robot.getRobotContainer().getCurrentPilot()) {
+
+            case DefaultUser:
+                return pilot;
+
+            case Joakin:
+                return pilot;
+
+            default:
+                return pilot;
         }
     }
 }
