@@ -5,6 +5,7 @@
 package frc.robot.subsystems.manipulator.pivots;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
@@ -30,6 +31,7 @@ public class IntakePivot extends SubsystemBase {
         RobotMap.INTAKE_PIVOT_MOTOR_TYPES);
 
     intakePivotMotors.setBrakeMode(HighAltitudeConstants.INTAKE_PIVOT_MOTOR_BRAKING_MODE);
+    intakePivotMotors.setEncoderInverted(RobotMap.INTAKE_PIVOT_ENCODER_IS_INVERTED);
 
     if (RobotMap.INTAKE_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.INTAKE_PIVOT_TOP_LIMIT_SWITCH_PORT);
@@ -68,6 +70,8 @@ public class IntakePivot extends SubsystemBase {
   public void periodic() {
     currentIntakePivotEncoderPosition = intakePivotMotors.getEncoderPosition();
     intakePivotPositionDegrees = currentIntakePivotEncoderPosition
-        * HighAltitudeConstants.INTAKE_PIVOT_DEGREES_PER_PULSE;
+        * HighAltitudeConstants.INTAKE_PIVOT_DEGREES_PER_REVOLUTION;
+
+    SmartDashboard.putNumber("Raw Intake Pivot Encoder", intakePivotMotors.getEncoderPosition());
   }
 }

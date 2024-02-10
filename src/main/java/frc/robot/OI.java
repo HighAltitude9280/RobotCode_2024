@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.commands.manipulator.pivots.primitives.IntakePivotResetEncoder;
+import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotResetEncoder;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.resources.joysticks.HighAltitudeGuitarHeroJoystick;
@@ -26,7 +28,7 @@ public class OI {
 
         ////////////////////////// PILOT //////////////////////////
 
-        switch (Robot.getRobotContainer().getCurrentPilot()) {
+        switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case DefaultUser:
 
@@ -59,6 +61,9 @@ public class OI {
 
                 pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
 
+                pilot.onTrue(ButtonType.A, new ShooterPivotResetEncoder());
+                pilot.onTrue(ButtonType.B, new IntakePivotResetEncoder());
+
                 break;
 
             case MACGwithGuitar:
@@ -82,7 +87,7 @@ public class OI {
 
         ///////////////////////// COPILOT /////////////////////////
 
-        switch (Robot.getRobotContainer().getCurrentCopilot()) {
+        switch (HighAltitudeConstants.CURRENT_COPILOT) {
 
             case DefaultUser:
 
@@ -126,7 +131,7 @@ public class OI {
 
     public double getDefaultSwerveDriveSpeed() {
 
-        switch (Robot.getRobotContainer().getCurrentPilot()) {
+        switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case DefaultUser:
                 return -pilot.getAxis(AxisType.LEFT_Y);
@@ -142,7 +147,7 @@ public class OI {
 
     public double getDefaultSwerveDriveStrafe() {
 
-        switch (Robot.getRobotContainer().getCurrentPilot()) {
+        switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case DefaultUser:
                 return -pilot.getAxis(AxisType.LEFT_X);
@@ -157,7 +162,7 @@ public class OI {
 
     public double getDefaultSwerveDriveTurn() {
 
-        switch (Robot.getRobotContainer().getCurrentPilot()) {
+        switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case DefaultUser:
                 return -pilot.getAxis(AxisType.RIGHT_X);
@@ -171,12 +176,15 @@ public class OI {
     }
 
     public HighAltitudeJoystick getPilot() {
-        switch (Robot.getRobotContainer().getCurrentPilot()) {
+        switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case DefaultUser:
                 return pilot;
 
             case Joakin:
+                return pilot;
+
+            case MACG:
                 return pilot;
 
             default:

@@ -29,7 +29,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     robotContainer = new RobotContainer();
     getRobotContainer().ConfigureButtonBindings();
-    getRobotContainer().ConfigureDrivers();
+
+    getRobotContainer().getShooterPivot().resetEncoders();
+    getRobotContainer().getIntakePivot().resetEncoders();
 
   }
 
@@ -39,11 +41,16 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Intake Pivot Degrees", robotContainer.getIntakePivot().getIntakePivotPositionInDegres());
     SmartDashboard.putNumber("Shooter Pivot Degrees",
-        robotContainer.getShooterPivot().getshooterPivotPositionInDegres());
+        robotContainer.getShooterPivot().getShooterPivotPositionInDegres());
+
+    SmartDashboard.putString("Pilot", robotContainer.getCurrentPilot().toString());
+    SmartDashboard.putString("Copilot", robotContainer.getCurrentCopilot().toString());
   }
 
   @Override
   public void autonomousInit() {
+    robotContainer.getSwerveDriveTrain().setModulesBrakeMode(true);
+
   }
 
   @Override
@@ -52,6 +59,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    robotContainer.getSwerveDriveTrain().setModulesBrakeMode(true);
   }
 
   @Override
@@ -60,12 +68,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    robotContainer.getSwerveDriveTrain().setModulesBrakeMode(false);
   }
 
   @Override
   public void disabledPeriodic() {
-    getRobotContainer().putDriverChoosers();
-    getRobotContainer().setDrivers();
   }
 
   @Override

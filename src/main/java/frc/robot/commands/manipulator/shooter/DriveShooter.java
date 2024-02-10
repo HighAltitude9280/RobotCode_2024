@@ -10,8 +10,8 @@ import frc.robot.Robot;
 import frc.robot.subsystems.manipulator.shooter.Shooter;
 
 public class DriveShooter extends Command {
-  double power;
   Shooter shooter;
+  double power;
 
   /** Creates a new DriveShooter. */
   public DriveShooter() {
@@ -28,13 +28,14 @@ public class DriveShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    power = OI.getInstance().getPilot().getTriggers();
-    Robot.getRobotContainer().getShooter().driveShooter(power);
+    double power = OI.getInstance().getPilot().getTriggers();
+    shooter.driveShooter(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.driveShooter(0);
   }
 
   // Returns true when the command should end.

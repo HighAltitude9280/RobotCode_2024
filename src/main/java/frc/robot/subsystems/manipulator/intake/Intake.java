@@ -9,7 +9,7 @@ import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 
 public class Intake extends SubsystemBase {
-  HighAltitudeMotorGroup intakeMotors;
+  HighAltitudeMotorGroup intakeMotors; 
 
   /** Creates a new Intake. */
   public Intake() {

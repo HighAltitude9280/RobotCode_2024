@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import frc.robot.Human_Drivers.HumanDrivers;
 
 /** Add your docs here. */
 public class HighAltitudeConstants {
@@ -123,37 +124,39 @@ public class HighAltitudeConstants {
 
         public static final boolean SHOOTER_PIVOT_MOTOR_BRAKING_MODE = true;
 
-        // The reported encoder position after one revolution, check encoder
-        // specifications.
-        public static final double SHOOTER_PIVOT_PULSES_PER_REVOLUTION = 40;
-
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
-        // NUMBERS. MOTOR REVS / SHOOTER REVS
-        public static final double SHOOTER_PIVOT_RATIO = ((12.0 * 18.0 * 12.0) / (72.0 * 72.0 * 24.0));
-
-        public static final double SHOOTER_PIVOT_DEGREES_PER_PULSE = 360
-                        / (SHOOTER_PIVOT_PULSES_PER_REVOLUTION * SHOOTER_PIVOT_RATIO);
+        // NUMBERS. SHOOTER PIVOT REVS / MOTOR REVS
+        public static final double SHOOTER_PIVOT_RATIO = ((72.0 * 80.0 * 26.0) / (12.0 * 16.0 * 12.0));
+        // 2592 //124416
+        public static final double SHOOTER_PIVOT_DEGREES_PER_REVOLUTION = 360
+                        / SHOOTER_PIVOT_RATIO;
 
         public static final double SHOOTER_PIVOT_BRAKING_DEGREES = 90;
 
         public static final double SHOOTER_PIVOT_ARRIVE_OFFSET = 3;
 
+        public static final double SHOOTER_PIVOT_ENCODER_PULSES_PER_REVOLUTION = 4096;
+
+        public static final double SHOOTER_PIVOT_ABSOLUTE_ENCODER_DEGREES_PER_PULSE = 360 /
+                        (SHOOTER_PIVOT_ENCODER_PULSES_PER_REVOLUTION * SHOOTER_PIVOT_RATIO);
+
         ///// INTAKE PIVOT
 
         public static final boolean INTAKE_PIVOT_MOTOR_BRAKING_MODE = true;
 
-        // The reported encoder position after one revolution, check encoder
-        // specifications.
-        public static final double INTAKE_PIVOT_PULSES_PER_REVOLUTION = 40;
-
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
         // NUMBERS. MOTOR REVS / SHOOTER REVS
-        public static final double INTAKE_PIVOT_RATIO = ((12.0 * 18.0 * 12.0) / (72.0 * 72.0 * 26.0));
+        public static final double INTAKE_PIVOT_RATIO = ((60.0 * 80.0 * 26.0) / (12.0 * 16.0 * 12.0));
 
-        public static final double INTAKE_PIVOT_DEGREES_PER_PULSE = 360
-                        / (INTAKE_PIVOT_PULSES_PER_REVOLUTION * INTAKE_PIVOT_RATIO);
+        public static final double INTAKE_PIVOT_DEGREES_PER_REVOLUTION = 360.0
+                        / INTAKE_PIVOT_RATIO;
 
         public static final double INTAKE_PIVOT_BRAKING_DEGREES = 90;
 
         public static final double INTAKE_PIVOT_ARRIVE_OFFSET = 3;
+
+        //////////////////////// DRIVERS ////////////////////////
+
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.MACG;
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.DefaultUser;
 }

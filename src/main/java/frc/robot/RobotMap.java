@@ -15,16 +15,16 @@ public class RobotMap {
     // DRIVE
     public static final int SWERVE_FRONT_LEFT_DRIVE_MOTOR_PORT = 16;
     public static final TypeOfMotor SWERVE_FRONT_LEFT_DRIVE_MOTOR_TYPE = TypeOfMotor.CAN_SPARK_BRUSHLESS;
-    public static final boolean SWERVE_FRONT_LEFT_DRIVE_MOTOR_INVERTED = false;
+    public static final boolean SWERVE_FRONT_LEFT_DRIVE_MOTOR_INVERTED = true;
     public static final boolean SWERVE_FRONT_LEFT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_FRONT_LEFT_DIRECTION_MOTOR_PORT = 17;
     public static final TypeOfMotor SWERVE_FRONT_LEFT_DIRECTION_MOTOR_TYPE = TypeOfMotor.CAN_SPARK_BRUSHLESS;
-    public static final boolean SWERVE_FRONT_LEFT_DIRECTION_MOTOR_INVERTED = true;
+    public static final boolean SWERVE_FRONT_LEFT_DIRECTION_MOTOR_INVERTED = false;
     public static final boolean SWERVE_FRONT_LEFT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_FRONT_LEFT_ENCODED_TALON_PORT = 39;
-    public static final double SWERVE_FRONT_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = -0.3544921875;
+    public static final double SWERVE_FRONT_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = 0.053466796875;
     public static final boolean SWERVE_FRONT_LEFT_ENCODED_TALON_INVERTED = false;
 
     ///// FRONT RIGHT
@@ -40,23 +40,23 @@ public class RobotMap {
     public static final boolean SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
     public static final int SWERVE_FRONT_RIGHT_ENCODED_TALON_PORT = 40;
-    public static final double SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = -0.372802734375;
+    public static final double SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.076171875;
     public static final boolean SWERVE_FRONT_RIGHT_ENCODED_TALON_INVERTED = false;
 
     ///// BACK LEFT
     // DRIVE
     public static final int SWERVE_BACK_LEFT_DRIVE_MOTOR_PORT = 14;
     public static final TypeOfMotor SWERVE_BACK_LEFT_DRIVE_MOTOR_TYPE = TypeOfMotor.CAN_SPARK_BRUSHLESS;
-    public static final boolean SWERVE_BACK_LEFT_DRIVE_MOTOR_INVERTED = true;
+    public static final boolean SWERVE_BACK_LEFT_DRIVE_MOTOR_INVERTED = false;
     public static final boolean SWERVE_BACK_LEFT_DRIVE_ENCODER_INVERTED = true;
     // DIRECTION
     public static final int SWERVE_BACK_LEFT_DIRECTION_MOTOR_PORT = 15;
     public static final TypeOfMotor SWERVE_BACK_LEFT_DIRECTION_MOTOR_TYPE = TypeOfMotor.CAN_SPARK_BRUSHLESS;
-    public static final boolean SWERVE_BACK_LEFT_DIRECTION_MOTOR_INVERTED = true;
+    public static final boolean SWERVE_BACK_LEFT_DIRECTION_MOTOR_INVERTED = false;
     public static final boolean SWERVE_BACK_LEFT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_BACK_LEFT_ENCODED_TALON_PORT = 38;
-    public static final double SWERVE_BACK_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = 0.46875;
+    public static final double SWERVE_BACK_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = -0.6474609375;
     public static final boolean SWERVE_BACK_LEFT_ENCODED_TALON_INVERTED = false;
 
     ///// BACK RIGHT
@@ -68,24 +68,24 @@ public class RobotMap {
     // DIRECTION
     public static final int SWERVE_BACK_RIGHT_DIRECTION_MOTOR_PORT = 13;
     public static final TypeOfMotor SWERVE_BACK_RIGHT_DIRECTION_MOTOR_TYPE = TypeOfMotor.CAN_SPARK_BRUSHLESS;
-    public static final boolean SWERVE_BACK_RIGHT_DIRECTION_MOTOR_INVERTED = true;
+    public static final boolean SWERVE_BACK_RIGHT_DIRECTION_MOTOR_INVERTED = false;
     public static final boolean SWERVE_BACK_RIGHT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_BACK_RIGHT_ENCODED_TALON_PORT = 37;
-    public static final double SWERVE_BACK_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = -0.487548828125;
+    public static final double SWERVE_BACK_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.461181640625;
     public static final boolean SWERVE_BACK_RIGHT_ENCODED_TALON_INVERTED = false;
 
     ////////////////////////// SHOOTER //////////////////////////
     public static final int[] SHOOTER_MOTOR_PORTS = { 30, 31, 32 };
-    public static final int[] SHOOTER_INVERTED_MOTORS_PORTS = {};
+    public static final int[] SHOOTER_INVERTED_MOTORS_PORTS = { 30, 31 };
     public static final boolean SHOOTER_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] SHOOTER_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS,
-            TypeOfMotor.CAN_SPARK_BRUSHLESS, TypeOfMotor.TALON_SRX };
+            TypeOfMotor.CAN_SPARK_BRUSHLESS, TypeOfMotor.CAN_SPARK_BRUSHLESS };
 
     ////////////////////////// INTAKE //////////////////////////
 
     public static final int[] INTAKE_MOTOR_PORTS = { 20 };
-    public static final int[] INTAKE_INVERTED_MOTORS_PORTS = {};
+    public static final int[] INTAKE_INVERTED_MOTORS_PORTS = { 20 };
     public static final boolean INTAKE_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] INTAKE_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS };
 
@@ -93,7 +93,7 @@ public class RobotMap {
 
     ///// INTAKE PIVOT
     public static final int[] INTAKE_PIVOT_MOTOR_PORTS = { 40 };
-    public static final int[] INTAKE_PIVOT_INVERTED_MOTORS_PORTS = {};
+    public static final int[] INTAKE_PIVOT_INVERTED_MOTORS_PORTS = { 40 };
     public static final boolean INTAKE_PIVOT_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] INTAKE_PIVOT_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS };
 
@@ -105,9 +105,14 @@ public class RobotMap {
 
     ///// SHOOTER PIVOT
     public static final int[] SHOOTER_PIVOT_MOTOR_PORTS = { 41 };
-    public static final int[] SHOOTER_PIVOT_INVERTED_MOTORS_PORTS = {};
+    public static final int[] SHOOTER_PIVOT_INVERTED_MOTORS_PORTS = { 41 };
     public static final boolean SHOOTER_PIVOT_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] SHOOTER_PIVOT_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS };
+
+    // CANCODER
+    public static final int SHOOTER_PIVOT_ENCODED_TALON_PORT = 45;
+    public static final double SHOOTER_PIVOT_ENCODER_OFFSET_PULSES = -0.284423828125;
+    public static final boolean SHOOTER_PIVOT_ENCODED_TALON_INVERTED = false;
 
     public static final boolean SHOOTER_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE = true;
     public static final boolean SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE = true;
