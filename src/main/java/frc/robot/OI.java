@@ -4,8 +4,16 @@
 
 package frc.robot;
 
-import frc.robot.commands.manipulator.pivots.primitives.IntakePivotResetEncoder;
-import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotResetEncoder;
+import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotResetEncoder;
+import frc.robot.commands.manipulator.intake.IntakeIn;
+import frc.robot.commands.manipulator.intake.IntakeOut;
+import frc.robot.commands.manipulator.pivots.positions.ShooterPivotMoveTo;
+import frc.robot.commands.manipulator.pivots.primitives.IntakePivotDown;
+import frc.robot.commands.manipulator.pivots.primitives.IntakePivotUp;
+import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotDown;
+import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotUp;
+import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.IntakePivotResetEncoder;
+import frc.robot.commands.swerve.TestSwerve;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.resources.joysticks.HighAltitudeGuitarHeroJoystick;
@@ -48,7 +56,13 @@ public class OI {
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
 
-                pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+
+                pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
+
+                pilot.whileTrue(ButtonType.RB, new IntakeOut());
+                pilot.whileTrue(ButtonType.LB, new IntakeIn());
 
                 break;
 
@@ -64,11 +78,31 @@ public class OI {
                 pilot.onTrue(ButtonType.A, new ShooterPivotResetEncoder());
                 pilot.onTrue(ButtonType.B, new IntakePivotResetEncoder());
 
+                pilot.whileTrue(ButtonType.RB, new IntakeOut());
+                pilot.whileTrue(ButtonType.LB, new IntakeIn());
+
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+
+                pilot.whileTrue(ButtonType.POV_E, new ShooterPivotMoveTo(105));
+
                 break;
 
             case MACGwithGuitar:
 
                 pilotG = new HighAltitudeGuitarHeroJoystick(0);
+
+                break;
+
+            case Mafer:
+             pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+
+                pilot.onTrue(ButtonType.POV_N, new ResetOdometryZeros());
+
+                pilot.onTrue(ButtonType.A, new TestSwerve());
 
                 break;
 
@@ -104,6 +138,14 @@ public class OI {
             case MACG:
 
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+
+                copilot.whileTrueCombo(new ShooterPivotUp(), ButtonType.A, ButtonType.POV_N);
+                copilot.whileTrueCombo(new ShooterPivotDown(), ButtonType.A, ButtonType.POV_S);
+
+                copilot.whileTrueCombo(new IntakePivotUp(), ButtonType.B, ButtonType.POV_N);
+                copilot.whileTrueCombo(new IntakePivotDown(), ButtonType.B, ButtonType.POV_S);
+
+                copilot.onTrue(ButtonType.START, new IntakePivotResetEncoder());
 
                 break;
 
@@ -170,8 +212,28 @@ public class OI {
             case Joakin:
                 return -pilot.getAxis(AxisType.RIGHT_X);
 
+            case MACG:
+                return -pilot.getAxis(AxisType.RIGHT_X);
+
             default:
                 return -pilot.getAxis(AxisType.RIGHT_X);
+        }
+    }
+
+    public double getDeafultShooterDriveSpeed() {
+        switch (HighAltitudeConstants.CURRENT_PILOT) {
+
+            case DefaultUser:
+                return pilot.getTriggers();
+
+            case Joakin:
+                return pilot.getTriggers();
+
+            case MACG:
+                return pilot.getTriggers();
+
+            default:
+                return pilot.getTriggers();
         }
     }
 
@@ -189,6 +251,23 @@ public class OI {
 
             default:
                 return pilot;
+        }
+    }
+
+    public HighAltitudeJoystick getCopilot() {
+        switch (HighAltitudeConstants.CURRENT_COPILOT) {
+
+            case DefaultUser:
+                return copilot;
+
+            case Joakin:
+                return copilot;
+
+            case MACG:
+                return copilot;
+
+            default:
+                return copilot;
         }
     }
 }

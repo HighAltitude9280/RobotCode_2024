@@ -46,7 +46,7 @@ public class HighAltitudeSwerveModule {
         directionMotor.setBrakeMode(true);
         this.isDirectionEncoderReversed = isDirectionEncoderReversed;
 
-        directionPIDController = new PIDController(0.092, 0.0, 0.008646745);
+        directionPIDController = new PIDController(0.1, 0.0, 0.0);
         directionPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
         absoluteEncoderController = new CANcoder(encodedTalonPort);

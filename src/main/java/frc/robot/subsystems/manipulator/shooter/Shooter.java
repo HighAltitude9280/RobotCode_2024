@@ -30,27 +30,27 @@ public class Shooter extends SubsystemBase {
   }
 
   public void driveRollers(double speed) {
-    shooterMotors.setSpecificMotorSpeed(16, speed);
+    shooterMotors.setSpecificMotorSpeed(32, speed);
   }
 
   public void stopRollers() {
-    shooterMotors.setSpecificMotorSpeed(16, 0);
+    shooterMotors.setSpecificMotorSpeed(32, 0);
   }
 
   public void driveTop(double speed) {
-    shooterMotors.setSpecificMotorSpeed(15, speed);
+    shooterMotors.setSpecificMotorSpeed(30, speed);
   }
 
   public void stopTop() {
-    shooterMotors.setSpecificMotorSpeed(15, 0);
+    shooterMotors.setSpecificMotorSpeed(30, 0);
   }
 
   public void driveBottom(double speed) {
-    shooterMotors.setSpecificMotorSpeed(14, speed);
+    shooterMotors.setSpecificMotorSpeed(31, speed);
   }
 
   public void stopBottom() {
-    shooterMotors.setSpecificMotorSpeed(14, 0);
+    shooterMotors.setSpecificMotorSpeed(31, 0);
   }
 
   @Override

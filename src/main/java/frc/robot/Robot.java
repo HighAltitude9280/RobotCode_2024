@@ -4,9 +4,14 @@
 
 package frc.robot;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.resources.joysticks.HighAltitudeJoystick;
+import frc.robot.resources.joysticks.HighAltitudeGuitarHeroJoystick.ButtonType;
+import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -39,18 +44,30 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
+    boolean Test = OI.getInstance().getPilot().toggleAsBoolean(HighAltitudeJoystick.ButtonType.A);
+
     SmartDashboard.putNumber("Intake Pivot Degrees", robotContainer.getIntakePivot().getIntakePivotPositionInDegres());
     SmartDashboard.putNumber("Shooter Pivot Degrees",
         robotContainer.getShooterPivot().getShooterPivotPositionInDegres());
 
     SmartDashboard.putString("Pilot", robotContainer.getCurrentPilot().toString());
     SmartDashboard.putString("Copilot", robotContainer.getCurrentCopilot().toString());
+
+    SmartDashboard.putBoolean("Field Oriented", robotContainer.getSwerveDriveTrain().getIsFieldOriented());
+
+    SmartDashboard.putNumber("Drive Distance FL", robotContainer.getSwerveDriveTrain().getFrontLeft().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance FR", robotContainer.getSwerveDriveTrain().getFrontRight().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance BL", robotContainer.getSwerveDriveTrain().getBackLeft().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance BR", robotContainer.getSwerveDriveTrain().getBackRight().getDriveDistance());
+
+    SmartDashboard.putNumber("Odometry X", robotContainer.getSwerveDriveTrain().getPose().getX());
+    SmartDashboard.putNumber("Odometry Y", robotContainer.getSwerveDriveTrain().getPose().getY());
+    SmartDashboard.putNumber("Odometry angle", robotContainer.getSwerveDriveTrain().getPose().getRotation().getDegrees());
+    
   }
 
   @Override
   public void autonomousInit() {
-    robotContainer.getSwerveDriveTrain().setModulesBrakeMode(true);
-
   }
 
   @Override
@@ -59,7 +76,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    robotContainer.getSwerveDriveTrain().setModulesBrakeMode(true);
   }
 
   @Override
@@ -68,7 +84,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    robotContainer.getSwerveDriveTrain().setModulesBrakeMode(false);
   }
 
   @Override

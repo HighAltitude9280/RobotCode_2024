@@ -13,6 +13,8 @@ public class HighAltitudeConstants {
 
         ////////////////////////// SWERVE //////////////////////////
 
+        public static final double MAX_VOLTAGE = 12.0;
+
         /////////// KINEMATICS
         // Distance left - right (meters)
         public static final double SWERVE_TRACK_WIDTH = 0.0254 * (28.5 - 2.0 * 2.625);
@@ -131,14 +133,20 @@ public class HighAltitudeConstants {
         public static final double SHOOTER_PIVOT_DEGREES_PER_REVOLUTION = 360
                         / SHOOTER_PIVOT_RATIO;
 
-        public static final double SHOOTER_PIVOT_BRAKING_DEGREES = 90;
+        public static final double SHOOTER_PIVOT_BRAKING_DEGREES = 50;
 
-        public static final double SHOOTER_PIVOT_ARRIVE_OFFSET = 3;
+        public static final double SHOOTER_PIVOT_ARRIVE_OFFSET = 1.0;
 
-        public static final double SHOOTER_PIVOT_ENCODER_PULSES_PER_REVOLUTION = 4096;
+        public static final double SHOOTER_PIVOT_ABSOLUTE_ENCODER_DEGREES_PER_PULSE = 360
+                        / SHOOTER_PIVOT_RATIO;
 
-        public static final double SHOOTER_PIVOT_ABSOLUTE_ENCODER_DEGREES_PER_PULSE = 360 /
-                        (SHOOTER_PIVOT_ENCODER_PULSES_PER_REVOLUTION * SHOOTER_PIVOT_RATIO);
+        public static final double SHOOTER_PIVOT_AUTO_MAX_POWER = 0.5;
+
+        public static final double SHOOTER_PIVOT_UPPER_LIMIT = 105.07;
+        // 105.0625 Shuffle Report
+
+        public static final double SHOOTER_PIVOT_LOWER_LIMIT = -1.0;
+        // -0.87890625Shuffle Report
 
         ///// INTAKE PIVOT
 
@@ -155,8 +163,14 @@ public class HighAltitudeConstants {
 
         public static final double INTAKE_PIVOT_ARRIVE_OFFSET = 3;
 
+        public static final double INTAKE_PIVOT_UPPER_LIMIT = 160;
+        // 168.051662503756 Shuffle Report
+
+        public static final double INTAKE_PIVOT_LOWER_LIMIT = 0.0;
+        // Shuffle Report 0
+
         //////////////////////// DRIVERS ////////////////////////
 
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.MACG;
-        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.DefaultUser;
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.MACG;
 }

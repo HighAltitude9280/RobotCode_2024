@@ -16,6 +16,7 @@ import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 public class ShooterPivot extends SubsystemBase {
   HighAltitudeMotorGroup shooterPivotMotors;
   double currentShooterPivotEncoderPosition, shooterPivotPositionDegrees;
+  double currentTarget;
 
   DigitalInput topLimitSwitch;
   DigitalInput bottomLimitSwitch;
@@ -41,17 +42,25 @@ public class ShooterPivot extends SubsystemBase {
     if (RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
     }
+
+    currentTarget = getShooterPivotPositionInDegres();
   }
 
   public double getAbsoluteEncoderDeg() {
-    double angle = absoluteEncoderController.getPosition().getValueAsDouble()
-        - RobotMap.SHOOTER_PIVOT_ENCODER_OFFSET_PULSES;
-    return angle * HighAltitudeConstants.SHOOTER_PIVOT_ABSOLUTE_ENCODER_DEGREES_PER_PULSE
+    double angle = (absoluteEncoderController.getPosition().getValueAsDouble()
+        - RobotMap.SHOOTER_PIVOT_ENCODER_OFFSET_PULSES) * 360;
+    return angle
         * (RobotMap.SHOOTER_PIVOT_ENCODED_TALON_INVERTED ? -1.0 : 1.0);
   }
 
   public void driveShooterPivot(double speed) {
-    shooterPivotMotors.setAll(speed);
+    if (shooterPivotPositionDegrees > HighAltitudeConstants.SHOOTER_PIVOT_UPPER_LIMIT && speed > 0) {
+      shooterPivotMotors.setAll(0);
+    } else if (shooterPivotPositionDegrees < HighAltitudeConstants.SHOOTER_PIVOT_LOWER_LIMIT && speed < 0) {
+      shooterPivotMotors.setAll(0);
+    } else {
+      shooterPivotMotors.setAll(speed);
+    }
   }
 
   public boolean getShooterPivotTopLimitSwitch() {
@@ -78,15 +87,28 @@ public class ShooterPivot extends SubsystemBase {
     return shooterPivotPositionDegrees;
   }
 
+  public double getCurrentTarget() {
+    return currentTarget;
+  }
+
+  public void setCurrentTarget(double Target) {
+    currentTarget = Target;
+  }
+
+  public boolean humanInteraction() {
+    if (Math.abs(currentTarget - shooterPivotPositionDegrees) >= 5) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @Override
   public void periodic() {
-    currentShooterPivotEncoderPosition = shooterPivotMotors.getEncoderPosition();
-    shooterPivotPositionDegrees = currentShooterPivotEncoderPosition
-        * HighAltitudeConstants.SHOOTER_PIVOT_DEGREES_PER_REVOLUTION;
+    currentShooterPivotEncoderPosition = absoluteEncoderController.getAbsolutePosition().getValueAsDouble();
+    shooterPivotPositionDegrees = getAbsoluteEncoderDeg();
 
-    SmartDashboard.putNumber("Raw Shooter Pivot Encoder", shooterPivotMotors.getEncoderPosition());
-    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder",
-        absoluteEncoderController.getPosition().getValueAsDouble());
-    SmartDashboard.putNumber("Shooter Pivot Deegres", getAbsoluteEncoderDeg());
+    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder", currentShooterPivotEncoderPosition);
+    SmartDashboard.putNumber("Shooter Pivot Deegres", shooterPivotPositionDegrees);
   }
 }

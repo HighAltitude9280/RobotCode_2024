@@ -9,6 +9,8 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.event.BooleanEvent;
+import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -436,6 +438,12 @@ public class HighAltitudeJoystick {
 
     public Trigger getAxisButtonObj(int axis) {
         return availableAxisButtons.get(axis);
+    }
+
+    public boolean toggleAsBoolean(ButtonType buttonType) {
+        Trigger chosenButton = joystickButtonConfiguration.get(buttonType);
+        boolean state = false;
+        return state;
     }
 
     public Haptics getHaptics() {

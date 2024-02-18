@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Human_Drivers.HumanDrivers;
+import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;
 import frc.robot.commands.manipulator.shooter.DriveShooter;
 import frc.robot.commands.swerve.DefaultSwerveDrive;
 import frc.robot.resources.components.Navx;
@@ -18,26 +19,27 @@ import frc.robot.subsystems.swerve.SwerveDriveTrain;
 public class RobotContainer {
 
     private Navx navx;
-    private SwerveDriveTrain swerveDriveTrain;
     private Intake intake;
     private Shooter shooter;
     private IntakePivot intakePivot;
     private ShooterPivot shooterPivot;
+    private SwerveDriveTrain swerveDriveTrain;
 
     public RobotContainer() {
 
         navx = new Navx();
-        swerveDriveTrain = new SwerveDriveTrain();
         intake = new Intake();
         shooter = new Shooter();
         intakePivot = new IntakePivot();
         shooterPivot = new ShooterPivot();
+        swerveDriveTrain = new SwerveDriveTrain();
     }
 
     public void ConfigureButtonBindings() {
         OI.getInstance().ConfigureButtonBindings();
-        swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
         shooter.setDefaultCommand(new DriveShooter());
+        swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
+        shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition());
     }
 
     public Navx getNavx() {
@@ -50,10 +52,6 @@ public class RobotContainer {
 
     public HumanDrivers getCurrentCopilot() {
         return HighAltitudeConstants.CURRENT_COPILOT;
-    }
-
-    public SwerveDriveTrain getSwerveDriveTrain() {
-        return swerveDriveTrain;
     }
 
     public Intake getIntake() {
@@ -70,5 +68,9 @@ public class RobotContainer {
 
     public ShooterPivot getShooterPivot() {
         return shooterPivot;
+    }
+
+    public SwerveDriveTrain getSwerveDriveTrain() {
+        return swerveDriveTrain;
     }
 }

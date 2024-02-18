@@ -7,11 +7,12 @@ package frc.robot.commands.manipulator.shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.resources.joysticks.HighAltitudeJoystick.ButtonType;
 import frc.robot.subsystems.manipulator.shooter.Shooter;
 
 public class DriveShooter extends Command {
   Shooter shooter;
-  double power;
+  boolean SuperShoot;
 
   /** Creates a new DriveShooter. */
   public DriveShooter() {
@@ -28,8 +29,15 @@ public class DriveShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double power = OI.getInstance().getPilot().getTriggers();
-    shooter.driveShooter(power);
+    SuperShoot = OI.getInstance().getCopilot().getButtonObj(ButtonType.X).getAsBoolean();
+    if (SuperShoot == true) {
+      shooter.driveTop(1);
+      shooter.driveBottom(1);
+
+      shooter.driveRollers(OI.getInstance().getDeafultShooterDriveSpeed() * 0.5);
+    } else {
+      shooter.driveShooter(OI.getInstance().getDeafultShooterDriveSpeed());
+    }
   }
 
   // Called once the command ends or is interrupted.
