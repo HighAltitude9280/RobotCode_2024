@@ -4,14 +4,9 @@
 
 package frc.robot;
 
-import javax.swing.text.StyleContext.SmallAttributeSet;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.resources.joysticks.HighAltitudeJoystick;
-import frc.robot.resources.joysticks.HighAltitudeGuitarHeroJoystick.ButtonType;
-import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -43,8 +38,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
-    boolean Test = OI.getInstance().getPilot().toggleAsBoolean(HighAltitudeJoystick.ButtonType.A);
 
     SmartDashboard.putNumber("Intake Pivot Degrees", robotContainer.getIntakePivot().getIntakePivotPositionInDegres());
     SmartDashboard.putNumber("Shooter Pivot Degrees",

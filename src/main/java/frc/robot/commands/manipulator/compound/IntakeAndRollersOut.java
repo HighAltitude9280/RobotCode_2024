@@ -5,15 +5,20 @@
 package frc.robot.commands.manipulator.compound;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.manipulator.intake.IntakeOut;
+import frc.robot.commands.manipulator.shooter.RollersOut;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IntakeAndShooterOut extends ParallelCommandGroup {
+public class IntakeAndRollersOut extends ParallelCommandGroup {
   /** Creates a new IntakeAndShooterOut. */
-  public IntakeAndShooterOut() {
+  public IntakeAndRollersOut() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
+    addCommands(
+      new IntakeOut(),
+      new RollersOut()
+    );
   }
 }

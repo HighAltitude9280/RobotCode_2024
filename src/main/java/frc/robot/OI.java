@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotResetEncoder;
+import frc.robot.commands.manipulator.shooter.SuperShoot;
+import frc.robot.commands.manipulator.compound.IntakeAndRollersOut;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 import frc.robot.commands.manipulator.intake.IntakeOut;
 import frc.robot.commands.manipulator.pivots.positions.ShooterPivotMoveTo;
@@ -12,6 +14,7 @@ import frc.robot.commands.manipulator.pivots.primitives.IntakePivotDown;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotUp;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotDown;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotUp;
+import frc.robot.commands.manipulator.pivots.primitives.ToggleIntakePivot;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.IntakePivotResetEncoder;
 import frc.robot.commands.swerve.TestSwerve;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
@@ -53,16 +56,20 @@ public class OI {
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
+
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
 
-                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
-                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
-
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
-                pilot.whileTrue(ButtonType.RB, new IntakeOut());
-                pilot.whileTrue(ButtonType.LB, new IntakeIn());
+                pilot.whileTrue(ButtonType.LT, new IntakeIn());
+                pilot.whileTrue(ButtonType.RT, new SuperShoot());
+
+                pilot.whileTrue(ButtonType.LB, new ToggleIntakePivot());
+                pilot.whileTrue(ButtonType.RB, new IntakeAndRollersOut());
 
                 break;
 
@@ -139,13 +146,11 @@ public class OI {
 
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
-                copilot.whileTrueCombo(new ShooterPivotUp(), ButtonType.A, ButtonType.POV_N);
-                copilot.whileTrueCombo(new ShooterPivotDown(), ButtonType.A, ButtonType.POV_S);
-
-                copilot.whileTrueCombo(new IntakePivotUp(), ButtonType.B, ButtonType.POV_N);
-                copilot.whileTrueCombo(new IntakePivotDown(), ButtonType.B, ButtonType.POV_S);
-
-                copilot.onTrue(ButtonType.START, new IntakePivotResetEncoder());
+                copilot.whileTrueCombo(new IntakePivotUp(), ButtonType.POV_N, ButtonType.A);
+                copilot.whileTrueCombo(new IntakePivotDown(), ButtonType.POV_S, ButtonType.A);
+                
+                copilot.whileTrueCombo(new ShooterPivotUp(), ButtonType.POV_N, ButtonType.B);
+                copilot.whileTrueCombo(new ShooterPivotDown(), ButtonType.POV_S, ButtonType.B);
 
                 break;
 
