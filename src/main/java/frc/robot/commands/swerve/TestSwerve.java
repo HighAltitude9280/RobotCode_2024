@@ -57,10 +57,10 @@ public class TestSwerve extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(swerveDriveTrain.{
+    /*if(swerveDriveTrain.{
     return true;  
-    } else {
-      return false;}
+    } else {*/
+      return false;
     
   }
 }
