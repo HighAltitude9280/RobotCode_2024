@@ -22,7 +22,7 @@ public class ShooterPivotKeepCurrentPosition extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     shooterPivot = Robot.getRobotContainer().getShooterPivot();
 
-    targetPIDController = new PIDController(0.0520, 0.005, 0.0);
+    targetPIDController = new PIDController(0.035, 0.0, 0.0);
 
     addRequirements(shooterPivot);
   }
@@ -35,10 +35,6 @@ public class ShooterPivotKeepCurrentPosition extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    if (shooterPivot.humanInteraction()) {
-      shooterPivot.setCurrentTarget(shooterPivot.getAbsoluteEncoderDeg());
-    }
 
     currentAngle = shooterPivot.getAbsoluteEncoderDeg();
     currentTarget = shooterPivot.getCurrentTarget();

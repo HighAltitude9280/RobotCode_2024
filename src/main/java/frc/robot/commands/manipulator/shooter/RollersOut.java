@@ -10,6 +10,7 @@ import frc.robot.subsystems.manipulator.shooter.Shooter;
 
 public class RollersOut extends Command {
   Shooter shooter;
+
   /** Creates a new RollersOut. */
   public RollersOut() {
     shooter = Robot.getRobotContainer().getShooter();
@@ -20,12 +21,13 @@ public class RollersOut extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.driveRollers(0.15);
+    shooter.driveRollers(0.3);
   }
 
   // Called once the command ends or is interrupted.

@@ -23,6 +23,8 @@ public class ShooterPivot extends SubsystemBase {
 
   CANcoder absoluteEncoderController;
 
+  boolean Override;
+
   /** Creates a new ShooterPivot. */
   public ShooterPivot() {
 
@@ -44,6 +46,8 @@ public class ShooterPivot extends SubsystemBase {
     }
 
     currentTarget = getShooterPivotPositionInDegres();
+
+    Override = false;
   }
 
   public double getAbsoluteEncoderDeg() {
@@ -54,10 +58,15 @@ public class ShooterPivot extends SubsystemBase {
   }
 
   public void driveShooterPivot(double speed) {
-    if (shooterPivotPositionDegrees > HighAltitudeConstants.SHOOTER_PIVOT_UPPER_LIMIT && speed > 0) {
-      shooterPivotMotors.setAll(0);
-    } else if (shooterPivotPositionDegrees < HighAltitudeConstants.SHOOTER_PIVOT_LOWER_LIMIT && speed < 0) {
-      shooterPivotMotors.setAll(0);
+
+    if (Override == false) {
+      if (shooterPivotPositionDegrees > HighAltitudeConstants.SHOOTER_PIVOT_UPPER_LIMIT && speed > 0) {
+        shooterPivotMotors.setAll(0);
+      } else if (shooterPivotPositionDegrees < HighAltitudeConstants.SHOOTER_PIVOT_LOWER_LIMIT && speed < 0) {
+        shooterPivotMotors.setAll(0);
+      } else {
+        shooterPivotMotors.setAll(speed);
+      }
     } else {
       shooterPivotMotors.setAll(speed);
     }
@@ -103,12 +112,22 @@ public class ShooterPivot extends SubsystemBase {
     }
   }
 
+  public boolean getOverride() {
+    return Override;
+  }
+
+  public void toggleOverride() {
+    Override = !Override;
+  }
+
   @Override
   public void periodic() {
     currentShooterPivotEncoderPosition = absoluteEncoderController.getAbsolutePosition().getValueAsDouble();
     shooterPivotPositionDegrees = getAbsoluteEncoderDeg();
 
-    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder", currentShooterPivotEncoderPosition);
-    SmartDashboard.putNumber("Shooter Pivot Deegres", shooterPivotPositionDegrees);
+    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder",
+        currentShooterPivotEncoderPosition);
+
+    SmartDashboard.putBoolean("Shooter_Override", Override);
   }
 }

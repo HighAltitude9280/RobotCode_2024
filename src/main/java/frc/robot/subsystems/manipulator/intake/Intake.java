@@ -9,7 +9,7 @@ import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 
 public class Intake extends SubsystemBase {
-  HighAltitudeMotorGroup intakeMotors; 
+  HighAltitudeMotorGroup intakeMotors;
 
   /** Creates a new Intake. */
   public Intake() {
@@ -20,6 +20,11 @@ public class Intake extends SubsystemBase {
 
   public void driveIntake(double speed) {
     intakeMotors.setAll(speed);
+  }
+
+  // TODO Tunnea esto xd
+  public void Hold() {
+    intakeMotors.setAll(0.05);
   }
 
   public void stopIntake() {

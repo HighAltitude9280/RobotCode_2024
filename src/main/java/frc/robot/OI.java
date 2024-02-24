@@ -6,10 +6,16 @@ package frc.robot;
 
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotResetEncoder;
 import frc.robot.commands.manipulator.shooter.SuperShoot;
+
+import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
+
 import frc.robot.commands.manipulator.compound.IntakeAndRollersOut;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 import frc.robot.commands.manipulator.intake.IntakeOut;
+import frc.robot.commands.manipulator.pivots.pivotsParameters.toggleOverride;
 import frc.robot.commands.manipulator.pivots.positions.ShooterPivotMoveTo;
+import frc.robot.commands.manipulator.pivots.primitives.AxisDriveIntakePivot;
+import frc.robot.commands.manipulator.pivots.primitives.AxisDriveShooterPivot;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotDown;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotUp;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotDown;
@@ -68,7 +74,6 @@ public class OI {
                 pilot.whileTrue(ButtonType.LT, new IntakeIn());
                 pilot.whileTrue(ButtonType.RT, new SuperShoot());
 
-                pilot.whileTrue(ButtonType.LB, new ToggleIntakePivot());
                 pilot.whileTrue(ButtonType.RB, new IntakeAndRollersOut());
 
                 break;
@@ -102,7 +107,7 @@ public class OI {
                 break;
 
             case Mafer:
-             pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
@@ -146,17 +151,37 @@ public class OI {
 
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
+                copilot.onTrue(ButtonType.START, new IntakePivotResetEncoder());
+                copilot.onTrue(ButtonType.BACK, new toggleOverride());
+
                 copilot.whileTrueCombo(new IntakePivotUp(), ButtonType.POV_N, ButtonType.A);
                 copilot.whileTrueCombo(new IntakePivotDown(), ButtonType.POV_S, ButtonType.A);
-                
+
                 copilot.whileTrueCombo(new ShooterPivotUp(), ButtonType.POV_N, ButtonType.B);
                 copilot.whileTrueCombo(new ShooterPivotDown(), ButtonType.POV_S, ButtonType.B);
+
+                copilot.whileTrue(ButtonType.LB, new ToggleIntakePivot());
 
                 break;
 
             case MACGwithGuitar:
 
                 copilotG = new HighAltitudeGuitarHeroJoystick(1);
+
+                break;
+
+            case LuisNN:
+
+                copilot.onTrue(ButtonType.START, new IntakePivotResetEncoder());
+                copilot.onTrue(ButtonType.BACK, new toggleOverride());
+
+                copilot.whileTrue(ButtonType.LB, new ToggleIntakePivot());
+
+                copilot.whileTrueCombo(new IntakePivotUp(), ButtonType.POV_N, ButtonType.A);
+                copilot.whileTrueCombo(new IntakePivotDown(), ButtonType.POV_S, ButtonType.A);
+
+                copilot.whileTrueCombo(new ShooterPivotUp(), ButtonType.POV_N, ButtonType.B);
+                copilot.whileTrueCombo(new ShooterPivotDown(), ButtonType.POV_S, ButtonType.B);
 
                 break;
 
@@ -269,6 +294,9 @@ public class OI {
                 return copilot;
 
             case MACG:
+                return copilot;
+
+            case LuisNN:
                 return copilot;
 
             default:

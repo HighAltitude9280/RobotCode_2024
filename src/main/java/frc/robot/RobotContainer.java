@@ -33,13 +33,25 @@ public class RobotContainer {
         intakePivot = new IntakePivot();
         shooterPivot = new ShooterPivot();
         swerveDriveTrain = new SwerveDriveTrain();
+
     }
 
     public void ConfigureButtonBindings() {
-        OI.getInstance().ConfigureButtonBindings();
-        shooter.setDefaultCommand(new DriveShooter());
-        swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
-        shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition());
+        switch (HighAltitudeConstants.CURRENT_PILOT) {
+
+            case Joakin:
+                OI.getInstance().ConfigureButtonBindings();
+                swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
+                shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition());
+                break;
+
+            default:
+                OI.getInstance().ConfigureButtonBindings();
+                shooter.setDefaultCommand(new DriveShooter());
+                swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
+                shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition());
+
+        }
     }
 
     public Navx getNavx() {

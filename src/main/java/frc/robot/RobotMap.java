@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.swervedrivespecialties.swervelib.ctre.Falcon500SteerControllerFactoryBuilder;
-
 import frc.robot.resources.components.speedController.HighAltitudeMotorController.TypeOfMotor;
 
 /** Add your docs here. */
@@ -26,7 +24,7 @@ public class RobotMap {
     public static final boolean SWERVE_FRONT_LEFT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_FRONT_LEFT_ENCODED_TALON_PORT = 39;
-    public static final double SWERVE_FRONT_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = 0.05029296875;
+    public static final double SWERVE_FRONT_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = 0.05859375;
     public static final boolean SWERVE_FRONT_LEFT_ENCODED_TALON_INVERTED = false;
 
     ///// FRONT RIGHT
@@ -42,7 +40,7 @@ public class RobotMap {
     public static final boolean SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
     public static final int SWERVE_FRONT_RIGHT_ENCODED_TALON_PORT = 40;
-    public static final double SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.087158203125;
+    public static final double SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.07080078125;
     public static final boolean SWERVE_FRONT_RIGHT_ENCODED_TALON_INVERTED = false;
 
     ///// BACK LEFT
@@ -58,7 +56,7 @@ public class RobotMap {
     public static final boolean SWERVE_BACK_LEFT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_BACK_LEFT_ENCODED_TALON_PORT = 38;
-    public static final double SWERVE_BACK_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = -0.3564453125;
+    public static final double SWERVE_BACK_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = -0.12939453125;
     public static final boolean SWERVE_BACK_LEFT_ENCODED_TALON_INVERTED = false;
 
     ///// BACK RIGHT
@@ -74,7 +72,7 @@ public class RobotMap {
     public static final boolean SWERVE_BACK_RIGHT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_BACK_RIGHT_ENCODED_TALON_PORT = 37;
-    public static final double SWERVE_BACK_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.46435546875;
+    public static final double SWERVE_BACK_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.46533203125;
     public static final boolean SWERVE_BACK_RIGHT_ENCODED_TALON_INVERTED = false;
 
     ////////////////////////// SHOOTER //////////////////////////
@@ -113,7 +111,7 @@ public class RobotMap {
 
     // CANCODER
     public static final int SHOOTER_PIVOT_ENCODED_TALON_PORT = 45;
-    public static final double SHOOTER_PIVOT_ENCODER_OFFSET_PULSES = -0.013916015625;
+    public static final double SHOOTER_PIVOT_ENCODER_OFFSET_PULSES = -0.035888671875;
     public static final boolean SHOOTER_PIVOT_ENCODED_TALON_INVERTED = false;
 
     // LIMIT SWITCHES

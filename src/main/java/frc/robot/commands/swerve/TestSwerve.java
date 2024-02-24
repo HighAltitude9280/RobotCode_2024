@@ -7,7 +7,6 @@ package frc.robot.commands.swerve;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.swerve.HighAltitudeSwerveModule;
 import frc.robot.subsystems.swerve.SwerveDriveTrain;
@@ -57,10 +56,12 @@ public class TestSwerve extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    /*if(swerveDriveTrain.{
-    return true;  
-    } else {*/
-      return false;
-    
+    /*
+     * if(swerveDriveTrain.{
+     * return true;
+     * } else {
+     */
+    return false;
+
   }
 }

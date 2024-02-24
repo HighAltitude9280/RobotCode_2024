@@ -2,62 +2,57 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.manipulator.pivots.positions;
+package frc.robot.commands.manipulator.pivots.primitives;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
 import frc.robot.subsystems.manipulator.pivots.ShooterPivot;
 
-public class ShooterPivotMoveTo extends Command {
+public class AxisDriveShooterPivot extends Command {
   ShooterPivot shooterPivot;
+  double axis;
 
-  double target;
-  double currentAngle;
-  double currentTarget;
-
-  PIDController targetPIDController;
-
-  /** Creates a new ShooterPivotMoveTo. */
-  public ShooterPivotMoveTo(double target) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  /** Creates a new AxisDriveShooterPivot. */
+  public AxisDriveShooterPivot() {
     shooterPivot = Robot.getRobotContainer().getShooterPivot();
 
-    targetPIDController = new PIDController(0.08, 0.0, 0.0);
-
     addRequirements(shooterPivot);
-    this.target = target;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterPivot.setCurrentTarget(target);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    currentAngle = shooterPivot.getAbsoluteEncoderDeg();
-    currentTarget = shooterPivot.getCurrentTarget();
+    axis = -OI.getInstance().getCopilot().getAxis(AxisType.RIGHT_Y);
 
-    shooterPivot.driveShooterPivot(targetPIDController.calculate(currentAngle, currentTarget));
+    if (axis > 0) {
+      shooterPivot.driveShooterPivot(0.25);
+    }
+    if (axis < 0) {
+      shooterPivot.driveShooterPivot(-0.25);
+    } else {
+      shooterPivot.driveShooterPivot(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     shooterPivot.driveShooterPivot(0);
+    shooterPivot.setCurrentTarget(shooterPivot.getAbsoluteEncoderDeg());
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (shooterPivot.getShooterPivotTopLimitSwitch() == true) {
-      return false;
-    } else {
-      return true;
-    }
+    return false;
   }
 }

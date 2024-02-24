@@ -142,11 +142,11 @@ public class HighAltitudeConstants {
 
         public static final double SHOOTER_PIVOT_AUTO_MAX_POWER = 0.5;
 
-        public static final double SHOOTER_PIVOT_UPPER_LIMIT = 105.07;
-        // 105.0625 Shuffle Report
+        public static final double SHOOTER_PIVOT_UPPER_LIMIT = 107.7;
+        // 107.666015625 Shuffle Report
 
-        public static final double SHOOTER_PIVOT_LOWER_LIMIT = -1.0;
-        // -0.87890625Shuffle Report
+        public static final double SHOOTER_PIVOT_LOWER_LIMIT = 0.0;
+        // 0.17578125 Shuffle Report
 
         ///// INTAKE PIVOT
 
@@ -171,6 +171,6 @@ public class HighAltitudeConstants {
 
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.MACG;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.MACG;
 }

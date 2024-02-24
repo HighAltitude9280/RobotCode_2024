@@ -17,9 +17,11 @@ public class IntakePivot extends SubsystemBase {
   DigitalInput topLimitSwitch;
   DigitalInput bottomLimitSwitch;
 
-  IntakePosition currentPosition;
+  IntakePivotPosition currentPosition;
 
-  public enum IntakePosition {
+  boolean Override;
+
+  public enum IntakePivotPosition {
     LOWERED, STORED
   }
 
@@ -39,14 +41,20 @@ public class IntakePivot extends SubsystemBase {
 
     if (RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
+
+      Override = false;
     }
   }
 
   public void driveIntakePivot(double speed) {
-    if (intakePivotPositionDegrees > HighAltitudeConstants.INTAKE_PIVOT_UPPER_LIMIT && speed > 0) {
-      intakePivotMotors.setAll(0);
-    } else if (intakePivotPositionDegrees < HighAltitudeConstants.INTAKE_PIVOT_LOWER_LIMIT && speed < 0) {
-      intakePivotMotors.setAll(0);
+    if (Override == false) {
+      if (intakePivotPositionDegrees > HighAltitudeConstants.INTAKE_PIVOT_UPPER_LIMIT && speed > 0) {
+        intakePivotMotors.setAll(0);
+      } else if (intakePivotPositionDegrees < HighAltitudeConstants.INTAKE_PIVOT_LOWER_LIMIT && speed < 0) {
+        intakePivotMotors.setAll(0);
+      } else {
+        intakePivotMotors.setAll(speed);
+      }
     } else {
       intakePivotMotors.setAll(speed);
     }
@@ -72,6 +80,26 @@ public class IntakePivot extends SubsystemBase {
     return intakePivotPositionDegrees;
   }
 
+  public IntakePivotPosition getCurrentPosition() {
+    return currentPosition;
+  }
+
+  public void toggleIntakePivotDirection() {
+    if (currentPosition == IntakePivotPosition.STORED) {
+      currentPosition = IntakePivotPosition.LOWERED;
+    } else {
+      currentPosition = IntakePivotPosition.STORED;
+    }
+  }
+
+  public boolean getOverride() {
+    return Override;
+  }
+
+  public void toggleOverride() {
+    Override = !Override;
+  }
+
   @Override
   public void periodic() {
     currentIntakePivotEncoderPosition = intakePivotMotors.getEncoderPosition();
@@ -79,5 +107,7 @@ public class IntakePivot extends SubsystemBase {
         * HighAltitudeConstants.INTAKE_PIVOT_DEGREES_PER_REVOLUTION;
 
     SmartDashboard.putNumber("Raw Intake Pivot Encoder", intakePivotMotors.getEncoderPosition());
+
+    SmartDashboard.putBoolean("Intake_Override", Override);
   }
 }

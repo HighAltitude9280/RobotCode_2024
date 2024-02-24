@@ -5,15 +5,17 @@
 package frc.robot.commands.manipulator.pivots.primitives;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
 import frc.robot.subsystems.manipulator.pivots.IntakePivot;
-import frc.robot.subsystems.manipulator.pivots.IntakePivot.IntakePivotPosition;
 
-public class ToggleIntakePivot extends Command {
+public class AxisDriveIntakePivot extends Command {
   IntakePivot intakePivot;
+  double axis;
 
-  /** Creates a new ToggleIntakePivot. */
-  public ToggleIntakePivot() {
+  /** Creates a new AxisDriveShooterPivot. */
+  public AxisDriveIntakePivot() {
     intakePivot = Robot.getRobotContainer().getIntakePivot();
 
     addRequirements(intakePivot);
@@ -23,17 +25,24 @@ public class ToggleIntakePivot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakePivot.toggleIntakePivotDirection();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (intakePivot.getCurrentPosition() == IntakePivotPosition.STORED) {
-      intakePivot.driveIntakePivot(-0.25);
-    } else {
+
+    axis = -OI.getInstance().getCopilot().getAxis(AxisType.LEFT_Y);
+
+    if (axis > 0) {
       intakePivot.driveIntakePivot(0.25);
     }
+    if (axis < 0) {
+      intakePivot.driveIntakePivot(-0.25);
+    } else {
+      intakePivot.driveIntakePivot(0);
+    }
+
+    System.out.println("AAAAAAAA");
   }
 
   // Called once the command ends or is interrupted.
