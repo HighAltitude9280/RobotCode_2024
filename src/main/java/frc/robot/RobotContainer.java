@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Human_Drivers.HumanDrivers;
+import frc.robot.commands.autonomous.primitiveAutos.ShootPreloaded;
 /*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
 import frc.robot.commands.manipulator.shooter.DriveShooter;
 import frc.robot.commands.swerve.DefaultSwerveDrive;
@@ -27,6 +32,8 @@ public class RobotContainer {
     private SwerveDriveTrain swerveDriveTrain;
     private LEDs leds;
 
+    SendableChooser<Command> m_chooser = new SendableChooser<>();
+
     public RobotContainer() {
 
         navx = new Navx();
@@ -45,14 +52,14 @@ public class RobotContainer {
             case Joakin:
                 OI.getInstance().ConfigureButtonBindings();
                 swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
-                /*shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition());*/
+                /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
                 break;
 
             default:
                 OI.getInstance().ConfigureButtonBindings();
                 shooter.setDefaultCommand(new DriveShooter());
                 swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
-                /*shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
+                /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
 
         }
     }
@@ -87,5 +94,18 @@ public class RobotContainer {
 
     public SwerveDriveTrain getSwerveDriveTrain() {
         return swerveDriveTrain;
+    }
+
+    public Command getAutonomousCommand() {
+        return m_chooser.getSelected();
+    }
+
+    public void putAutoChooser() {
+        SmartDashboard.putData("Autonomous", m_chooser);
+    }
+
+    public void generateAutos() {
+        m_chooser.addOption("ShootPreloaded", new ShootPreloaded());
+        m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
     }
 }

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private static RobotContainer robotContainer;
+  private Command m_autonomousCommand;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -48,19 +50,31 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putBoolean("Field Oriented", robotContainer.getSwerveDriveTrain().getIsFieldOriented());
 
-    SmartDashboard.putNumber("Drive Distance FL", robotContainer.getSwerveDriveTrain().getFrontLeft().getDriveDistance());
-    SmartDashboard.putNumber("Drive Distance FR", robotContainer.getSwerveDriveTrain().getFrontRight().getDriveDistance());
-    SmartDashboard.putNumber("Drive Distance BL", robotContainer.getSwerveDriveTrain().getBackLeft().getDriveDistance());
-    SmartDashboard.putNumber("Drive Distance BR", robotContainer.getSwerveDriveTrain().getBackRight().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance FL",
+        robotContainer.getSwerveDriveTrain().getFrontLeft().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance FR",
+        robotContainer.getSwerveDriveTrain().getFrontRight().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance BL",
+        robotContainer.getSwerveDriveTrain().getBackLeft().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance BR",
+        robotContainer.getSwerveDriveTrain().getBackRight().getDriveDistance());
 
     SmartDashboard.putNumber("Odometry X", robotContainer.getSwerveDriveTrain().getPose().getX());
     SmartDashboard.putNumber("Odometry Y", robotContainer.getSwerveDriveTrain().getPose().getY());
-    SmartDashboard.putNumber("Odometry angle", robotContainer.getSwerveDriveTrain().getPose().getRotation().getDegrees());
-    
+    SmartDashboard.putNumber("Odometry angle",
+        robotContainer.getSwerveDriveTrain().getPose().getRotation().getDegrees());
+
   }
 
   @Override
   public void autonomousInit() {
+    getRobotContainer().getSwerveDriveTrain().setModulesBrakeMode(true);
+    m_autonomousCommand = robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous comand (example)
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
   }
 
   @Override
@@ -69,6 +83,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+    getRobotContainer().getSwerveDriveTrain().setModulesBrakeMode(true);
   }
 
   @Override
@@ -81,6 +99,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    getRobotContainer().putAutoChooser();
   }
 
   @Override
