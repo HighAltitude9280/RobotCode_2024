@@ -5,10 +5,11 @@
 package frc.robot;
 
 import frc.robot.Human_Drivers.HumanDrivers;
-import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;
+/*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
 import frc.robot.commands.manipulator.shooter.DriveShooter;
 import frc.robot.commands.swerve.DefaultSwerveDrive;
 import frc.robot.resources.components.Navx;
+import frc.robot.resources.components.PWMLEDStrip.LEDs;
 import frc.robot.subsystems.manipulator.intake.Intake;
 import frc.robot.subsystems.manipulator.pivots.IntakePivot;
 import frc.robot.subsystems.manipulator.pivots.ShooterPivot;
@@ -24,6 +25,7 @@ public class RobotContainer {
     private IntakePivot intakePivot;
     private ShooterPivot shooterPivot;
     private SwerveDriveTrain swerveDriveTrain;
+    private LEDs leds;
 
     public RobotContainer() {
 
@@ -33,6 +35,7 @@ public class RobotContainer {
         intakePivot = new IntakePivot();
         shooterPivot = new ShooterPivot();
         swerveDriveTrain = new SwerveDriveTrain();
+        leds = new LEDs();
 
     }
 
@@ -42,14 +45,14 @@ public class RobotContainer {
             case Joakin:
                 OI.getInstance().ConfigureButtonBindings();
                 swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
-                shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition());
+                /*shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition());*/
                 break;
 
             default:
                 OI.getInstance().ConfigureButtonBindings();
                 shooter.setDefaultCommand(new DriveShooter());
                 swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
-                shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition());
+                /*shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
 
         }
     }

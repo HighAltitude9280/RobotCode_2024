@@ -30,6 +30,7 @@ public class ShooterPivotUp extends Command {
     shooterPivot.driveShooterPivot(0.25);
   }
 
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -40,6 +41,9 @@ public class ShooterPivotUp extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (shooterPivot.getShooterPivotTopLimitSwitch()){
+      return true;
+    }
     return false;
   }
 }

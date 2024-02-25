@@ -42,12 +42,13 @@ public class ShooterPivot extends SubsystemBase {
     }
 
     if (RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
-      topLimitSwitch = new DigitalInput(RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
+      bottomLimitSwitch = new DigitalInput(RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
     }
 
     currentTarget = getShooterPivotPositionInDegres();
 
-    Override = false;
+    //TODO: Alex S: puse el override
+    Override = true;
   }
 
   public double getAbsoluteEncoderDeg() {

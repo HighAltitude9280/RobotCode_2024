@@ -41,9 +41,8 @@ public class IntakePivot extends SubsystemBase {
 
     if (RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
-
-      Override = false;
     }
+    Override = true;
   }
 
   public void driveIntakePivot(double speed) {

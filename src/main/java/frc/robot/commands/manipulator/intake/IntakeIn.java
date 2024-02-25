@@ -27,7 +27,8 @@ public class IntakeIn extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.driveIntake(0.25);
+    intake.driveIntake(0.35); //    intake.driveIntake(0.25);
+
   }
 
   // Called once the command ends or is interrupted.

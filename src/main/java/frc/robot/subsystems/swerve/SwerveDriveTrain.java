@@ -26,7 +26,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   private SwerveDrivePoseEstimator swerveDrivePoseEstimator;
 
   private boolean isSlower = false;
-  private boolean isFieldOriented = false;
+  private boolean isFieldOriented = true;
 
   /** Creates a new SwerveDrive. */
   public SwerveDriveTrain() {
@@ -282,5 +282,10 @@ public class SwerveDriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("BL Current", backLeft.getAbsoluteEncoderRad());
     SmartDashboard.putNumber("BR Target", backRight.getPIDController().getSetpoint());
     SmartDashboard.putNumber("BR Current", backRight.getAbsoluteEncoderRad());
+
+    SmartDashboard.putNumber("Odometry X", swerveDrivePoseEstimator.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("Odometry Y", swerveDrivePoseEstimator.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Odometry Degree", swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getDegrees());
+
   }
 }

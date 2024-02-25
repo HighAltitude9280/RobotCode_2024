@@ -107,7 +107,7 @@ public class RobotMap {
     public static final int[] SHOOTER_PIVOT_MOTOR_PORTS = { 41 };
     public static final int[] SHOOTER_PIVOT_INVERTED_MOTORS_PORTS = { 41 };
     public static final boolean SHOOTER_PIVOT_ENCODER_IS_INVERTED = false;
-    public static final TypeOfMotor[] SHOOTER_PIVOT_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS };
+    public static final TypeOfMotor[] SHOOTER_PIVOT_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHED };
 
     // CANCODER
     public static final int SHOOTER_PIVOT_ENCODED_TALON_PORT = 45;
@@ -116,7 +116,7 @@ public class RobotMap {
 
     // LIMIT SWITCHES
     public static final boolean SHOOTER_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE = true;
-    public static final boolean SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE = false;
+    public static final boolean SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE = true;
 
     public static final int SHOOTER_PIVOT_TOP_LIMIT_SWITCH_PORT = 9;
     public static final int SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_PORT = 8;

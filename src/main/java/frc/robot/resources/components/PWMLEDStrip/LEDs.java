@@ -38,6 +38,7 @@ public class LEDs extends SubsystemBase {
 
   @Override
   public void periodic() {
+    leds.setRainbowCycle();
     // This method will be called once per scheduler run
   }
 }

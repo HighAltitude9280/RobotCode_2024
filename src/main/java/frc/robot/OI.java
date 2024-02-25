@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotResetEncoder;
+import frc.robot.commands.manipulator.shooter.ShooterIntake;
 import frc.robot.commands.manipulator.shooter.SuperShoot;
 
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
@@ -41,6 +42,9 @@ public class OI {
     private HighAltitudeGuitarHeroJoystick pilotG;
     private HighAltitudeGuitarHeroJoystick copilotG;
 
+    /**
+     * 
+     */
     public void ConfigureButtonBindings() {
 
         ////////////////////////// PILOT //////////////////////////
@@ -71,10 +75,8 @@ public class OI {
 
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
-                pilot.whileTrue(ButtonType.LT, new IntakeIn());
-                pilot.whileTrue(ButtonType.RT, new SuperShoot());
-
                 pilot.whileTrue(ButtonType.RB, new IntakeAndRollersOut());
+                pilot.whileTrue(ButtonType.LB, new ShooterIntake());
 
                 break;
 
@@ -151,16 +153,24 @@ public class OI {
 
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
-                copilot.onTrue(ButtonType.START, new IntakePivotResetEncoder());
+                copilot.onTrue(ButtonType.LB, new IntakePivotResetEncoder());
+                copilot.onTrue(ButtonType.RB, new ShooterPivotResetEncoder());
                 copilot.onTrue(ButtonType.BACK, new toggleOverride());
+                
+
+                copilot.whileTrue(ButtonType.X, new ToggleIntakePivot());
 
                 copilot.whileTrueCombo(new IntakePivotUp(), ButtonType.POV_N, ButtonType.A);
                 copilot.whileTrueCombo(new IntakePivotDown(), ButtonType.POV_S, ButtonType.A);
 
+                copilot.whileTrue(ButtonType.LT, new IntakeIn());
+
+
                 copilot.whileTrueCombo(new ShooterPivotUp(), ButtonType.POV_N, ButtonType.B);
                 copilot.whileTrueCombo(new ShooterPivotDown(), ButtonType.POV_S, ButtonType.B);
 
-                copilot.whileTrue(ButtonType.LB, new ToggleIntakePivot());
+                copilot.whileTrue(ButtonType.RT, new SuperShoot());
+
 
                 break;
 
@@ -172,16 +182,22 @@ public class OI {
 
             case LuisNN:
 
-                copilot.onTrue(ButtonType.START, new IntakePivotResetEncoder());
+                copilot.onTrue(ButtonType.LB, new IntakePivotResetEncoder());
+                copilot.onTrue(ButtonType.RB, new ShooterPivotResetEncoder());
                 copilot.onTrue(ButtonType.BACK, new toggleOverride());
+                
 
-                copilot.whileTrue(ButtonType.LB, new ToggleIntakePivot());
+                copilot.whileTrue(ButtonType.X, new ToggleIntakePivot());
 
                 copilot.whileTrueCombo(new IntakePivotUp(), ButtonType.POV_N, ButtonType.A);
                 copilot.whileTrueCombo(new IntakePivotDown(), ButtonType.POV_S, ButtonType.A);
 
+                copilot.whileTrue(ButtonType.LT, new IntakeIn());
+
+
                 copilot.whileTrueCombo(new ShooterPivotUp(), ButtonType.POV_N, ButtonType.B);
                 copilot.whileTrueCombo(new ShooterPivotDown(), ButtonType.POV_S, ButtonType.B);
+
 
                 break;
 
