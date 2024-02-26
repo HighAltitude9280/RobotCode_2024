@@ -67,7 +67,7 @@ public class HighAltitudeConstants {
 
         // Use this constants to convert from encoder position to meters
         // encoder position * this constant = meters
-        public static final double SWERVE_DRIVE_METERS_PER_PULSE = Math.PI * SWERVE_WHEEL_DIAMETER
+        public static final double SWERVE_DRIVE_METERS_PER_PULSE = (Math.PI * SWERVE_WHEEL_DIAMETER)
                         / (SWERVE_DRIVE_PULSES_PER_REVOLUTION * SWERVE_DRIVE_GEAR_RATIO);
 
         // Use this constant to convert from motor velocity to meters per second
@@ -172,5 +172,5 @@ public class HighAltitudeConstants {
         //////////////////////// DRIVERS ////////////////////////
 
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
-        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.MACG;
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.LuisNN;
 }

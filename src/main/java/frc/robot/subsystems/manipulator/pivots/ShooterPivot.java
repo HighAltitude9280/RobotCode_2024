@@ -15,13 +15,15 @@ import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 
 public class ShooterPivot extends SubsystemBase {
   HighAltitudeMotorGroup shooterPivotMotors;
-  double currentShooterPivotEncoderPosition, shooterPivotPositionDegrees;
+  double ShooterPivotEncoderPosition, shooterPivotPositionDegrees, shooterPivotRawEncoder;
   double currentTarget;
 
   DigitalInput topLimitSwitch;
   DigitalInput bottomLimitSwitch;
 
   CANcoder absoluteEncoderController;
+
+  double zeroValue = 0;
 
   boolean Override;
 
@@ -47,12 +49,12 @@ public class ShooterPivot extends SubsystemBase {
 
     currentTarget = getShooterPivotPositionInDegres();
 
-    //TODO: Alex S: puse el override
+    // TODO: Alex S: puse el override
     Override = true;
   }
 
   public double getAbsoluteEncoderDeg() {
-    double angle = (absoluteEncoderController.getPosition().getValueAsDouble()
+    double angle = (getShooterPivotEncoderPosition()
         - RobotMap.SHOOTER_PIVOT_ENCODER_OFFSET_PULSES) * 360;
     return angle
         * (RobotMap.SHOOTER_PIVOT_ENCODED_TALON_INVERTED ? -1.0 : 1.0);
@@ -89,7 +91,7 @@ public class ShooterPivot extends SubsystemBase {
     }
   }
 
-  public void resetEncoders() {
+  public void resetMotorEncoders() {
     shooterPivotMotors.resetEncoder();
   }
 
@@ -105,14 +107,6 @@ public class ShooterPivot extends SubsystemBase {
     currentTarget = Target;
   }
 
-  public boolean humanInteraction() {
-    if (Math.abs(currentTarget - shooterPivotPositionDegrees) >= 5) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   public boolean getOverride() {
     return Override;
   }
@@ -121,14 +115,26 @@ public class ShooterPivot extends SubsystemBase {
     Override = !Override;
   }
 
+  public void resetCanCoder() {
+    zeroValue = absoluteEncoderController.getPosition().getValueAsDouble();
+  }
+
+  public double getShooterPivotRawEncoder() {
+    return shooterPivotRawEncoder;
+  }
+
+  public double getShooterPivotEncoderPosition() {
+    return ShooterPivotEncoderPosition;
+  }
+
   @Override
   public void periodic() {
-    currentShooterPivotEncoderPosition = absoluteEncoderController.getAbsolutePosition().getValueAsDouble();
+    ShooterPivotEncoderPosition = absoluteEncoderController.getAbsolutePosition().getValueAsDouble() - zeroValue;
     shooterPivotPositionDegrees = getAbsoluteEncoderDeg();
+    shooterPivotRawEncoder = absoluteEncoderController.getPosition().getValueAsDouble();
 
-    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder",
-        currentShooterPivotEncoderPosition);
-
+    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder", getShooterPivotRawEncoder());
+    SmartDashboard.putNumber("Shooter Pivot Encoder Position", getShooterPivotEncoderPosition());
     SmartDashboard.putBoolean("Shooter_Override", Override);
   }
 }

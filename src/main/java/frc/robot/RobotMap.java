@@ -24,7 +24,7 @@ public class RobotMap {
     public static final boolean SWERVE_FRONT_LEFT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_FRONT_LEFT_ENCODED_TALON_PORT = 39;
-    public static final double SWERVE_FRONT_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = 0.05859375;
+    public static final double SWERVE_FRONT_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = 0.051025390625;
     public static final boolean SWERVE_FRONT_LEFT_ENCODED_TALON_INVERTED = false;
 
     ///// FRONT RIGHT
@@ -40,7 +40,7 @@ public class RobotMap {
     public static final boolean SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
     public static final int SWERVE_FRONT_RIGHT_ENCODED_TALON_PORT = 40;
-    public static final double SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.07080078125;
+    public static final double SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.0751953125;
     public static final boolean SWERVE_FRONT_RIGHT_ENCODED_TALON_INVERTED = false;
 
     ///// BACK LEFT
@@ -48,7 +48,7 @@ public class RobotMap {
     public static final int SWERVE_BACK_LEFT_DRIVE_MOTOR_PORT = 14;
     public static final TypeOfMotor SWERVE_BACK_LEFT_DRIVE_MOTOR_TYPE = TypeOfMotor.CAN_SPARK_BRUSHLESS;
     public static final boolean SWERVE_BACK_LEFT_DRIVE_MOTOR_INVERTED = true;
-    public static final boolean SWERVE_BACK_LEFT_DRIVE_ENCODER_INVERTED = true;
+    public static final boolean SWERVE_BACK_LEFT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_BACK_LEFT_DIRECTION_MOTOR_PORT = 15;
     public static final TypeOfMotor SWERVE_BACK_LEFT_DIRECTION_MOTOR_TYPE = TypeOfMotor.CAN_SPARK_BRUSHLESS;
@@ -56,7 +56,7 @@ public class RobotMap {
     public static final boolean SWERVE_BACK_LEFT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_BACK_LEFT_ENCODED_TALON_PORT = 38;
-    public static final double SWERVE_BACK_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = -0.12939453125;
+    public static final double SWERVE_BACK_LEFT_DIRECTION_ENCODER_OFFSET_PULSES = -0.097900390625;
     public static final boolean SWERVE_BACK_LEFT_ENCODED_TALON_INVERTED = false;
 
     ///// BACK RIGHT
@@ -72,7 +72,7 @@ public class RobotMap {
     public static final boolean SWERVE_BACK_RIGHT_DIRECTION_ENCODER_INVERTED = true;
     // CANCODER
     public static final int SWERVE_BACK_RIGHT_ENCODED_TALON_PORT = 37;
-    public static final double SWERVE_BACK_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.46533203125;
+    public static final double SWERVE_BACK_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.46142578125;
     public static final boolean SWERVE_BACK_RIGHT_ENCODED_TALON_INVERTED = false;
 
     ////////////////////////// SHOOTER //////////////////////////

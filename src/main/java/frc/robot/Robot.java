@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     getRobotContainer().ConfigureButtonBindings();
 
-    getRobotContainer().getShooterPivot().resetEncoders();
+    getRobotContainer().getShooterPivot().resetCanCoder();
     getRobotContainer().getIntakePivot().resetEncoders();
 
   }
@@ -95,6 +95,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    getRobotContainer().generateAutos();
   }
 
   @Override

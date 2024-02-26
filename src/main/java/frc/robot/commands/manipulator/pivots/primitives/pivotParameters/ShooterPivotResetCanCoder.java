@@ -11,11 +11,12 @@ import frc.robot.subsystems.manipulator.pivots.ShooterPivot;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShooterPivotResetEncoder extends InstantCommand {
+public class ShooterPivotResetCanCoder extends InstantCommand {
   ShooterPivot shooterPivot;
 
-  public ShooterPivotResetEncoder() {
+  public ShooterPivotResetCanCoder() {
     shooterPivot = Robot.getRobotContainer().getShooterPivot();
+
     addRequirements(shooterPivot);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -23,7 +24,6 @@ public class ShooterPivotResetEncoder extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterPivot.resetEncoders();
-    System.out.println("Si anda jalando we");
+    shooterPivot.resetCanCoder();
   }
 }
