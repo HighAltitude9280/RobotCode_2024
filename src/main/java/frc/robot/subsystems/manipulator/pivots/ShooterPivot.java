@@ -31,7 +31,7 @@ public class ShooterPivot extends SubsystemBase {
   public ShooterPivot() {
 
     shooterPivotMotors = new HighAltitudeMotorGroup(RobotMap.SHOOTER_PIVOT_MOTOR_PORTS,
-        RobotMap.SHOOTER_PIVOT_INVERTED_MOTORS_PORTS,
+        RobotMap.SHOOTER_PIVOT_INVERTED_MOTOR_PORTS,
         RobotMap.SHOOTER_PIVOT_MOTOR_TYPES);
 
     shooterPivotMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_PIVOT_MOTOR_BRAKING_MODE);

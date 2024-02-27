@@ -93,7 +93,7 @@ public class RobotMap {
 
     ///// INTAKE PIVOT
     public static final int[] INTAKE_PIVOT_MOTOR_PORTS = { 40 };
-    public static final int[] INTAKE_PIVOT_INVERTED_MOTORS_PORTS = {};
+    public static final int[] INTAKE_PIVOT_INVERTED_MOTOR_PORTS = {};
     public static final boolean INTAKE_PIVOT_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] INTAKE_PIVOT_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS };
 
@@ -105,7 +105,7 @@ public class RobotMap {
 
     ///// SHOOTER PIVOT
     public static final int[] SHOOTER_PIVOT_MOTOR_PORTS = { 41 };
-    public static final int[] SHOOTER_PIVOT_INVERTED_MOTORS_PORTS = { 41 };
+    public static final int[] SHOOTER_PIVOT_INVERTED_MOTOR_PORTS = { 41 };
     public static final boolean SHOOTER_PIVOT_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] SHOOTER_PIVOT_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHED };
 
@@ -120,4 +120,10 @@ public class RobotMap {
 
     public static final int SHOOTER_PIVOT_TOP_LIMIT_SWITCH_PORT = 9;
     public static final int SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_PORT = 8;
+
+    ////////////////////////// CLIMBER //////////////////////////
+    public static final int[] CLIMBER_MOTOR_PORTS = { 50 };
+    public static final int[] CLIMBER_INVERTED_MOTOR_PORTS = {};
+    public static final TypeOfMotor[] CLIMBER_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS };
+    public static final boolean CLIMBER_ENCODER_IS_INVERTED = false;
 }

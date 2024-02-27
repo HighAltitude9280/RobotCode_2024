@@ -16,12 +16,14 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Human_Drivers.HumanDrivers;
 import frc.robot.commands.autonomous.primitiveAutos.MoveUntilLimit;
 import frc.robot.commands.autonomous.primitiveAutos.ShootPreloaded;
+import frc.robot.commands.climber.MaintainClimberPosition;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 /*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
 import frc.robot.commands.manipulator.shooter.DriveShooter;
 import frc.robot.commands.swerve.DefaultSwerveDrive;
 import frc.robot.resources.components.Navx;
 import frc.robot.resources.components.PWMLEDStrip.LEDs;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.manipulator.intake.Intake;
 import frc.robot.subsystems.manipulator.pivots.IntakePivot;
 import frc.robot.subsystems.manipulator.pivots.ShooterPivot;
@@ -38,6 +40,7 @@ public class RobotContainer {
     private ShooterPivot shooterPivot;
     private SwerveDriveTrain swerveDriveTrain;
     private LEDs leds;
+    private Climber climber;
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -49,26 +52,28 @@ public class RobotContainer {
         intakePivot = new IntakePivot();
         shooterPivot = new ShooterPivot();
         swerveDriveTrain = new SwerveDriveTrain();
+        climber = new Climber();
         leds = new LEDs();
 
     }
 
     public void ConfigureButtonBindings() {
+        OI.getInstance().ConfigureButtonBindings();
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case Joakin:
-                OI.getInstance().ConfigureButtonBindings();
                 swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
                 /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
                 break;
 
             default:
-                OI.getInstance().ConfigureButtonBindings();
                 shooter.setDefaultCommand(new DriveShooter());
                 swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
                 /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
-
         }
+
+        // TODO: matar el climber si no hay climber
+        climber.setDefaultCommand(new MaintainClimberPosition());
     }
 
     public Navx getNavx() {
@@ -109,6 +114,14 @@ public class RobotContainer {
 
     public void putAutoChooser() {
         SmartDashboard.putData("Autonomous", m_chooser);
+    }
+
+    public LEDs getLEDs() {
+        return leds;
+    }
+
+    public Climber getClimber() {
+        return climber;
     }
 
     public void generateAutos() {

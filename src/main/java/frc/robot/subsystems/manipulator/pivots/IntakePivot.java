@@ -29,7 +29,7 @@ public class IntakePivot extends SubsystemBase {
   public IntakePivot() {
 
     intakePivotMotors = new HighAltitudeMotorGroup(RobotMap.INTAKE_PIVOT_MOTOR_PORTS,
-        RobotMap.INTAKE_PIVOT_INVERTED_MOTORS_PORTS,
+        RobotMap.INTAKE_PIVOT_INVERTED_MOTOR_PORTS,
         RobotMap.INTAKE_PIVOT_MOTOR_TYPES);
 
     intakePivotMotors.setBrakeMode(HighAltitudeConstants.INTAKE_PIVOT_MOTOR_BRAKING_MODE);

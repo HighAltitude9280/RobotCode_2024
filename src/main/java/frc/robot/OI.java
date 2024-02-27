@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.manipulator.shooter.ShooterAmp;
 import frc.robot.commands.manipulator.shooter.ShooterIntake;
 import frc.robot.commands.manipulator.shooter.SuperShoot;
+import frc.robot.commands.climber.MoveClimer;
 import frc.robot.commands.manipulator.compound.IntakeAndRollersOut;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 import frc.robot.commands.manipulator.intake.IntakeOut;
@@ -189,6 +190,9 @@ public class OI {
 
                 copilot.whileTrue(ButtonType.RT, new SuperShoot());
                 copilot.whileTrue(ButtonType.LT, new IntakeIn());
+
+                copilot.whileTrue(ButtonType.A, new MoveClimer(0.5));
+                copilot.whileTrue(ButtonType.B, new MoveClimer(-0.5));
 
                 break;
 
