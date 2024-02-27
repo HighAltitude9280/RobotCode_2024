@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.Human_Drivers.HumanDrivers;
@@ -17,9 +21,9 @@ public class HighAltitudeConstants {
 
         /////////// KINEMATICS
         // Distance left - right (meters)
-        public static final double SWERVE_TRACK_WIDTH = 0.0254 * (28.5 - 2.0 * 2.625);
+        public static final double SWERVE_TRACK_WIDTH = 0.0254 * (26.0 - 2.0 * 2.625);
         // Distance front - back (meters)
-        public static final double SWERVE_WHEEL_BASE = 0.0254 * (28.5 - 2.0 * 2.625);
+        public static final double SWERVE_WHEEL_BASE = 0.0254 * (26.0 - 2.0 * 2.625);
 
         // FL, FR, BL, BR. Remember these cartesian coordinates consider the x axis to
         // be headed where the robot is pointing to. The y-axis direction could be a
@@ -77,7 +81,7 @@ public class HighAltitudeConstants {
                         / SWERVE_DRIVE_VELOCITY_SAMPLE_RATE_MS;
 
         // Constant for L3 Configuration
-        public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 18 * 12 * 0.0254;
+        public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 16.6 * 12 * 0.0254;
 
         // Arbitrary to make controlling the swerve easier in teleop
         public static final double SWERVE_DRIVE_TELEOP_MAX_SPEED_METERS_PER_SECOND = SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND
@@ -111,6 +115,14 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_BRAKING_RADIANS = (Math.PI * 2) / 4; // 2pi/3
         public static final double SWERVE_DIRECTION_KP = 0.0;
         public static final double SWERVE_DIRECTION_KD = 0.0;
+
+        public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+                        new PIDConstants(5.0, 0, 0), // Translation constants
+                        new PIDConstants(1.0, 0, 0), // Rotation constants
+                        SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND,
+                        Math.hypot(SWERVE_TRACK_WIDTH, SWERVE_WHEEL_BASE), // Drive base radius (distance from center to
+                                                                           // furthest module)
+                        new ReplanningConfig());
 
         ////////////////////////// SHOOTER //////////////////////////
 
@@ -163,7 +175,7 @@ public class HighAltitudeConstants {
 
         public static final double INTAKE_PIVOT_ARRIVE_OFFSET = 3;
 
-        public static final double INTAKE_PIVOT_UPPER_LIMIT = 160;
+        public static final double INTAKE_PIVOT_UPPER_LIMIT = 155;
         // 168.051662503756 Shuffle Report
 
         public static final double INTAKE_PIVOT_LOWER_LIMIT = 0.0;

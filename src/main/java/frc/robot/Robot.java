@@ -35,13 +35,14 @@ public class Robot extends TimedRobot {
     getRobotContainer().getShooterPivot().resetCanCoder();
     getRobotContainer().getIntakePivot().resetEncoders();
 
+    getRobotContainer().generateAutos();
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    SmartDashboard.putNumber("Intake Pivot Degrees", robotContainer.getIntakePivot().getIntakePivotPositionInDegres());
+    SmartDashboard.putNumber("Intake Pivot Degrees", robotContainer.getIntakePivot().getIntakePivotPositionDegrees());
     SmartDashboard.putNumber("Shooter Pivot Degrees",
         robotContainer.getShooterPivot().getShooterPivotPositionInDegres());
 
@@ -95,7 +96,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    getRobotContainer().generateAutos();
   }
 
   @Override

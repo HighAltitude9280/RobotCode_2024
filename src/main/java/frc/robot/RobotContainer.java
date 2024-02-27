@@ -4,12 +4,19 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Human_Drivers.HumanDrivers;
+import frc.robot.commands.autonomous.primitiveAutos.MoveUntilLimit;
 import frc.robot.commands.autonomous.primitiveAutos.ShootPreloaded;
+import frc.robot.commands.manipulator.intake.IntakeIn;
 /*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
 import frc.robot.commands.manipulator.shooter.DriveShooter;
 import frc.robot.commands.swerve.DefaultSwerveDrive;
@@ -105,7 +112,17 @@ public class RobotContainer {
     }
 
     public void generateAutos() {
-        m_chooser.addOption("ShootPreloaded", new ShootPreloaded());
+        NamedCommands.registerCommand("ShootPreloaded", new ShootPreloaded());
+        NamedCommands.registerCommand("LowerIntake", new MoveUntilLimit(-0.25));
+        NamedCommands.registerCommand("IntakeIn", new IntakeIn().withTimeout(4.0));
+
+        PathPlannerPath a = PathPlannerPath.fromPathFile("GoStraight");
+
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
+        m_chooser.addOption("Shoot Preloaded", new ShootPreloaded());
+        m_chooser.addOption("Ruta straight", AutoBuilder.followPath(a));
+        m_chooser.addOption("Go Straight", new PathPlannerAuto("GoStraight"));
+        m_chooser.addOption("Shoot Go Straight", new PathPlannerAuto("ShootGoStraight"));
+        m_chooser.addOption("Shoot Then IntakeIn", new PathPlannerAuto("ShootThenIntakeIn"));
     }
 }

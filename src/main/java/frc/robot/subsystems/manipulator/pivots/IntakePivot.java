@@ -75,7 +75,7 @@ public class IntakePivot extends SubsystemBase {
     intakePivotMotors.resetEncoder();
   }
 
-  public double getIntakePivotPositionInDegres() {
+  public double getIntakePivotPositionDegrees() {
     return intakePivotPositionDegrees;
   }
 

@@ -6,6 +6,9 @@ package frc.robot.subsystems.swerve;
 
 import java.util.ArrayList;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.PathPlannerLogging;
+
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,6 +16,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
@@ -27,6 +32,8 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   private boolean isSlower = false;
   private boolean isFieldOriented = true;
+
+  private Field2d field = new Field2d();
 
   /** Creates a new SwerveDrive. */
   public SwerveDriveTrain() {
@@ -92,6 +99,32 @@ public class SwerveDriveTrain extends SubsystemBase {
             backLeft.getPosition(),
             backRight.getPosition()
         }, new Pose2d(0.0, 0.0, new Rotation2d(0)));
+
+    // Configure AutoBuilder
+    AutoBuilder.configureHolonomic(
+        this::getPose,
+        this::resetPose,
+        this::getChassisSpeeds,
+        this::driveRobotRelative,
+        HighAltitudeConstants.pathFollowerConfig,
+        () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red
+          // alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        },
+        this);
+
+    // Set up custom logging to add the current path to a field 2d widget
+    PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
+
+    SmartDashboard.putData("Field", field);
   }
 
   // By default, the Navx reports its angle as increasing when turning to its
@@ -116,6 +149,13 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   public Rotation2d getRotation2dCCWPositive() {
     return Rotation2d.fromDegrees(getHeadingCCWPositive());
+  }
+
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+    SwerveModuleState[] targetStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(targetSpeeds);
+    setModuleStates(targetStates);
   }
 
   // Controlling modules
@@ -285,7 +325,8 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Odometry X", swerveDrivePoseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", swerveDrivePoseEstimator.getEstimatedPosition().getY());
-    SmartDashboard.putNumber("Odometry Degree", swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    SmartDashboard.putNumber("Odometry Degree",
+        swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
   }
 }
