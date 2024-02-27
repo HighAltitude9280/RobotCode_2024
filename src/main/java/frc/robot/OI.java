@@ -23,7 +23,6 @@ import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterP
 import frc.robot.commands.swerve.TestSwerve;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
-import frc.robot.resources.joysticks.HighAltitudeGuitarHeroJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.ButtonType;
@@ -36,8 +35,8 @@ public class OI {
     private HighAltitudeJoystick pilot;
     private HighAltitudeJoystick copilot;
 
-    private HighAltitudeGuitarHeroJoystick pilotG;
-    private HighAltitudeGuitarHeroJoystick copilotG;
+    // private HighAltitudeGuitarHeroJoystick pilotG;
+    // private HighAltitudeGuitarHeroJoystick copilotG;
 
     public void ConfigureButtonBindings() {
 
@@ -100,8 +99,7 @@ public class OI {
 
             case MACGwithGuitar:
 
-                pilotG = new HighAltitudeGuitarHeroJoystick(0);
-                // A
+                // pilotG = new HighAltitudeGuitarHeroJoystick(0);
                 break;
 
             case Mafer:
@@ -141,7 +139,7 @@ public class OI {
 
             case Joakin:
 
-                copilotG = new HighAltitudeGuitarHeroJoystick(1);
+                // copilotG = new HighAltitudeGuitarHeroJoystick(1);
 
                 break;
 
@@ -165,7 +163,7 @@ public class OI {
 
             case MACGwithGuitar:
 
-                copilotG = new HighAltitudeGuitarHeroJoystick(1);
+                // copilotG = new HighAltitudeGuitarHeroJoystick(1);
 
                 break;
 

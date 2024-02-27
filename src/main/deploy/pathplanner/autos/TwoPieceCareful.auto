@@ -41,6 +41,43 @@
               }
             ]
           }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeIn"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RiseIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "GoBack"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPreloaded"
+          }
         }
       ]
     }

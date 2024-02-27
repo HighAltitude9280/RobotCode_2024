@@ -4,11 +4,8 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -127,15 +124,17 @@ public class RobotContainer {
     public void generateAutos() {
         NamedCommands.registerCommand("ShootPreloaded", new ShootPreloaded());
         NamedCommands.registerCommand("LowerIntake", new MoveUntilLimit(-0.25));
-        NamedCommands.registerCommand("IntakeIn", new IntakeIn().withTimeout(4.0));
-
-        PathPlannerPath a = PathPlannerPath.fromPathFile("GoStraight");
+        NamedCommands.registerCommand("RaiseIntake", new MoveUntilLimit(0.25));
+        NamedCommands.registerCommand("IntakeIn", new IntakeIn().withTimeout(5.0));
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         m_chooser.addOption("Shoot Preloaded", new ShootPreloaded());
-        m_chooser.addOption("Ruta straight", AutoBuilder.followPath(a));
         m_chooser.addOption("Go Straight", new PathPlannerAuto("GoStraight"));
         m_chooser.addOption("Shoot Go Straight", new PathPlannerAuto("ShootGoStraight"));
         m_chooser.addOption("Shoot Then IntakeIn", new PathPlannerAuto("ShootThenIntakeIn"));
+        m_chooser.addOption("Two Piece Careful", new PathPlannerAuto("TwoPieceCareful"));
+        m_chooser.addOption("Two Piece Semi-Fluid", new PathPlannerAuto("TwoPieceSemiFluid"));
+        m_chooser.addOption("Two Piece Fluid", new PathPlannerAuto("TwoPieceFluid"));
+        m_chooser.addOption("Three Piece Careful", new PathPlannerAuto("ThreePieceCareful"));
     }
 }
