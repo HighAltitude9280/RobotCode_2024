@@ -93,7 +93,7 @@ public class RobotMap {
 
     ///// INTAKE PIVOT
     public static final int[] INTAKE_PIVOT_MOTOR_PORTS = { 40 };
-    public static final int[] INTAKE_PIVOT_INVERTED_MOTOR_PORTS = {};
+    public static final int[] INTAKE_PIVOT_INVERTED_MOTORS_PORTS = {};
     public static final boolean INTAKE_PIVOT_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] INTAKE_PIVOT_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS };
 
@@ -105,7 +105,7 @@ public class RobotMap {
 
     ///// SHOOTER PIVOT
     public static final int[] SHOOTER_PIVOT_MOTOR_PORTS = { 41 };
-    public static final int[] SHOOTER_PIVOT_INVERTED_MOTOR_PORTS = { 41 };
+    public static final int[] SHOOTER_PIVOT_INVERTED_MOTORS_PORTS = { 41 };
     public static final boolean SHOOTER_PIVOT_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] SHOOTER_PIVOT_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHED };
 

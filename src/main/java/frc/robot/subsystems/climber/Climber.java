@@ -27,6 +27,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void maintainPosition() {
+    // Esto solo se ejecuta si tenemos un motor brushless (aka un NEO)
     if (climberMotor.getSpecificMotor(0).getType() == TypeOfMotor.CAN_SPARK_BRUSHLESS) {
       double power = PIDController.calculate(climberMotor.getEncoderPosition(), positionToMaintain);
       climberMotor.setAll(power);
