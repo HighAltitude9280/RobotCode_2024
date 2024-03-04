@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7336934388833163,
+      "y": 4.397140955802102
+    },
+    "rotation": -59.34933204294713
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPreloaded"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DiagonalSourceMid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RaiseIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DiagonalSourceMidBack"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPreloaded"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -5,9 +5,8 @@
 package frc.robot.subsystems.manipulator.pivots;
 
 import com.ctre.phoenix6.hardware.CANcoder;
-
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
@@ -46,11 +45,11 @@ public class ShooterPivot extends SubsystemBase {
     if (RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
       bottomLimitSwitch = new DigitalInput(RobotMap.SHOOTER_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
     }
+    ;
 
-    currentTarget = getShooterPivotPositionInDegres();
+    currentTarget = getShooterPivotPositionInDegrees();
 
-    // TODO: Alex S: puse el override
-    Override = true;
+    Override = false;
   }
 
   public double getAbsoluteEncoderDeg() {
@@ -62,17 +61,21 @@ public class ShooterPivot extends SubsystemBase {
 
   public void driveShooterPivot(double speed) {
 
-    if (Override == false) {
-      if (shooterPivotPositionDegrees > HighAltitudeConstants.SHOOTER_PIVOT_UPPER_LIMIT && speed > 0) {
-        shooterPivotMotors.setAll(0);
-      } else if (shooterPivotPositionDegrees < HighAltitudeConstants.SHOOTER_PIVOT_LOWER_LIMIT && speed < 0) {
-        shooterPivotMotors.setAll(0);
-      } else {
-        shooterPivotMotors.setAll(speed);
-      }
-    } else {
-      shooterPivotMotors.setAll(speed);
-    }
+    /*
+     * if (Override == true) {
+     * if (shooterPivotPositionDegrees >
+     * HighAltitudeConstants.SHOOTER_PIVOT_UPPER_LIMIT && speed > 0) {
+     * shooterPivotMotors.setAll(0);
+     * } else if (shooterPivotPositionDegrees <
+     * HighAltitudeConstants.SHOOTER_PIVOT_LOWER_LIMIT && speed < 0) {
+     * shooterPivotMotors.setAll(0);
+     * } else {
+     * shooterPivotMotors.setAll(speed);
+     * }
+     * } else {
+     */
+    shooterPivotMotors.setAll(speed);
+
   }
 
   public boolean getShooterPivotTopLimitSwitch() {
@@ -95,7 +98,7 @@ public class ShooterPivot extends SubsystemBase {
     shooterPivotMotors.resetEncoder();
   }
 
-  public double getShooterPivotPositionInDegres() {
+  public double getShooterPivotPositionInDegrees() {
     return shooterPivotPositionDegrees;
   }
 
@@ -133,8 +136,17 @@ public class ShooterPivot extends SubsystemBase {
     shooterPivotPositionDegrees = getAbsoluteEncoderDeg();
     shooterPivotRawEncoder = absoluteEncoderController.getPosition().getValueAsDouble();
 
-    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder", getShooterPivotRawEncoder());
-    SmartDashboard.putNumber("Shooter Pivot Encoder Position", getShooterPivotEncoderPosition());
-    SmartDashboard.putBoolean("Shooter_Override", Override);
+    /*
+     * SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder",
+     * getShooterPivotRawEncoder());
+     * SmartDashboard.putNumber("Shooter Pivot Encoder Position",
+     * getShooterPivotEncoderPosition());
+     * 
+     * SmartDashboard.putBoolean("Shooter_Override", Override);
+     * SmartDashboard.putBoolean("Shooter_Pivot_Top_Limit_Switch",
+     * getShooterPivotTopLimitSwitch());
+     * SmartDashboard.putBoolean("Shooter_Pivot_Bottom_Limit_Switch",
+     * getShooterPivotBottomLimitSwitch());
+     */
   }
 }

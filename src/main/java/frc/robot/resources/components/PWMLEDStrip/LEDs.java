@@ -5,14 +5,15 @@
 package frc.robot.resources.components.PWMLEDStrip;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.OI;
 
 public class LEDs extends SubsystemBase {
-  OldHighAltitudePWMLEDStrip leds;
+  HighAltitudePWMLEDStrip leds;
 
   /** Creates a new LEDs. */
 
   public LEDs() {
-    leds = new OldHighAltitudePWMLEDStrip(9, 60);
+    leds = new HighAltitudePWMLEDStrip(9, 150);
   }
 
   public void allLedsOff() {
@@ -38,6 +39,7 @@ public class LEDs extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // leds.setBasicFire(64, 225, 2, 200);
     leds.setRainbowCycle();
     // This method will be called once per scheduler run
   }

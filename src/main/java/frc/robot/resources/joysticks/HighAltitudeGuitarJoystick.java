@@ -16,8 +16,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.resources.math.Math;
 
 /** Add your docs here. */
-public class HighAltitudeGuitarHeroJoystick {
+public class HighAltitudeGuitarJoystick {
     Joystick joystick;
+
+    GuitarJoystickType guitarJoystickType;
+
+    public enum GuitarJoystickType {
+        ROCK_BAND,
+        GUITAR_HERO
+    }
 
     public enum DriveLayout {
         ALEX_S
@@ -64,15 +71,26 @@ public class HighAltitudeGuitarHeroJoystick {
 
     DriveLayout currentDriveLayout;
 
-    public HighAltitudeGuitarHeroJoystick(int port) {
+    public HighAltitudeGuitarJoystick(int port, GuitarJoystickType guitarJoystickType) {
         joystick = new Joystick(port);
-        configureGuitar();
+        this.guitarJoystickType = guitarJoystickType;
+
+        switch (guitarJoystickType) {
+
+            case ROCK_BAND:
+                configureRockBandGuitar();
+                break;
+
+            case GUITAR_HERO:
+                configureGuitarHeroGuitar();
+                break;
+        }
         configureDefaultDeadzoneAndMultiplier(0, 1);
 
         currentDriveLayout = DriveLayout.ALEX_S;
     }
 
-    void configureGuitar() {
+    void configureRockBandGuitar() {
         availableJoystickButtons = new HashMap<Integer, JoystickButton>();
         for (int i = 1; i <= joystick.getButtonCount(); i++) {
             availableJoystickButtons.put(i, new JoystickButton(joystick, i));
@@ -104,6 +122,49 @@ public class HighAltitudeGuitarHeroJoystick {
         joystickButtonConfiguration.put(ButtonType.BACK, availableJoystickButtons.get(7));
         joystickButtonConfiguration.put(ButtonType.START, availableJoystickButtons.get(8));
         joystickButtonConfiguration.put(ButtonType.COMBO, availableJoystickButtons.get(9));
+
+        joystickButtonConfiguration.put(ButtonType.POV_NULL, availablePOVButtons.get(-1));
+        joystickButtonConfiguration.put(ButtonType.POV_N, availablePOVButtons.get(0));
+        joystickButtonConfiguration.put(ButtonType.POV_NE, availablePOVButtons.get(45));
+        joystickButtonConfiguration.put(ButtonType.POV_E, availablePOVButtons.get(90));
+        joystickButtonConfiguration.put(ButtonType.POV_SE, availablePOVButtons.get(135));
+        joystickButtonConfiguration.put(ButtonType.POV_S, availablePOVButtons.get(180));
+        joystickButtonConfiguration.put(ButtonType.POV_SW, availablePOVButtons.get(225));
+        joystickButtonConfiguration.put(ButtonType.POV_W, availablePOVButtons.get(270));
+        joystickButtonConfiguration.put(ButtonType.POV_NW, availablePOVButtons.get(315));
+    }
+
+    void configureGuitarHeroGuitar() {
+        availableJoystickButtons = new HashMap<Integer, JoystickButton>();
+        for (int i = 1; i <= joystick.getButtonCount(); i++) {
+            availableJoystickButtons.put(i, new JoystickButton(joystick, i));
+        }
+
+        availablePOVButtons = new HashMap<Integer, POVButton>();
+        availablePOVButtons.put(-1, new POVButton(joystick, -1));
+        for (int i = 0; i <= 360; i += 45) {
+            availablePOVButtons.put(i, new POVButton(joystick, i));
+        }
+
+        availableAxisButtons = new HashMap<Integer, Trigger>();
+        for (int i = 0; i < 6; i++) {
+            int currentPort = i;
+            BooleanSupplier booleanSupplier = () -> isAxisPressed(currentPort);
+            availableAxisButtons.put(i, new Trigger(booleanSupplier));
+        }
+
+        axisConfiguration = new HashMap<AxisType, Integer>();
+        axisConfiguration.put(AxisType.PICKUP_SWITCH, 2);
+        axisConfiguration.put(AxisType.VOLUME_RAMP, 4);
+
+        joystickButtonConfiguration = new HashMap<ButtonType, Trigger>();
+        joystickButtonConfiguration.put(ButtonType.GREEN, availableJoystickButtons.get(1));
+        joystickButtonConfiguration.put(ButtonType.RED, availableJoystickButtons.get(2));
+        joystickButtonConfiguration.put(ButtonType.YELLOW, availableJoystickButtons.get(4));
+        joystickButtonConfiguration.put(ButtonType.BLUE, availableJoystickButtons.get(3));
+        joystickButtonConfiguration.put(ButtonType.ORANGE, availableJoystickButtons.get(5));
+        joystickButtonConfiguration.put(ButtonType.BACK, availableJoystickButtons.get(7));
+        joystickButtonConfiguration.put(ButtonType.START, availableJoystickButtons.get(8));
 
         joystickButtonConfiguration.put(ButtonType.POV_NULL, availablePOVButtons.get(-1));
         joystickButtonConfiguration.put(ButtonType.POV_N, availablePOVButtons.get(0));

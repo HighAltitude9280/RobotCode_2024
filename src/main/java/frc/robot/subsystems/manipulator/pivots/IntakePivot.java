@@ -5,7 +5,7 @@
 package frc.robot.subsystems.manipulator.pivots;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
@@ -42,11 +42,11 @@ public class IntakePivot extends SubsystemBase {
     if (RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
     }
-    Override = true;
+    Override = false;
   }
 
   public void driveIntakePivot(double speed) {
-    if (Override == false) {
+    if (Override == true) {
       if (intakePivotPositionDegrees > HighAltitudeConstants.INTAKE_PIVOT_UPPER_LIMIT && speed > 0) {
         intakePivotMotors.setAll(0);
       } else if (intakePivotPositionDegrees < HighAltitudeConstants.INTAKE_PIVOT_LOWER_LIMIT && speed < 0) {
@@ -105,8 +105,11 @@ public class IntakePivot extends SubsystemBase {
     intakePivotPositionDegrees = currentIntakePivotEncoderPosition
         * HighAltitudeConstants.INTAKE_PIVOT_DEGREES_PER_REVOLUTION;
 
-    SmartDashboard.putNumber("Raw Intake Pivot Encoder", intakePivotMotors.getEncoderPosition());
-
-    SmartDashboard.putBoolean("Intake_Override", Override);
+    /*
+     * SmartDashboard.putNumber("Raw Intake Pivot Encoder",
+     * intakePivotMotors.getEncoderPosition());
+     * 
+     * SmartDashboard.putBoolean("Intake_Override", Override);
+     */
   }
 }

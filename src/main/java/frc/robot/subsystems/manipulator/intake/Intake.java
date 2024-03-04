@@ -22,7 +22,6 @@ public class Intake extends SubsystemBase {
     intakeMotors.setAll(speed);
   }
 
-  // TODO Tunnea esto xd
   public void Hold() {
     intakeMotors.setAll(0.05);
   }

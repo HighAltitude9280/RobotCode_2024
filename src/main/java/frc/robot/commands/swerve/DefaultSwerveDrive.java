@@ -17,6 +17,7 @@ import frc.robot.subsystems.swerve.SwerveDriveTrain;
 public class DefaultSwerveDrive extends Command {
   private SlewRateLimiter speedLimiter, strafeLimiter, turnLimiter;
   SwerveDriveTrain swerveDriveTrain;
+  double speed, strafe, turn;
 
   /** Creates a new DriveSwerve. */
   public DefaultSwerveDrive() {
@@ -36,10 +37,32 @@ public class DefaultSwerveDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // 1. Read input
-    double speed = OI.getInstance().getDefaultSwerveDriveSpeed();
-    double strafe = OI.getInstance().getDefaultSwerveDriveStrafe();
-    double turn = OI.getInstance().getDefaultSwerveDriveTurn();
+    if (swerveDriveTrain.getIsOnCompetitiveField() == true) {
+
+      // 1. Read input
+
+      double speed = -OI.getInstance().getDefaultSwerveDriveSpeed();
+      double strafe = -OI.getInstance().getDefaultSwerveDriveStrafe();
+      double turn = -OI.getInstance().getDefaultSwerveDriveTurn();
+
+      this.speed = speed;
+      this.turn = turn;
+      this.strafe = strafe;
+
+    } else {
+
+      // 1. Read input
+
+      double speed = OI.getInstance().getDefaultSwerveDriveSpeed();
+      double strafe = OI.getInstance().getDefaultSwerveDriveStrafe();
+      double turn = OI.getInstance().getDefaultSwerveDriveTurn();
+
+      this.speed = speed;
+      this.turn = turn;
+      this.strafe = strafe;
+
+    }
+
     /*
      * double speed = 0;
      * double strafe = 0.25;

@@ -23,7 +23,10 @@ import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterP
 import frc.robot.commands.swerve.TestSwerve;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
+import frc.robot.commands.swerve.swerveParameters.ToggleIsOnCompetitiveField;
+import frc.robot.resources.joysticks.HighAltitudeGuitarJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
+import frc.robot.resources.joysticks.HighAltitudeGuitarJoystick.GuitarJoystickType;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.ButtonType;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.JoystickType;
@@ -35,8 +38,8 @@ public class OI {
     private HighAltitudeJoystick pilot;
     private HighAltitudeJoystick copilot;
 
-    // private HighAltitudeGuitarHeroJoystick pilotG;
-    // private HighAltitudeGuitarHeroJoystick copilotG;
+    private HighAltitudeGuitarJoystick pilotG;
+    private HighAltitudeGuitarJoystick copilotG;
 
     public void ConfigureButtonBindings() {
 
@@ -74,6 +77,8 @@ public class OI {
                 pilot.whileTrue(ButtonType.RT, new ShooterAmp());
                 pilot.whileTrue(ButtonType.LT, new IntakeIn());
 
+                pilot.whileTrue(ButtonType.POV_SE, new ToggleIsOnCompetitiveField());
+
                 break;
 
             case MACG:
@@ -98,8 +103,8 @@ public class OI {
                 break;
 
             case MACGwithGuitar:
+                pilotG = new HighAltitudeGuitarJoystick(0, GuitarJoystickType.GUITAR_HERO);
 
-                // pilotG = new HighAltitudeGuitarHeroJoystick(0);
                 break;
 
             case Mafer:
@@ -139,7 +144,7 @@ public class OI {
 
             case Joakin:
 
-                // copilotG = new HighAltitudeGuitarHeroJoystick(1);
+                copilotG = new HighAltitudeGuitarJoystick(1, GuitarJoystickType.GUITAR_HERO);
 
                 break;
 
@@ -163,7 +168,7 @@ public class OI {
 
             case MACGwithGuitar:
 
-                // copilotG = new HighAltitudeGuitarHeroJoystick(1);
+                copilotG = new HighAltitudeGuitarJoystick(1, GuitarJoystickType.GUITAR_HERO);
 
                 break;
 
@@ -172,7 +177,7 @@ public class OI {
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
                 copilot.onTrue(ButtonType.START, new IntakePivotResetEncoder());
-                copilot.onTrue(ButtonType.Y, new ShooterPivotResetCanCoder());
+                copilot.onTrue(ButtonType.START, new ShooterPivotResetCanCoder());
                 copilot.onTrue(ButtonType.BACK, new toggleOverride());
 
                 copilot.whileTrue(ButtonType.X, new ToggleIntakePivot());

@@ -32,6 +32,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   private boolean isSlower = false;
   private boolean isFieldOriented = true;
+  private boolean isOnCompetitiveField = false;
 
   private Field2d field = new Field2d();
 
@@ -289,10 +290,18 @@ public class SwerveDriveTrain extends SubsystemBase {
         HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
   }
 
+  public boolean getIsOnCompetitiveField() {
+    return isOnCompetitiveField;
+  }
+
+  public void toggleIsOnCompetitiveField() {
+    isOnCompetitiveField = !isOnCompetitiveField;
+  }
+
   @Override
   public void periodic() {
     updateOdometry();
-    putAllInfoInSmartDashboard();
+    // putAllInfoInSmartDashboard();
   }
 
   public void putAllInfoInSmartDashboard() {

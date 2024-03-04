@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
-import frc.robot.resources.components.speedController.HighAltitudeMotorController.TypeOfMotor;
 
 public class Climber extends SubsystemBase {
   HighAltitudeMotorGroup climberMotor;
@@ -27,12 +26,8 @@ public class Climber extends SubsystemBase {
   }
 
   public void maintainPosition() {
-    // Esto solo se ejecuta si tenemos un motor brushless (aka un NEO)
-    if (climberMotor.getSpecificMotor(0).getType() == TypeOfMotor.CAN_SPARK_BRUSHLESS) {
-      double power = PIDController.calculate(climberMotor.getEncoderPosition(), positionToMaintain);
-      climberMotor.setAll(power);
-    } else
-      climberMotor.setAll(0);
+    double power = PIDController.calculate(climberMotor.getEncoderPosition(), positionToMaintain);
+    climberMotor.setAll(power);
   }
 
   public void setPositionToMaintain(double newPositionToMaintain) {

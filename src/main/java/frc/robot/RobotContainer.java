@@ -38,6 +38,7 @@ public class RobotContainer {
     private SwerveDriveTrain swerveDriveTrain;
     private LEDs leds;
     private Climber climber;
+    private boolean isOnField;
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -69,7 +70,6 @@ public class RobotContainer {
                 /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
         }
 
-        // TODO: matar el climber si no hay climber
         climber.setDefaultCommand(new MaintainClimberPosition());
     }
 
@@ -121,20 +121,30 @@ public class RobotContainer {
         return climber;
     }
 
+    public boolean getIsOnField() {
+        return isOnField;
+    }
+
+    public void toggleIsOnField() {
+        isOnField = !isOnField;
+    }
+
     public void generateAutos() {
         NamedCommands.registerCommand("ShootPreloaded", new ShootPreloaded());
         NamedCommands.registerCommand("LowerIntake", new MoveUntilLimit(-0.25));
         NamedCommands.registerCommand("RaiseIntake", new MoveUntilLimit(0.25));
-        NamedCommands.registerCommand("IntakeIn", new IntakeIn().withTimeout(5.0));
+        NamedCommands.registerCommand("IntakeIn", new IntakeIn().withTimeout(3.0));
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         m_chooser.addOption("Shoot Preloaded", new ShootPreloaded());
         m_chooser.addOption("Go Straight", new PathPlannerAuto("GoStraight"));
+        m_chooser.addOption("Two Piece Source", new PathPlannerAuto("DiagonalSourceTwoNotes"));
         m_chooser.addOption("Shoot Go Straight", new PathPlannerAuto("ShootGoStraight"));
         m_chooser.addOption("Shoot Then IntakeIn", new PathPlannerAuto("ShootThenIntakeIn"));
         m_chooser.addOption("Two Piece Careful", new PathPlannerAuto("TwoPieceCareful"));
         m_chooser.addOption("Two Piece Semi-Fluid", new PathPlannerAuto("TwoPieceSemiFluid"));
         m_chooser.addOption("Two Piece Fluid", new PathPlannerAuto("TwoPieceFluid"));
         m_chooser.addOption("Three Piece Careful", new PathPlannerAuto("ThreePieceCareful"));
+        m_chooser.addOption("Go Straight From Back", new PathPlannerAuto("StraightFromBack"));
     }
 }
