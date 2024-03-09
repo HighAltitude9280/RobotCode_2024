@@ -37,14 +37,15 @@ public class MoveUntilLimit extends Command {
   @Override
   public void end(boolean interrupted) {
     intakePivot.driveIntakePivot(0);
+    System.out.println("AAAAA");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (intakePivot.getIntakePivotPositionDegrees() > HighAltitudeConstants.INTAKE_PIVOT_UPPER_LIMIT && speed > 0) {
+    if (intakePivot.getIntakePivotPositionDegrees() < HighAltitudeConstants.INTAKE_PIVOT_UPPER_LIMIT && speed > 0) {
       return true;
-    } else if (intakePivot.getIntakePivotPositionDegrees() < HighAltitudeConstants.INTAKE_PIVOT_LOWER_LIMIT
+    } else if (intakePivot.getIntakePivotPositionDegrees() > HighAltitudeConstants.INTAKE_PIVOT_LOWER_LIMIT
         && speed < 0) {
       return true;
     } else {

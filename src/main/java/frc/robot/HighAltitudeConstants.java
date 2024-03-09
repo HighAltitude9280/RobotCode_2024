@@ -118,7 +118,7 @@ public class HighAltitudeConstants {
 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
                         new PIDConstants(5.0, 0, 0), // Translation constants
-                        new PIDConstants(1.0, 0, 0), // Rotation constants
+                        new PIDConstants(2.0, 0, 0), // Rotation constants
                         SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND,
                         Math.hypot(SWERVE_TRACK_WIDTH, SWERVE_WHEEL_BASE), // Drive base radius (distance from center to
                                                                            // furthest module)
@@ -175,10 +175,10 @@ public class HighAltitudeConstants {
 
         public static final double INTAKE_PIVOT_ARRIVE_OFFSET = 3;
 
-        public static final double INTAKE_PIVOT_UPPER_LIMIT = 155;
+        public static final double INTAKE_PIVOT_UPPER_LIMIT = 0.0;
         // 168.051662503756 Shuffle Report
 
-        public static final double INTAKE_PIVOT_LOWER_LIMIT = 0.0;
+        public static final double INTAKE_PIVOT_LOWER_LIMIT = 155.0;
         // Shuffle Report 0
 
         //////////////////////// DRIVERS ////////////////////////

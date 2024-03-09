@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
     getRobotContainer().ConfigureButtonBindings();
 
     getRobotContainer().getShooterPivot().resetCanCoder();
-    getRobotContainer().getIntakePivot().resetEncoders();
+    // getRobotContainer().getIntakePivot().resetEncoders();
 
     getRobotContainer().generateAutos();
   }
@@ -41,36 +41,36 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    /*
-     * SmartDashboard.putNumber("Intake Pivot Degrees",
-     * robotContainer.getIntakePivot().getIntakePivotPositionDegrees());
-     * SmartDashboard.putNumber("Shooter Pivot Degrees",
-     * robotContainer.getShooterPivot().getShooterPivotPositionInDegrees());
-     * 
-     * SmartDashboard.putString("Pilot",
-     * robotContainer.getCurrentPilot().toString());
-     * SmartDashboard.putString("Copilot",
-     * robotContainer.getCurrentCopilot().toString());
-     * 
-     * SmartDashboard.putBoolean("Field Oriented",
-     * robotContainer.getSwerveDriveTrain().getIsFieldOriented());
-     * 
-     * SmartDashboard.putNumber("Drive Distance FL",
-     * robotContainer.getSwerveDriveTrain().getFrontLeft().getDriveDistance());
-     * SmartDashboard.putNumber("Drive Distance FR",
-     * robotContainer.getSwerveDriveTrain().getFrontRight().getDriveDistance());
-     * SmartDashboard.putNumber("Drive Distance BL",
-     * robotContainer.getSwerveDriveTrain().getBackLeft().getDriveDistance());
-     * SmartDashboard.putNumber("Drive Distance BR",
-     * robotContainer.getSwerveDriveTrain().getBackRight().getDriveDistance());
-     * 
-     * SmartDashboard.putNumber("Odometry X",
-     * robotContainer.getSwerveDriveTrain().getPose().getX());
-     * SmartDashboard.putNumber("Odometry Y",
-     * robotContainer.getSwerveDriveTrain().getPose().getY());
-     * SmartDashboard.putNumber("Odometry angle",
-     * robotContainer.getSwerveDriveTrain().getPose().getRotation().getDegrees());
-     */
+
+    SmartDashboard.putNumber("Intake Pivot Degrees",
+        robotContainer.getIntakePivot().getIntakePivotPositionDegrees());
+    SmartDashboard.putNumber("Shooter Pivot Degrees",
+        robotContainer.getShooterPivot().getShooterPivotPositionInDegrees());
+
+    SmartDashboard.putString("Pilot",
+        robotContainer.getCurrentPilot().toString());
+    SmartDashboard.putString("Copilot",
+        robotContainer.getCurrentCopilot().toString());
+
+    SmartDashboard.putBoolean("Field Oriented",
+        robotContainer.getSwerveDriveTrain().getIsFieldOriented());
+
+    SmartDashboard.putNumber("Drive Distance FL",
+        robotContainer.getSwerveDriveTrain().getFrontLeft().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance FR",
+        robotContainer.getSwerveDriveTrain().getFrontRight().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance BL",
+        robotContainer.getSwerveDriveTrain().getBackLeft().getDriveDistance());
+    SmartDashboard.putNumber("Drive Distance BR",
+        robotContainer.getSwerveDriveTrain().getBackRight().getDriveDistance());
+
+    SmartDashboard.putNumber("Odometry X",
+        robotContainer.getSwerveDriveTrain().getPose().getX());
+    SmartDashboard.putNumber("Odometry Y",
+        robotContainer.getSwerveDriveTrain().getPose().getY());
+    SmartDashboard.putNumber("Odometry angle",
+        robotContainer.getSwerveDriveTrain().getPose().getRotation().getDegrees());
+
   }
 
   @Override

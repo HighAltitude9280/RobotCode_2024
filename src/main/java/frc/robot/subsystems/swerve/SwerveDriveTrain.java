@@ -7,6 +7,7 @@ package frc.robot.subsystems.swerve;
 import java.util.ArrayList;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.PPLibTelemetry;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -124,7 +125,6 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
-
     SmartDashboard.putData("Field", field);
   }
 
@@ -301,37 +301,42 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    // putAllInfoInSmartDashboard();
+    putAllInfoInSmartDashboard();
   }
 
   public void putAllInfoInSmartDashboard() {
-    frontLeft.putProcessedValues("FL");
-    frontRight.putProcessedValues("FR");
-    backLeft.putProcessedValues("BL");
-    backRight.putProcessedValues("BR");
-    frontLeft.putEncoderValuesInvertedApplied("FL");
-    frontRight.putEncoderValuesInvertedApplied("FR");
-    backLeft.putEncoderValuesInvertedApplied("BL");
-    backRight.putEncoderValuesInvertedApplied("BR");
-
-    SmartDashboard.putNumber("FL Steer Power",
-        frontLeft.getDirectionMotor().getOutput());
-    SmartDashboard.putNumber("FR Steer Power",
-        frontRight.getDirectionMotor().getOutput());
-    SmartDashboard.putNumber("BL Steer Power",
-        backLeft.getDirectionMotor().getOutput());
-    SmartDashboard.putNumber("BR Steer Power",
-        backRight.getDirectionMotor().getOutput());
-
-    SmartDashboard.putNumber("FL Target", frontLeft.getPIDController().getSetpoint());
-    SmartDashboard.putNumber("FL Current", frontLeft.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("FR Target", frontRight.getPIDController().getSetpoint());
-    SmartDashboard.putNumber("FR Current", frontRight.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("BL Target", backLeft.getPIDController().getSetpoint());
-    SmartDashboard.putNumber("BL Current", backLeft.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("BR Target", backRight.getPIDController().getSetpoint());
-    SmartDashboard.putNumber("BR Current", backRight.getAbsoluteEncoderRad());
-
+    /*
+     * frontLeft.putProcessedValues("FL");
+     * frontRight.putProcessedValues("FR");
+     * backLeft.putProcessedValues("BL");
+     * backRight.putProcessedValues("BR");
+     * frontLeft.putEncoderValuesInvertedApplied("FL");
+     * frontRight.putEncoderValuesInvertedApplied("FR");
+     * backLeft.putEncoderValuesInvertedApplied("BL");
+     * backRight.putEncoderValuesInvertedApplied("BR");
+     * 
+     * SmartDashboard.putNumber("FL Steer Power",
+     * frontLeft.getDirectionMotor().getOutput());
+     * SmartDashboard.putNumber("FR Steer Power",
+     * frontRight.getDirectionMotor().getOutput());
+     * SmartDashboard.putNumber("BL Steer Power",
+     * backLeft.getDirectionMotor().getOutput());
+     * SmartDashboard.putNumber("BR Steer Power",
+     * backRight.getDirectionMotor().getOutput());
+     * 
+     * SmartDashboard.putNumber("FL Target",
+     * frontLeft.getPIDController().getSetpoint());
+     * SmartDashboard.putNumber("FL Current", frontLeft.getAbsoluteEncoderRad());
+     * SmartDashboard.putNumber("FR Target",
+     * frontRight.getPIDController().getSetpoint());
+     * SmartDashboard.putNumber("FR Current", frontRight.getAbsoluteEncoderRad());
+     * SmartDashboard.putNumber("BL Target",
+     * backLeft.getPIDController().getSetpoint());
+     * SmartDashboard.putNumber("BL Current", backLeft.getAbsoluteEncoderRad());
+     * SmartDashboard.putNumber("BR Target",
+     * backRight.getPIDController().getSetpoint());
+     * SmartDashboard.putNumber("BR Current", backRight.getAbsoluteEncoderRad());
+     */
     SmartDashboard.putNumber("Odometry X", swerveDrivePoseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", swerveDrivePoseEstimator.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Odometry Degree",

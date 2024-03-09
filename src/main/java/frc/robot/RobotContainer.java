@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Human_Drivers.HumanDrivers;
 import frc.robot.commands.autonomous.primitiveAutos.MoveUntilLimit;
 import frc.robot.commands.autonomous.primitiveAutos.ShootPreloaded;
-import frc.robot.commands.climber.MaintainClimberPosition;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 /*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
 import frc.robot.commands.manipulator.shooter.DriveShooter;
@@ -70,7 +69,7 @@ public class RobotContainer {
                 /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
         }
 
-        climber.setDefaultCommand(new MaintainClimberPosition());
+        // climber.setDefaultCommand(new MaintainClimberPosition());
     }
 
     public Navx getNavx() {
@@ -119,7 +118,7 @@ public class RobotContainer {
 
     public Climber getClimber() {
         return climber;
-    }
+    };
 
     public boolean getIsOnField() {
         return isOnField;
@@ -131,8 +130,9 @@ public class RobotContainer {
 
     public void generateAutos() {
         NamedCommands.registerCommand("ShootPreloaded", new ShootPreloaded());
-        NamedCommands.registerCommand("LowerIntake", new MoveUntilLimit(-0.25));
-        NamedCommands.registerCommand("RaiseIntake", new MoveUntilLimit(0.25));
+        NamedCommands.registerCommand("LowerIntake", new MoveUntilLimit(-0.325));
+        NamedCommands.registerCommand("RaiseIntake", new MoveUntilLimit(0.325));
+        NamedCommands.registerCommand("RiseIntake", new MoveUntilLimit(0.325));
         NamedCommands.registerCommand("IntakeIn", new IntakeIn().withTimeout(3.0));
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
@@ -146,5 +146,6 @@ public class RobotContainer {
         m_chooser.addOption("Two Piece Fluid", new PathPlannerAuto("TwoPieceFluid"));
         m_chooser.addOption("Three Piece Careful", new PathPlannerAuto("ThreePieceCareful"));
         m_chooser.addOption("Go Straight From Back", new PathPlannerAuto("StraightFromBack"));
+        m_chooser.addOption("3 - 2", new PathPlannerAuto("ThreePieceSemiFluid2"));
     }
 }

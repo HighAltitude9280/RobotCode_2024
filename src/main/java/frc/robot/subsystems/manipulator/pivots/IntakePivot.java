@@ -47,9 +47,9 @@ public class IntakePivot extends SubsystemBase {
 
   public void driveIntakePivot(double speed) {
     if (Override == true) {
-      if (intakePivotPositionDegrees > HighAltitudeConstants.INTAKE_PIVOT_UPPER_LIMIT && speed > 0) {
+      if (getIntakePivotPositionDegrees() < HighAltitudeConstants.INTAKE_PIVOT_UPPER_LIMIT && speed > 0) {
         intakePivotMotors.setAll(0);
-      } else if (intakePivotPositionDegrees < HighAltitudeConstants.INTAKE_PIVOT_LOWER_LIMIT && speed < 0) {
+      } else if (intakePivotPositionDegrees > HighAltitudeConstants.INTAKE_PIVOT_LOWER_LIMIT && speed < 0) {
         intakePivotMotors.setAll(0);
       } else {
         intakePivotMotors.setAll(speed);

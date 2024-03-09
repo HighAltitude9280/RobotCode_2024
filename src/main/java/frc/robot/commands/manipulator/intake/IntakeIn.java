@@ -5,11 +5,15 @@
 package frc.robot.commands.manipulator.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Robot;
+import frc.robot.resources.components.PWMLEDStrip.commands.compound.FlashColor;
 import frc.robot.subsystems.manipulator.intake.Intake;
 
 public class IntakeIn extends Command {
   Intake intake;
+  boolean shouldFlash = false;
+  boolean hasFlashed = false;
 
   /** Creates a new IntakeIn. */
   public IntakeIn() {
@@ -22,12 +26,22 @@ public class IntakeIn extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shouldFlash = false;
+    hasFlashed = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.driveIntake(0.35); //    intake.driveIntake(0.25);
+    intake.driveIntake(0.35); // intake.driveIntake(0.25);
+    if (intake.getDetectedColorRed() > 500 && hasFlashed == false) {
+      shouldFlash = true;
+      hasFlashed = true;
+    }
+    if (shouldFlash) {
+      CommandScheduler.getInstance().schedule(new FlashColor(0, 255, 0, 0.125));
+      shouldFlash = false;
+    }
 
   }
 
@@ -35,6 +49,8 @@ public class IntakeIn extends Command {
   @Override
   public void end(boolean interrupted) {
     intake.driveIntake(0);
+    shouldFlash = false;
+    hasFlashed = false;
   }
 
   // Returns true when the command should end.

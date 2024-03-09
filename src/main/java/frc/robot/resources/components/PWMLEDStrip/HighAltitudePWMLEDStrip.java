@@ -302,6 +302,70 @@ public class HighAltitudePWMLEDStrip {
     /**
      * Sets the LEDs to a "sonidero" animation.
      * 
+     * @param hue       the hue you want the sonidero to be
+     * @param intensity the intensity (from -1 to 1 or 0-1) you want the noise to
+     *                  have. This can be variable
+     */
+    public void setRhythmSingleHueDouble(int hue, double intensity, int length, int offset, boolean inverted) {
+        intensity = map(Math.abs(intensity), 0, 1, 0.08, 1);
+        int baseline = (int) map(intensity, 0, 1, 1024.0 * 0.25, 1024.0 * 0.5);
+
+        int sample = baseline
+                + (int) map(Math.sin(counter * 0.3), -1, 1, 0, 1024 * intensity * intensity)
+                + Math.randomInt(0, (int) (1024.0 * intensity * 0.5));
+
+        int led = (int) map(sample, 0, 1024, 0, length - 1); // max - min = peak-peak amplitude
+        if (!inverted) {
+            for (int i = 0; i < led; i++) {
+                buffer.setHSV(
+                        i + offset,
+                        hue,
+                        255 - (int) map(i, 0, length - 1, 0, 255 * 0.25),
+                        255 - (int) map(i, 0, length - 1, 0, 255 * 0.25));
+            }
+
+            for (int i = getLength() - 1; i > led; i--) {
+                buffer.setHSV(i + offset, 0, 0, 0);
+            }
+
+            if (led > peak1)
+                peak1 = led; // Keep 'peak' dot at top
+            if (peak1 > 1 && peak1 <= getLength() - 1)
+                buffer.setHSV(peak1 + offset, 0, 0, 255);
+        } else {
+            for (int i = 0; i < led; i++) {
+                buffer.setHSV(
+                        offset + length - 1 - i,
+                        hue,
+                        255 - (int) map(i, 0, length - 1, 0, 255 * 0.25),
+                        255 - (int) map(i, 0, length - 1, 0, 255 * 0.25));
+            }
+
+            for (int i = getLength() - 1; i > led; i--) {
+                buffer.setHSV(offset + length - 1 - i, 0, 0, 0);
+            }
+
+            if (led > peak1)
+                peak1 = led; // Keep 'peak' dot at top
+            if (peak1 > 1 && peak1 <= getLength() - 1)
+                buffer.setHSV(offset + length - 1 - peak1, 0, 0, 255);
+        }
+        addressableLED.setData(buffer);
+
+        // Every few frames, make the peak pixel drop by 1:
+
+        if (++dotCount1 >= PEAK_FALL1) { // fall rate
+
+            if (peak1 > 0)
+                peak1--;
+            dotCount1 = 0;
+        }
+        counter++;
+    }
+
+    /**
+     * Sets the LEDs to a "sonidero" animation.
+     * 
      * @param intensity the intensity (from -1 to 1 or 0-1) you want the noise to
      *                  have. This can be variable
      */
@@ -314,6 +378,7 @@ public class HighAltitudePWMLEDStrip {
                 + Math.randomInt(0, (int) (1024.0 * intensity * 0.5));
 
         int led = (int) map(sample, 0, 1024, 0, getLength() - 1); // max - min = peak-peak amplitude
+
         for (int i = 0; i < led; i++) {
             int hue = 60 - (int) map(i, 0, getLength() - 1, 0, 60);
             buffer.setHSV(

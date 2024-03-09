@@ -5,7 +5,6 @@
 package frc.robot.resources.components.PWMLEDStrip;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.OI;
 
 public class LEDs extends SubsystemBase {
   HighAltitudePWMLEDStrip leds;
@@ -13,7 +12,8 @@ public class LEDs extends SubsystemBase {
   /** Creates a new LEDs. */
 
   public LEDs() {
-    leds = new HighAltitudePWMLEDStrip(9, 150);
+    leds = new HighAltitudePWMLEDStrip(9, 140);
+    leds.allLedsOff();
   }
 
   public void allLedsOff() {
@@ -33,14 +33,17 @@ public class LEDs extends SubsystemBase {
   }
 
   public void setCoolerFireAnimationWithInput(int hue, double in, double mn, double mx) {
-    leds.setFireWithVariableIntensity(hue, in, mn, mx, 30, 0, false);
-    leds.setFireWithVariableIntensity(hue, in, mn, mx, 30, 30, true);
+    leds.setFireWithVariableIntensity(hue, in, mn, mx, 50, 0, false);
+    leds.setFireWithVariableIntensity(hue, in, mn, mx, 50, 30, true);
   }
 
   @Override
   public void periodic() {
     // leds.setBasicFire(64, 225, 2, 200);
-    leds.setRainbowCycle();
+    // leds.setRhythmSingleHue(0, 0.5);
+    // leds.setRhythmSingleHueDouble(0, 0.5, 70, 0, false);
+    // leds.setRhythmSingleHueDouble(0, 0.5, 70, 70, true);
+    // leds.setRainbowCycle();
     // This method will be called once per scheduler run
   }
 }
