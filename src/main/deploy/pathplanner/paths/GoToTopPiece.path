@@ -12,7 +12,7 @@
         "y": 5.55076982040085
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Speaker - Forward"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "TopNote"
     }
   ],
   "rotationTargets": [],
