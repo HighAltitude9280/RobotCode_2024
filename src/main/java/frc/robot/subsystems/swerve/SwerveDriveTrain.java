@@ -7,7 +7,6 @@ package frc.robot.subsystems.swerve;
 import java.util.ArrayList;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.PPLibTelemetry;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;

@@ -11,24 +11,35 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Human_Drivers.HumanDrivers;
-import frc.robot.commands.autonomous.primitiveAutos.MoveUntilLimit;
 import frc.robot.commands.autonomous.primitiveAutos.ShootPreloaded;
 import frc.robot.commands.manipulator.intake.IntakeIn;
+import frc.robot.commands.manipulator.pivots.positions.IntakePivotMoveTo;
 /*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
 import frc.robot.commands.manipulator.shooter.DriveShooter;
 import frc.robot.commands.swerve.DefaultSwerveDrive;
 import frc.robot.resources.components.Navx;
 import frc.robot.resources.components.PWMLEDStrip.LEDs;
-import frc.robot.subsystems.climber.Climber;
+import frc.robot.resources.components.PWMLEDStrip.commands.primitives.SetRGB;
+import frc.robot.resources.vision.DriverCameras;
+//import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.manipulator.intake.Intake;
 import frc.robot.subsystems.manipulator.pivots.IntakePivot;
 import frc.robot.subsystems.manipulator.pivots.ShooterPivot;
 import frc.robot.subsystems.manipulator.shooter.Shooter;
 import frc.robot.subsystems.swerve.SwerveDriveTrain;
+import frc.robot.subsystems.vision.Vision;
 
 /** Add your docs here. */
 public class RobotContainer {
 
+    enum Mode{
+        MANUAL,
+        NOTE,
+        AMPLIFIED,
+        COOPERTITION
+    }
+
+    private Mode currentMode = Mode.MANUAL;
     private Navx navx;
     private Intake intake;
     private Shooter shooter;
@@ -36,8 +47,10 @@ public class RobotContainer {
     private ShooterPivot shooterPivot;
     private SwerveDriveTrain swerveDriveTrain;
     private LEDs leds;
-    private Climber climber;
+    //private Climber climber;
+    private DriverCameras driverCameras;
     private boolean isOnField;
+    private Vision vision;
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -49,9 +62,10 @@ public class RobotContainer {
         intakePivot = new IntakePivot();
         shooterPivot = new ShooterPivot();
         swerveDriveTrain = new SwerveDriveTrain();
-        climber = new Climber();
+        //climber = new Climber();
         leds = new LEDs();
-
+        driverCameras = new DriverCameras();
+        vision = new Vision();
     }
 
     public void ConfigureButtonBindings() {
@@ -68,7 +82,7 @@ public class RobotContainer {
                 swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
                 /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
         }
-
+        leds.setDefaultCommand(new SetRGB(0, 255, 137));
         // climber.setDefaultCommand(new MaintainClimberPosition());
     }
 
@@ -90,6 +104,10 @@ public class RobotContainer {
 
     public Shooter getShooter() {
         return shooter;
+    }
+
+    public DriverCameras getDriverCameras() {
+        return driverCameras;
     }
 
     public IntakePivot getIntakePivot() {
@@ -116,9 +134,9 @@ public class RobotContainer {
         return leds;
     }
 
-    public Climber getClimber() {
+    /*public Climber getClimber() {
         return climber;
-    };
+    };*/
 
     public boolean getIsOnField() {
         return isOnField;
@@ -128,17 +146,30 @@ public class RobotContainer {
         isOnField = !isOnField;
     }
 
+    public Mode getCurrentMode(){
+        return currentMode;
+    }
+
+    public void setCurrentMode(Mode mode){
+        currentMode = mode;
+    }
+
+    public Vision getVision() {
+        return vision;
+    }
+
     public void generateAutos() {
         NamedCommands.registerCommand("ShootPreloaded", new ShootPreloaded());
-        NamedCommands.registerCommand("LowerIntake", new MoveUntilLimit(-0.325));
-        NamedCommands.registerCommand("RaiseIntake", new MoveUntilLimit(0.325));
-        NamedCommands.registerCommand("RiseIntake", new MoveUntilLimit(0.325));
+        NamedCommands.registerCommand("LowerIntake", new IntakePivotMoveTo(0.75, 155.0));
+        NamedCommands.registerCommand("RaiseIntake", new IntakePivotMoveTo(0.75, 0.0));
+        NamedCommands.registerCommand("RiseIntake", new IntakePivotMoveTo(0.75, 0.0));
         NamedCommands.registerCommand("IntakeIn", new IntakeIn().withTimeout(3.0));
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         m_chooser.addOption("Shoot Preloaded", new ShootPreloaded());
         m_chooser.addOption("Go Straight", new PathPlannerAuto("GoStraight"));
         m_chooser.addOption("Two Piece Source", new PathPlannerAuto("DiagonalSourceTwoNotes"));
+        m_chooser.addOption("Two Piece Source GrabMid", new PathPlannerAuto("DiagonalSourceTwoNotesThenMid"));
         m_chooser.addOption("Shoot Go Straight", new PathPlannerAuto("ShootGoStraight"));
         m_chooser.addOption("Shoot Then IntakeIn", new PathPlannerAuto("ShootThenIntakeIn"));
         m_chooser.addOption("Two Piece Careful", new PathPlannerAuto("TwoPieceCareful"));

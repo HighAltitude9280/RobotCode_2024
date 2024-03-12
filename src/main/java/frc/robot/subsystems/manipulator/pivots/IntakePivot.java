@@ -5,6 +5,7 @@
 package frc.robot.subsystems.manipulator.pivots;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
@@ -105,11 +106,7 @@ public class IntakePivot extends SubsystemBase {
     intakePivotPositionDegrees = currentIntakePivotEncoderPosition
         * HighAltitudeConstants.INTAKE_PIVOT_DEGREES_PER_REVOLUTION;
 
-    /*
-     * SmartDashboard.putNumber("Raw Intake Pivot Encoder",
-     * intakePivotMotors.getEncoderPosition());
-     * 
-     * SmartDashboard.putBoolean("Intake_Override", Override);
-     */
+    SmartDashboard.putNumber("Raw Intake Pivot Encoder", intakePivotMotors.getEncoderPosition());
+    SmartDashboard.putBoolean("Intake_Override", Override);
   }
 }

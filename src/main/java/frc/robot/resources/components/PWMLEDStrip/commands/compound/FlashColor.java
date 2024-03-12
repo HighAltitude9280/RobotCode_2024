@@ -7,7 +7,6 @@ package frc.robot.resources.components.PWMLEDStrip.commands.compound;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.resources.components.PWMLEDStrip.commands.primitives.SetRGBThenTurnOff;
-import frc.robot.resources.components.PWMLEDStrip.commands.primitives.SetRGBDontTurnOff;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

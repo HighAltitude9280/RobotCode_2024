@@ -33,7 +33,7 @@ public class IntakeIn extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.driveIntake(0.35); // intake.driveIntake(0.25);
+    intake.driveIntake(0.5); // intake.driveIntake(0.25);
     if (intake.getDetectedColorRed() > 500 && hasFlashed == false) {
       shouldFlash = true;
       hasFlashed = true;
@@ -48,7 +48,7 @@ public class IntakeIn extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.driveIntake(0);
+    intake.Hold();
     shouldFlash = false;
     hasFlashed = false;
   }

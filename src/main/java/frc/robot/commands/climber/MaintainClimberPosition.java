@@ -5,7 +5,7 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Robot;
+//import frc.robot.Robot;
 import frc.robot.subsystems.climber.Climber;
 
 public class MaintainClimberPosition extends Command {
@@ -14,7 +14,7 @@ public class MaintainClimberPosition extends Command {
   /** Creates a new MaintainPosition. */
   public MaintainClimberPosition() {
     // Use addRequirements() here to declare subsystem dependencies.
-    climber = Robot.getRobotContainer().getClimber();
+    //climber = Robot.getRobotContainer().getClimber();
     addRequirements(climber);
   }
 
@@ -42,7 +42,6 @@ public class MaintainClimberPosition extends Command {
     return false;
   }
 
-  // TODO: kinda dangerous tbh pero es por un bien mayor. Esto hace que el comando
   // siga ejecutandose incluso cuando esté en disable :0
   @Override
   public boolean runsWhenDisabled() {

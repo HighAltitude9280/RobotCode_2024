@@ -10,14 +10,15 @@ import frc.robot.RobotMap;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorSensorV3.RawColor;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 
 public class Intake extends SubsystemBase {
   HighAltitudeMotorGroup intakeMotors;
   ColorSensorV3 intakeColorSensor;
+  AnalogInput proximitySensor;
 
   /** Creates a new Intake. */
   public Intake() {
@@ -26,6 +27,7 @@ public class Intake extends SubsystemBase {
         RobotMap.INTAKE_MOTOR_TYPES);
 
     intakeColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+    proximitySensor = new AnalogInput(3);
   }
 
   public void driveIntake(double speed) {
@@ -33,7 +35,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void Hold() {
-    intakeMotors.setAll(0.05);
+    intakeMotors.setAll(0.25);
   }
 
   public void stopIntake() {
@@ -49,7 +51,7 @@ public class Intake extends SubsystemBase {
   }
 
   public int getProximity() {
-    return intakeColorSensor.getProximity();
+    return proximitySensor.getAverageValue();
   }
 
   @Override

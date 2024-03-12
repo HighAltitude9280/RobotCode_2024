@@ -4,29 +4,29 @@
 
 package frc.robot.commands.manipulator.pivots.positions;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.manipulator.pivots.ShooterPivot;
+import frc.robot.resources.math.Math;
 
 public class ShooterPivotMoveTo extends Command {
   ShooterPivot shooterPivot;
 
+  double maxPower;
   double target;
-  double currentAngle;
-  double currentTarget;
+  double error;
 
-  PIDController targetPIDController;
+  double breakingDegrees = 150;
 
   /** Creates a new ShooterPivotMoveTo. */
-  public ShooterPivotMoveTo(double target) {
+  public ShooterPivotMoveTo(double maxPower, double target) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooterPivot = Robot.getRobotContainer().getShooterPivot();
-
-    targetPIDController = new PIDController(0.08, 0.0, 0.0);
+    this.target = target;
+    this.maxPower = maxPower;
 
     addRequirements(shooterPivot);
-    this.target = target;
   }
 
   // Called when the command is initially scheduled.
@@ -38,11 +38,12 @@ public class ShooterPivotMoveTo extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    error = target - shooterPivot.getShooterPivotPositionInDegrees();
+    double power = error / (maxPower * maxPower * breakingDegrees);
 
-    currentAngle = shooterPivot.getAbsoluteEncoderDeg();
-    currentTarget = shooterPivot.getCurrentTarget();
-
-    shooterPivot.driveShooterPivot(targetPIDController.calculate(currentAngle, currentTarget));
+    power = Math.clamp(power, -1, 1) * maxPower * 1;
+    shooterPivot.driveShooterPivot(power);
+    SmartDashboard.putNumber("CurrentPower", Math.abs(power));
   }
 
   // Called once the command ends or is interrupted.
@@ -54,10 +55,10 @@ public class ShooterPivotMoveTo extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (shooterPivot.getShooterPivotTopLimitSwitch() == true) {
-      return false;
-    } else {
+    if (shooterPivot.getShooterPivotTopLimitSwitch() == true || shooterPivot.getShooterPivotBottomLimitSwitch() == true) {
       return true;
+    } else {
+      return false;
     }
   }
 }

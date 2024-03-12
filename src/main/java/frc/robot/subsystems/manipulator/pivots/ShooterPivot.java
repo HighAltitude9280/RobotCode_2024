@@ -6,6 +6,7 @@ package frc.robot.subsystems.manipulator.pivots;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
@@ -136,17 +137,16 @@ public class ShooterPivot extends SubsystemBase {
     shooterPivotPositionDegrees = getAbsoluteEncoderDeg();
     shooterPivotRawEncoder = absoluteEncoderController.getPosition().getValueAsDouble();
 
-    /*
-     * SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder",
-     * getShooterPivotRawEncoder());
-     * SmartDashboard.putNumber("Shooter Pivot Encoder Position",
-     * getShooterPivotEncoderPosition());
-     * 
-     * SmartDashboard.putBoolean("Shooter_Override", Override);
-     * SmartDashboard.putBoolean("Shooter_Pivot_Top_Limit_Switch",
-     * getShooterPivotTopLimitSwitch());
-     * SmartDashboard.putBoolean("Shooter_Pivot_Bottom_Limit_Switch",
-     * getShooterPivotBottomLimitSwitch());
-     */
+    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder",
+        getShooterPivotRawEncoder());
+    SmartDashboard.putNumber("Shooter Pivot Encoder Position",
+        getShooterPivotEncoderPosition());
+
+    SmartDashboard.putBoolean("Shooter_Override", Override);
+    SmartDashboard.putBoolean("Shooter_Pivot_Top_Limit_Switch",
+        getShooterPivotTopLimitSwitch());
+    SmartDashboard.putBoolean("Shooter_Pivot_Bottom_Limit_Switch",
+        getShooterPivotBottomLimitSwitch());
+
   }
 }

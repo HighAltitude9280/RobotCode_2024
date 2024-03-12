@@ -7,11 +7,11 @@ package frc.robot;
 import frc.robot.commands.manipulator.shooter.ShooterAmp;
 import frc.robot.commands.manipulator.shooter.ShooterIntake;
 import frc.robot.commands.manipulator.shooter.SuperShoot;
-import frc.robot.commands.climber.MoveClimer;
 import frc.robot.commands.manipulator.compound.IntakeAndRollersOut;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 import frc.robot.commands.manipulator.intake.IntakeOut;
 import frc.robot.commands.manipulator.pivots.pivotsParameters.toggleOverride;
+import frc.robot.commands.manipulator.pivots.positions.IntakePivotMoveTo;
 import frc.robot.commands.manipulator.pivots.positions.ShooterPivotMoveTo;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotDown;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotUp;
@@ -20,6 +20,7 @@ import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotUp;
 import frc.robot.commands.manipulator.pivots.primitives.ToggleIntakePivot;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.IntakePivotResetEncoder;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotResetCanCoder;
+import frc.robot.commands.swerve.SwerveDriveAndCenter;
 import frc.robot.commands.swerve.TestSwerve;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
@@ -78,7 +79,7 @@ public class OI {
                 pilot.whileTrue(ButtonType.LT, new IntakeIn());
 
                 pilot.whileTrue(ButtonType.POV_SE, new ToggleIsOnCompetitiveField());
-
+                pilot.toggleOnTrue(ButtonType.A, new SwerveDriveAndCenter());
                 break;
 
             case MACG:
@@ -182,8 +183,8 @@ public class OI {
 
                 copilot.whileTrue(ButtonType.X, new ToggleIntakePivot());
 
-                copilot.whileTrue(ButtonType.POV_N, new IntakePivotUp());
-                copilot.whileTrue(ButtonType.POV_S, new IntakePivotDown());
+                copilot.whileTrue(ButtonType.POV_N, new IntakePivotMoveTo(0.75, 0.0));
+                copilot.whileTrue(ButtonType.POV_S, new IntakePivotMoveTo(0.75, 155.0));
 
                 copilot.whileTrue(ButtonType.POV_E, new ShooterPivotUp());
                 copilot.whileTrue(ButtonType.POV_W, new ShooterPivotDown());
@@ -194,8 +195,8 @@ public class OI {
                 copilot.whileTrue(ButtonType.RT, new SuperShoot());
                 copilot.whileTrue(ButtonType.LT, new IntakeIn());
 
-                copilot.whileTrue(ButtonType.A, new MoveClimer(0.5));
-                copilot.whileTrue(ButtonType.B, new MoveClimer(-0.5));
+                copilot.whileTrue(ButtonType.A, new IntakePivotDown());
+                copilot.whileTrue(ButtonType.B, new IntakePivotUp());
 
                 break;
 
