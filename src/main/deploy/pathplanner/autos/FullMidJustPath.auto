@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7336934388833163,
+      "y": 4.397140955802102
+    },
+    "rotation": -58.877529803207985
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DiagonalSourceMidNoIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DiagonalSourceMidBack"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DiagonalSecondNoteNoIntake"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

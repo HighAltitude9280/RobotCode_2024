@@ -27,7 +27,7 @@ public class ShooterPivotDown extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterPivot.driveShooterPivot(-0.3);
+    shooterPivot.driveShooterPivot(-0.35);
   }
 
   // Called once the command ends or is interrupted.

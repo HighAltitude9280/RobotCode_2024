@@ -154,8 +154,6 @@ public class HighAltitudeGuitarJoystick {
         }
 
         axisConfiguration = new HashMap<AxisType, Integer>();
-        axisConfiguration.put(AxisType.PICKUP_SWITCH, 2);
-        axisConfiguration.put(AxisType.VOLUME_RAMP, 4);
 
         joystickButtonConfiguration = new HashMap<ButtonType, Trigger>();
         joystickButtonConfiguration.put(ButtonType.GREEN, availableJoystickButtons.get(1));

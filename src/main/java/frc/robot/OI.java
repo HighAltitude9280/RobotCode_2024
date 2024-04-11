@@ -7,12 +7,13 @@ package frc.robot;
 import frc.robot.commands.manipulator.shooter.ShooterAmp;
 import frc.robot.commands.manipulator.shooter.ShooterIntake;
 import frc.robot.commands.manipulator.shooter.SuperShoot;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.manipulator.compound.IntakeAndRollersOut;
+import frc.robot.commands.manipulator.intake.DriveIntake;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 import frc.robot.commands.manipulator.intake.IntakeOut;
 import frc.robot.commands.manipulator.pivots.pivotsParameters.toggleOverride;
 import frc.robot.commands.manipulator.pivots.positions.IntakePivotMoveTo;
-import frc.robot.commands.manipulator.pivots.positions.ShooterPivotMoveTo;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotDown;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotUp;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotDown;
@@ -79,7 +80,7 @@ public class OI {
                 pilot.whileTrue(ButtonType.LT, new IntakeIn());
 
                 pilot.whileTrue(ButtonType.POV_SE, new ToggleIsOnCompetitiveField());
-                pilot.toggleOnTrue(ButtonType.A, new SwerveDriveAndCenter());
+                // pilot.toggleOnTrue(ButtonType.A, new SwerveDriveAndCenter());
                 break;
 
             case MACG:
@@ -99,12 +100,12 @@ public class OI {
                 pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
                 pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
 
-                pilot.whileTrue(ButtonType.POV_E, new ShooterPivotMoveTo(105));
-
                 break;
 
             case MACGwithGuitar:
                 pilotG = new HighAltitudeGuitarJoystick(0, GuitarJoystickType.GUITAR_HERO);
+
+                pilotG.onTrue(HighAltitudeGuitarJoystick.ButtonType.BACK, new WaitCommand(0.5));
 
                 break;
 
@@ -181,10 +182,10 @@ public class OI {
                 copilot.onTrue(ButtonType.START, new ShooterPivotResetCanCoder());
                 copilot.onTrue(ButtonType.BACK, new toggleOverride());
 
-                copilot.whileTrue(ButtonType.X, new ToggleIntakePivot());
+                copilot.whileTrue(ButtonType.X, new DriveIntake(-0.1));
 
                 copilot.whileTrue(ButtonType.POV_N, new IntakePivotMoveTo(0.75, 0.0));
-                copilot.whileTrue(ButtonType.POV_S, new IntakePivotMoveTo(0.75, 155.0));
+                copilot.whileTrue(ButtonType.POV_S, new IntakePivotMoveTo(0.75, 160.0));
 
                 copilot.whileTrue(ButtonType.POV_E, new ShooterPivotUp());
                 copilot.whileTrue(ButtonType.POV_W, new ShooterPivotDown());
@@ -197,6 +198,31 @@ public class OI {
 
                 copilot.whileTrue(ButtonType.A, new IntakePivotDown());
                 copilot.whileTrue(ButtonType.B, new IntakePivotUp());
+
+                break;
+
+            case Abby:
+
+                copilotG = new HighAltitudeGuitarJoystick(1, GuitarJoystickType.GUITAR_HERO);
+
+                copilotG.whileTrue(HighAltitudeGuitarJoystick.ButtonType.POV_N, new ShooterPivotUp()/*
+                                                                                                     * ShooterPivotMoveTo
+                                                                                                     * (0.4, 0.0)
+                                                                                                     */);
+                copilotG.whileTrue(HighAltitudeGuitarJoystick.ButtonType.POV_S, new ShooterPivotDown()/*
+                                                                                                       * ShooterPivotMoveTo
+                                                                                                       * (0.4, 0.0)
+                                                                                                       */);
+
+                copilotG.onTrue(HighAltitudeGuitarJoystick.ButtonType.START, new IntakePivotResetEncoder());
+                copilotG.onTrue(HighAltitudeGuitarJoystick.ButtonType.START, new ShooterPivotResetCanCoder());
+                copilotG.onTrue(HighAltitudeGuitarJoystick.ButtonType.BACK, new toggleOverride());
+
+                copilotG.whileTrue(HighAltitudeGuitarJoystick.ButtonType.GREEN, new IntakeIn());
+                copilotG.whileTrue(HighAltitudeGuitarJoystick.ButtonType.RED, new IntakeAndRollersOut());
+                copilotG.whileTrue(HighAltitudeGuitarJoystick.ButtonType.YELLOW, new SuperShoot());
+
+                copilotG.whileTrue(HighAltitudeGuitarJoystick.ButtonType.BLUE, new DriveIntake(-0.1));
 
                 break;
 
@@ -316,6 +342,16 @@ public class OI {
 
             default:
                 return copilot;
+        }
+    }
+
+    public HighAltitudeGuitarJoystick getCopilotG() {
+        switch (HighAltitudeConstants.CURRENT_COPILOT) {
+            case Abby:
+                return copilotG;
+
+            default:
+                return copilotG;
         }
     }
 }

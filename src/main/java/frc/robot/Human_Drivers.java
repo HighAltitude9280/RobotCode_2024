@@ -13,7 +13,7 @@ public class Human_Drivers {
         Joakin, // Joakin use a specific configuration for his joystick
         Yare, // Yare use a specific configuration for her joystick
         LuisNN, // LuisNN use a specific configuration for his joystick
-        LuisNNwithGuitar, // LuisNN use a specific configuration for his joystick
+        Abby, // Abby use a specific configuration for his joystick
 
         ///// PROGRAMMING /////
         MACG, // MACG use a specific configuration for testing features

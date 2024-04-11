@@ -14,8 +14,8 @@ import frc.robot.Human_Drivers.HumanDrivers;
 import frc.robot.commands.autonomous.primitiveAutos.ShootPreloaded;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 import frc.robot.commands.manipulator.pivots.positions.IntakePivotMoveTo;
+import frc.robot.commands.manipulator.pivots.positions.MoveToWithGuitarAxis;
 /*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
-import frc.robot.commands.manipulator.shooter.DriveShooter;
 import frc.robot.commands.swerve.DefaultSwerveDrive;
 import frc.robot.resources.components.Navx;
 import frc.robot.resources.components.PWMLEDStrip.LEDs;
@@ -32,7 +32,7 @@ import frc.robot.subsystems.vision.Vision;
 /** Add your docs here. */
 public class RobotContainer {
 
-    enum Mode{
+    enum Mode {
         MANUAL,
         NOTE,
         AMPLIFIED,
@@ -47,7 +47,7 @@ public class RobotContainer {
     private ShooterPivot shooterPivot;
     private SwerveDriveTrain swerveDriveTrain;
     private LEDs leds;
-    //private Climber climber;
+    // private Climber climber;
     private DriverCameras driverCameras;
     private boolean isOnField;
     private Vision vision;
@@ -62,7 +62,7 @@ public class RobotContainer {
         intakePivot = new IntakePivot();
         shooterPivot = new ShooterPivot();
         swerveDriveTrain = new SwerveDriveTrain();
-        //climber = new Climber();
+        // climber = new Climber();
         leds = new LEDs();
         driverCameras = new DriverCameras();
         vision = new Vision();
@@ -73,15 +73,22 @@ public class RobotContainer {
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case Joakin:
-                swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
-                /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
                 break;
 
             default:
-                shooter.setDefaultCommand(new DriveShooter());
-                swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
-                /* shooterPivot.setDefaultCommand(new ShooterPivotKeepCurrentPosition()); */
+                break;
         }
+
+        switch (HighAltitudeConstants.CURRENT_COPILOT) {
+            case Abby:
+                intakePivot.setDefaultCommand(new MoveToWithGuitarAxis(0.75));
+                break;
+
+            default:
+                break;
+        }
+
+        swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
         leds.setDefaultCommand(new SetRGB(0, 255, 137));
         // climber.setDefaultCommand(new MaintainClimberPosition());
     }
@@ -134,9 +141,11 @@ public class RobotContainer {
         return leds;
     }
 
-    /*public Climber getClimber() {
-        return climber;
-    };*/
+    /*
+     * public Climber getClimber() {
+     * return climber;
+     * };
+     */
 
     public boolean getIsOnField() {
         return isOnField;
@@ -146,11 +155,11 @@ public class RobotContainer {
         isOnField = !isOnField;
     }
 
-    public Mode getCurrentMode(){
+    public Mode getCurrentMode() {
         return currentMode;
     }
 
-    public void setCurrentMode(Mode mode){
+    public void setCurrentMode(Mode mode) {
         currentMode = mode;
     }
 
@@ -178,5 +187,7 @@ public class RobotContainer {
         m_chooser.addOption("Three Piece Careful", new PathPlannerAuto("ThreePieceCareful"));
         m_chooser.addOption("Go Straight From Back", new PathPlannerAuto("StraightFromBack"));
         m_chooser.addOption("3 - 2", new PathPlannerAuto("ThreePieceSemiFluid2"));
+        m_chooser.addOption("Full Mid", new PathPlannerAuto("FullMid"));
+        m_chooser.addOption("Full Mid Test", new PathPlannerAuto("FullMidJustPath"));
     }
 }

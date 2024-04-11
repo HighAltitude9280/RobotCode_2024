@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.231791664745845,
-        "y": 5.55076982040085
+        "x": 2.5553683061717036,
+        "y": 5.703177397795595
       },
       "isLocked": false,
       "linkedName": "Speaker - Forward"
@@ -20,8 +20,8 @@
         "y": 7.0
       },
       "prevControl": {
-        "x": 1.75,
-        "y": 7.0
+        "x": 1.5248146901429311,
+        "y": 7.026501927468906
       },
       "nextControl": null,
       "isLocked": false,

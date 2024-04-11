@@ -2,20 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.manipulator.pivots.primitives;
+package frc.robot.commands.manipulator.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.manipulator.pivots.IntakePivot;
+import frc.robot.subsystems.manipulator.intake.Intake;
 
-public class IntakePivotUp extends Command {
-  IntakePivot intakePivot;
+public class DriveIntake extends Command {
+  Intake intake;
+  double power;
 
-  /** Creates a new ShooterPivotDown. */
-  public IntakePivotUp() {
-    intakePivot = Robot.getRobotContainer().getIntakePivot();
+  /** Creates a new IntakeOut. */
+  public DriveIntake(double power) {
+    intake = Robot.getRobotContainer().getIntake();
+    this.power = power;
 
-    addRequirements(intakePivot);
+    addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -27,14 +29,13 @@ public class IntakePivotUp extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakePivot.driveIntakePivot(0.55);
+    intake.driveIntake(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakePivot.driveIntakePivot(0);
-
+    intake.driveIntake(0);
   }
 
   // Returns true when the command should end.

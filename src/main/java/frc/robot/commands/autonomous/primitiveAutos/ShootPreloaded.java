@@ -19,7 +19,7 @@ public class ShootPreloaded extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new SuperShoot().withTimeout(0.5),
+        new SuperShoot().withTimeout(0.6),
         new SequentialCommandGroup(
             new WaitCommand(0.5),
             new IntakeAndRollersOut().withTimeout(1.0)));
