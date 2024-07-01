@@ -6,11 +6,15 @@ package frc.robot.subsystems.manipulator.pivots;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
+import frc.robot.resources.math.Math;
+import frc.robot.subsystems.vision.Vision;
 
 public class ShooterPivot extends SubsystemBase {
   HighAltitudeMotorGroup shooterPivotMotors;
@@ -26,6 +30,8 @@ public class ShooterPivot extends SubsystemBase {
 
   boolean Override;
 
+  double encoderTarget = 0.0, angleTarget = 65.0;
+
   /** Creates a new ShooterPivot. */
   public ShooterPivot() {
 
@@ -37,6 +43,7 @@ public class ShooterPivot extends SubsystemBase {
     shooterPivotMotors.setEncoderInverted(RobotMap.SHOOTER_PIVOT_ENCODER_IS_INVERTED);
 
     absoluteEncoderController = new CANcoder(RobotMap.SHOOTER_PIVOT_ENCODED_TALON_PORT);
+    resetCanCoder();
 
     if (RobotMap.SHOOTER_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE) {
       topLimitSwitch = new DigitalInput(RobotMap.SHOOTER_PIVOT_TOP_LIMIT_SWITCH_PORT);
@@ -53,10 +60,10 @@ public class ShooterPivot extends SubsystemBase {
   }
 
   public double getAbsoluteEncoderDeg() {
-    double angle = (getShooterPivotEncoderPosition()
-        - RobotMap.SHOOTER_PIVOT_ENCODER_OFFSET_PULSES) * 360;
-    return angle
-        * (RobotMap.SHOOTER_PIVOT_ENCODED_TALON_INVERTED ? -1.0 : 1.0);
+
+    double angle = HighAltitudeConstants.SHOOTER_PIVOT_ZERO_ANGLE
+        + (RobotMap.SHOOTER_PIVOT_ENCODED_TALON_INVERTED ? -1.0 : 1.0) * getShooterPivotEncoderPosition() * 360;
+    return angle;
   }
 
   public void driveShooterPivot(double speed) {
@@ -76,6 +83,53 @@ public class ShooterPivot extends SubsystemBase {
      */
     shooterPivotMotors.setAll(speed);
 
+  }
+
+  public void followTarget() {
+
+    Vision vision = Robot.getRobotContainer().getVision();
+    double pitch = vision.getPitch();
+    double target = pitch * HighAltitudeConstants.SHOOTER_PIVOT_PITCH_TO_TARGET_MULTIPLIER
+        + HighAltitudeConstants.SHOOTER_PIVOT_PITCH_TO_TARGET_OFFSET;
+
+    SmartDashboard.putNumber("PivotTarget", target);
+    setEncoderTarget(target);
+    maintainTarget(0.5);
+
+  }
+
+  public void setEncoderTarget(double target) {
+
+    this.encoderTarget = target;
+
+  }
+
+  public double getEncoderTarget() {
+    return encoderTarget;
+  }
+
+  public void setAngleTarget(double targetDegrees) {
+
+    this.encoderTarget = angleToEncoder(targetDegrees);
+
+  }
+
+  public double getAngleTarget() {
+    return encoderTarget;
+  }
+
+  public double angleToEncoder(double angleDegrees) {
+    return (RobotMap.SHOOTER_PIVOT_ENCODED_TALON_INVERTED ? -1.0
+        : 1.0) * (angleDegrees - HighAltitudeConstants.SHOOTER_PIVOT_ZERO_ANGLE) / 360;
+  }
+
+  public void maintainTarget(double maxPower) {
+
+    double power = (getEncoderTarget()
+        - getShooterPivotEncoderPosition()) * HighAltitudeConstants.SHOOTER_PIVOT_ANGLE_CORRECTION_CONSTANT;
+    power = Math.clamp(power * maxPower, -maxPower, maxPower);
+
+    driveShooterPivot(power);
   }
 
   public boolean getShooterPivotTopLimitSwitch() {
@@ -119,7 +173,8 @@ public class ShooterPivot extends SubsystemBase {
   }
 
   public void resetCanCoder() {
-    zeroValue = absoluteEncoderController.getPosition().getValueAsDouble();
+    absoluteEncoderController.setPosition(0);
+    // zeroValue = absoluteEncoderController.getPosition().getValueAsDouble();
   }
 
   public void resetZeroValue() {
@@ -136,21 +191,27 @@ public class ShooterPivot extends SubsystemBase {
 
   @Override
   public void periodic() {
-    ShooterPivotEncoderPosition = absoluteEncoderController.getAbsolutePosition().getValueAsDouble() - zeroValue;
+    ShooterPivotEncoderPosition = absoluteEncoderController.getAbsolutePosition().getValueAsDouble() -
+        zeroValue;
+
     shooterPivotPositionDegrees = getAbsoluteEncoderDeg();
     shooterPivotRawEncoder = absoluteEncoderController.getPosition().getValueAsDouble();
 
-    /*
-     * SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder",
-     * getShooterPivotRawEncoder());
-     * SmartDashboard.putNumber("Shooter Pivot Encoder Position",
-     * getShooterPivotEncoderPosition());
-     * 
-     * SmartDashboard.putBoolean("Shooter_Override", Override);
-     * SmartDashboard.putBoolean("Shooter_Pivot_Top_Limit_Switch",
-     * getShooterPivotTopLimitSwitch());
-     * SmartDashboard.putBoolean("Shooter_Pivot_Bottom_Limit_Switch",
-     * getShooterPivotBottomLimitSwitch());
-     */
+    if (getShooterPivotBottomLimitSwitch())
+      resetCanCoder();
+
+    SmartDashboard.putNumber("Shooter Pivot Raw Abs Encoder",
+        getShooterPivotRawEncoder());
+    SmartDashboard.putNumber("ShooterPivotEncoderTarget", encoderTarget);
+    SmartDashboard.putNumber("Shooter Pivot Encoder Position",
+        getShooterPivotEncoderPosition());
+
+    SmartDashboard.putBoolean("Shooter_Override", Override);
+    SmartDashboard.putNumber("Zero Value shooter pivot", zeroValue);
+    SmartDashboard.putBoolean("Shooter_Pivot_Top_Limit_Switch",
+        getShooterPivotTopLimitSwitch());
+    SmartDashboard.putBoolean("Shooter_Pivot_Bottom_Limit_Switch",
+        getShooterPivotBottomLimitSwitch());
   }
+
 }

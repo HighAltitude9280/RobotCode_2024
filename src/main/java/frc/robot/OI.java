@@ -4,24 +4,28 @@
 
 package frc.robot;
 
-import frc.robot.commands.manipulator.shooter.ShooterAmp;
 import frc.robot.commands.manipulator.shooter.ShooterIntake;
 import frc.robot.commands.manipulator.shooter.SuperShoot;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.autonomous.primitiveAutos.MaintainPointAtTarget;
 import frc.robot.commands.manipulator.compound.IntakeAndRollersOut;
 import frc.robot.commands.manipulator.intake.DriveIntake;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 import frc.robot.commands.manipulator.intake.IntakeOut;
 import frc.robot.commands.manipulator.pivots.pivotsParameters.toggleOverride;
+import frc.robot.commands.manipulator.pivots.positions.IntakePivotExtruir;
 import frc.robot.commands.manipulator.pivots.positions.IntakePivotMoveTo;
+import frc.robot.commands.manipulator.pivots.positions.IntakePivotRetractar;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotDown;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotUp;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotDown;
+import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotMaintainTarget;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotUp;
 import frc.robot.commands.manipulator.pivots.primitives.ToggleIntakePivot;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.IntakePivotResetEncoder;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotResetCanCoder;
-import frc.robot.commands.swerve.SwerveDriveAndCenter;
+import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotSetAngleTarget;
 import frc.robot.commands.swerve.TestSwerve;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
@@ -72,15 +76,37 @@ public class OI {
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
 
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
+                pilot.whileTrue(ButtonType.X, new DriveIntake(-0.1));
+
+                // pilot.whileTrue(ButtonType.POV_N, new IntakePivotMoveTo(0.75, 0.0));
+                // pilot.whileTrue(ButtonType.POV_S, new IntakePivotMoveTo(0.75, 160.0));
+                pilot.onTrue(ButtonType.POV_N, new IntakePivotRetractar(0.5));
+                pilot.onTrue(ButtonType.POV_S, new IntakePivotExtruir(0.5));
+
+                pilot.whileTrue(ButtonType.POV_E, new ShooterPivotUp());
+                pilot.whileTrue(ButtonType.POV_W, new ShooterPivotDown());
 
                 pilot.whileTrue(ButtonType.RB, new IntakeAndRollersOut());
                 pilot.whileTrue(ButtonType.LB, new ShooterIntake());
 
-                pilot.whileTrue(ButtonType.RT, new ShooterAmp());
+                pilot.whileTrue(ButtonType.RT, new SuperShoot());
                 pilot.whileTrue(ButtonType.LT, new IntakeIn());
 
+                // pilot.whileTrue(ButtonType.A, new followTarget());
+
                 pilot.whileTrue(ButtonType.POV_SE, new ToggleIsOnCompetitiveField());
+
                 // pilot.toggleOnTrue(ButtonType.A, new SwerveDriveAndCenter());
+                // pilot.onTrue(ButtonType.A, new ShooterPivotSetAngleTarget(22));
+                // pilot.whileTrue(ButtonType.A, new ShooterPivotMaintainTarget(0.5));
+                pilot.onTrue(ButtonType.POV_N, new ShooterPivotSetAngleTarget(45));
+                pilot.whileTrue(ButtonType.POV_N, new ShooterPivotMaintainTarget(0.5));
+
+                pilot.onTrue(ButtonType.POV_S, new ShooterPivotSetAngleTarget(45));
+                pilot.whileTrue(ButtonType.POV_S, new ShooterPivotMaintainTarget(0.5));
+
+                pilot.whileTrue(ButtonType.A,
+                        new MaintainPointAtTarget(new Translation3d(0, 1.6, 1.64), 0.8));
                 break;
 
             case MACG:

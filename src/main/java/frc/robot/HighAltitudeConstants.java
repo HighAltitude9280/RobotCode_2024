@@ -17,7 +17,7 @@ public class HighAltitudeConstants {
 
         ////////////////////////// SWERVE //////////////////////////
 
-        public static final double MAX_VOLTAGE = 12.0;
+        public static final double MAX_VOLTAGE = 12;
 
         /////////// KINEMATICS
         // Distance left - right (meters)
@@ -124,6 +124,18 @@ public class HighAltitudeConstants {
                                                                            // furthest module)
                         new ReplanningConfig());
 
+        //// SpeedReduction constants
+
+        public static final double SWERVE_TURN_BRAKE_DISTANCE = 40.0;
+        public static final double SWERVE_TURN_ARRIVE_OFFSET = 3.0;
+
+        //// VISION
+
+        public static final double YAW_CORRECTION = 0.15;
+        public static final double YAW_OFFSET = 5.72;
+
+        public static final double DISTANCE_CORRECTION = 0.5;
+
         ////////////////////////// SHOOTER //////////////////////////
 
         public static final boolean SHOOTER_MOTORS_BRAKING_MODE = false;
@@ -160,6 +172,13 @@ public class HighAltitudeConstants {
         public static final double SHOOTER_PIVOT_LOWER_LIMIT = 0.0;
         // 0.17578125 Shuffle Report
 
+        public static final double SHOOTER_PIVOT_ANGLE_CORRECTION_CONSTANT = 20;
+
+        public static final double SHOOTER_PIVOT_PITCH_TO_TARGET_MULTIPLIER = -0.003;
+        public static final double SHOOTER_PIVOT_PITCH_TO_TARGET_OFFSET = 0.18;
+
+        public static final double SHOOTER_PIVOT_ZERO_ANGLE = 65.0;
+
         ///// INTAKE PIVOT
 
         public static final boolean INTAKE_PIVOT_MOTOR_BRAKING_MODE = true;
@@ -173,6 +192,7 @@ public class HighAltitudeConstants {
 
         public static final double INTAKE_PIVOT_BRAKING_DEGREES = 90;
 
+        public static final double INTAKE_PIVOT_BRAKING_ENC = 5;
         public static final double INTAKE_PIVOT_ARRIVE_OFFSET = 3;
 
         public static final double INTAKE_PIVOT_UPPER_LIMIT = 0.0;

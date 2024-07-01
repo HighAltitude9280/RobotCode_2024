@@ -5,11 +5,13 @@
 package frc.robot.subsystems.manipulator.pivots;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
+import frc.robot.resources.math.Math;
 
 public class IntakePivot extends SubsystemBase {
   HighAltitudeMotorGroup intakePivotMotors;
@@ -43,6 +45,20 @@ public class IntakePivot extends SubsystemBase {
       topLimitSwitch = new DigitalInput(RobotMap.INTAKE_PIVOT_BOTTOM_LIMIT_SWITCH_PORT);
     }
     Override = false;
+    resetEncoders();
+  }
+
+  public boolean intakePivotMoveTo(double maxPower, double target) {
+    double delta = target - currentIntakePivotEncoderPosition;
+    double power = delta / HighAltitudeConstants.INTAKE_PIVOT_BRAKING_ENC;
+    power = Math.clamp(power * maxPower, -maxPower, maxPower);
+    if (HighAltitudeConstants.INTAKE_PIVOT_ARRIVE_OFFSET > Math.abs(delta)) {
+      driveIntakePivot(0);
+      return true;
+    } else {
+      driveIntakePivot(-power);
+      return false;
+    }
   }
 
   public void driveIntakePivot(double speed) {
@@ -105,10 +121,9 @@ public class IntakePivot extends SubsystemBase {
     intakePivotPositionDegrees = currentIntakePivotEncoderPosition
         * HighAltitudeConstants.INTAKE_PIVOT_DEGREES_PER_REVOLUTION;
 
-    /*
-     * SmartDashboard.putNumber("Raw Intake Pivot Encoder",
-     * intakePivotMotors.getEncoderPosition());
-     * SmartDashboard.putBoolean("Intake_Override", Override);
-     */
+    SmartDashboard.putNumber("Raw Intake Pivot Encoder",
+        intakePivotMotors.getEncoderPosition());
+    SmartDashboard.putBoolean("Intake_Override", Override);
+
   }
 }

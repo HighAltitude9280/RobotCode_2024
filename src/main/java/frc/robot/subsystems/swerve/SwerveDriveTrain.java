@@ -6,10 +6,13 @@ package frc.robot.subsystems.swerve;
 
 import java.util.ArrayList;
 
+import org.photonvision.EstimatedRobotPose;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -23,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.resources.math.Math;
+import frc.robot.subsystems.vision.Vision;
 
 public class SwerveDriveTrain extends SubsystemBase {
   private HighAltitudeSwerveModule frontLeft, frontRight, backLeft, backRight;
@@ -35,6 +40,8 @@ public class SwerveDriveTrain extends SubsystemBase {
   private boolean isOnCompetitiveField = false;
 
   private Field2d field = new Field2d();
+
+  private SlewRateLimiter speedLimiter, strafeLimiter, turnLimiter;
 
   /** Creates a new SwerveDrive. */
   public SwerveDriveTrain() {
@@ -125,6 +132,11 @@ public class SwerveDriveTrain extends SubsystemBase {
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
     SmartDashboard.putData("Field", field);
+
+    speedLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
+    strafeLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
+    turnLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND);
+
   }
 
   // By default, the Navx reports its angle as increasing when turning to its
@@ -149,6 +161,80 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   public Rotation2d getRotation2dCCWPositive() {
     return Rotation2d.fromDegrees(getHeadingCCWPositive());
+  }
+
+  public void defaultDrive(double speed, double strafe, double turn) {
+
+    speed = speedLimiter.calculate(speed);
+    strafe = strafeLimiter.calculate(strafe);
+    turn = turnLimiter.calculate(turn);
+
+    // 3. Scale input to teleop max speed
+    speed *= HighAltitudeConstants.SWERVE_DRIVE_TELEOP_MAX_SPEED_METERS_PER_SECOND;
+    strafe *= HighAltitudeConstants.SWERVE_DRIVE_TELEOP_MAX_SPEED_METERS_PER_SECOND;
+    turn *= HighAltitudeConstants.SWERVE_DIRECTION_TELEOP_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
+
+    // 4. Construct the chassis speeds
+    ChassisSpeeds chassisSpeeds;
+    if (getIsFieldOriented()) {
+      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(speed, strafe, turn,
+          getPose().getRotation());
+    } else {
+      chassisSpeeds = new ChassisSpeeds(speed, strafe, turn);
+    }
+
+    // 5. Set the states to the swerve modules
+    SwerveModuleState[] moduleStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    setModuleStates(moduleStates);
+
+  }
+
+  /**
+   * Turns the robot until it's heading the given angle.
+   * 
+   * @param angle    The target angle to which the robot is going to turn.
+   * @param maxPower Maximum speed (from 0 to 1).
+   * @param gyro     True to turn using gyro, false to use odometry.
+   * 
+   * @return True if the robot has arrived to the target.
+   */
+  public boolean turnToAngle(double angle, double maxPower, boolean gyro) {
+
+    double delta;
+
+    if (gyro)
+      delta = Math.deltaAngle(getHeading(), angle);
+    else
+      delta = Math.deltaAngle(getPose().getRotation().getDegrees(), angle);
+
+    if (Math.abs(delta) < HighAltitudeConstants.SWERVE_TURN_ARRIVE_OFFSET) {
+      stopModules();
+      return true;
+    }
+
+    double power = (delta / HighAltitudeConstants.SWERVE_TURN_BRAKE_DISTANCE) * maxPower;
+
+    defaultDrive(0, 0, Math.clamp(power, -maxPower, maxPower));
+    return false;
+
+  }
+
+  public void followTarget(double yaw, double area, double area_target, double maxPower) {
+
+    Vision vision = Robot.getRobotContainer().getVision();
+
+    double xPower = (HighAltitudeConstants.YAW_OFFSET - vision.getYaw()) * HighAltitudeConstants.YAW_CORRECTION;
+    double yPower = (area_target - Robot.getRobotContainer().getVision().getArea())
+        * HighAltitudeConstants.DISTANCE_CORRECTION;
+
+    xPower = Math.clamp(xPower * maxPower, -maxPower, maxPower);
+    yPower = Math.clamp(yPower * maxPower, -maxPower, maxPower);
+
+    SmartDashboard.putNumber("deltaX", HighAltitudeConstants.YAW_OFFSET - vision.getYaw());
+    SmartDashboard.putNumber("deltaY", (area_target - Robot.getRobotContainer().getVision().getArea()));
+    SmartDashboard.putNumber("Yawwwww", vision.getYaw());
+    defaultDrive(-yPower, -xPower, 0);
+
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
@@ -199,6 +285,15 @@ public class SwerveDriveTrain extends SubsystemBase {
             frontRight.getPosition(),
             backLeft.getPosition(),
             backRight.getPosition() });
+    field.setRobotPose(getPose());
+  }
+
+  public void updateOdometryWithVision() {
+    EstimatedRobotPose pose = Robot.getRobotContainer().getVision().getEstimatedPosition();
+
+    if (pose == null)
+      return;
+    swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
   }
 
   public void addVisionMeasurement(Pose2d visionMeasurement, double timeStampSeconds) {
@@ -300,6 +395,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
+    updateOdometryWithVision();
     putAllInfoInSmartDashboard();
   }
 

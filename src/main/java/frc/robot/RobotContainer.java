@@ -17,6 +17,8 @@ import frc.robot.commands.manipulator.pivots.positions.IntakePivotMoveTo;
 import frc.robot.commands.manipulator.pivots.positions.MoveToWithGuitarAxis;
 /*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
 import frc.robot.commands.swerve.DefaultSwerveDrive;
+import frc.robot.commands.swerve.DefaultSwerveDriveNew;
+import frc.robot.commands.swerve.Primitives.Turn;
 import frc.robot.resources.components.Navx;
 import frc.robot.resources.components.PWMLEDStrip.LEDs;
 import frc.robot.resources.components.PWMLEDStrip.commands.primitives.SetRGB;
@@ -88,7 +90,7 @@ public class RobotContainer {
                 break;
         }
 
-        swerveDriveTrain.setDefaultCommand(new DefaultSwerveDrive());
+        swerveDriveTrain.setDefaultCommand(new DefaultSwerveDriveNew());
         leds.setDefaultCommand(new SetRGB(0, 255, 137));
         // climber.setDefaultCommand(new MaintainClimberPosition());
     }
@@ -189,5 +191,6 @@ public class RobotContainer {
         m_chooser.addOption("3 - 2", new PathPlannerAuto("ThreePieceSemiFluid2"));
         m_chooser.addOption("Full Mid", new PathPlannerAuto("FullMid"));
         m_chooser.addOption("Full Mid Test", new PathPlannerAuto("FullMidJustPath"));
+        m_chooser.addOption("Turn to 90", new Turn(90, 0.8, false));
     }
 }

@@ -122,24 +122,23 @@ public class HighAltitudeMotorGroup {
         encodedMotor = motorsHashMap.get(port);
     }
 
-    public void setEncoderInverted(boolean isInverted){
+    public void setEncoderInverted(boolean isInverted) {
         encoderIsInverted = isInverted;
     }
 
     public double getEncoderPosition() {
-        return (encoderIsInverted ? -1 : 1)*encodedMotor.getEncPosition();
+        return (encoderIsInverted ? -1 : 1) * encodedMotor.getEncPosition();
     }
 
-    public void setBrakeMode(boolean doBrake){
-     
+    public void setBrakeMode(boolean doBrake) {
+
         for (HighAltitudeMotorController motor : motors) {
             motor.setBrakeMode(doBrake);
         }
 
     }
 
-    public void resetEncoder()
-    {
+    public void resetEncoder() {
         encodedMotor.setEncoderPosition(0);
     }
 }
