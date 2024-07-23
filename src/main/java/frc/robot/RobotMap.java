@@ -80,7 +80,7 @@ public class RobotMap {
     public static final int[] SHOOTER_INVERTED_MOTORS_PORTS = { 30, 31 };
     public static final boolean SHOOTER_ENCODER_IS_INVERTED = false;
     public static final TypeOfMotor[] SHOOTER_MOTOR_TYPES = { TypeOfMotor.CAN_SPARK_BRUSHLESS,
-            TypeOfMotor.CAN_SPARK_BRUSHLESS, TypeOfMotor.CAN_SPARK_BRUSHLESS };
+        TypeOfMotor.CAN_SPARK_BRUSHLESS, TypeOfMotor.CAN_SPARK_BRUSHLESS };
 
     public static final double SHOOTER_HEIGHT = 0.63;
 

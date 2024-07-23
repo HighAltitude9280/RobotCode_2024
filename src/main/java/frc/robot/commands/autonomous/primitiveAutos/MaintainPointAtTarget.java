@@ -15,14 +15,15 @@ import frc.robot.resources.math.Math;
 public class MaintainPointAtTarget extends Command {
   /** Creates a new MaintainPointAtTarget. */
   Translation3d target;
-  double maxPower;
+  double shooterMaxPower, turnMaxPower;
 
-  public MaintainPointAtTarget(Translation3d target, double maxPower) {
+  public MaintainPointAtTarget(Translation3d target, double shooterMaxPower, double turnMaxPower) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
     addRequirements(Robot.getRobotContainer().getShooterPivot());
 
-    this.maxPower = maxPower;
+    this.shooterMaxPower = shooterMaxPower;
+    this.turnMaxPower = turnMaxPower;
     this.target = target;
   }
 
@@ -61,8 +62,8 @@ public class MaintainPointAtTarget extends Command {
     double pitch = Math.toDegrees(Math.atan(deltaZ / distanceToTarget));
 
     Robot.getRobotContainer().getShooterPivot().setAngleTarget(pitch);
-    Robot.getRobotContainer().getShooterPivot().maintainTarget(maxPower);
-    Robot.getRobotContainer().getSwerveDriveTrain().turnToAngle(yaw, maxPower, false);
+    Robot.getRobotContainer().getShooterPivot().maintainTarget(shooterMaxPower);
+    Robot.getRobotContainer().getSwerveDriveTrain().turnToAngle(yaw, turnMaxPower, false);
 
     SmartDashboard.putNumber("TargetPitch", pitch);
 

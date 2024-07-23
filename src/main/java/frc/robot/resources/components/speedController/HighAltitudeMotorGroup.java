@@ -130,6 +130,10 @@ public class HighAltitudeMotorGroup {
         return (encoderIsInverted ? -1 : 1) * encodedMotor.getEncPosition();
     }
 
+    public double getEncoderVelocity() {
+        return (encoderIsInverted ? -1 : 1) * encodedMotor.getEncVelocity();
+    }
+
     public void setBrakeMode(boolean doBrake) {
 
         for (HighAltitudeMotorController motor : motors) {

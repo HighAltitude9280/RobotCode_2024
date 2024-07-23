@@ -126,7 +126,7 @@ public class HighAltitudeConstants {
 
         //// SpeedReduction constants
 
-        public static final double SWERVE_TURN_BRAKE_DISTANCE = 40.0;
+        public static final double SWERVE_TURN_BRAKE_DISTANCE = 32.0;
         public static final double SWERVE_TURN_ARRIVE_OFFSET = 3.0;
 
         //// VISION
@@ -139,6 +139,9 @@ public class HighAltitudeConstants {
         ////////////////////////// SHOOTER //////////////////////////
 
         public static final boolean SHOOTER_MOTORS_BRAKING_MODE = false;
+        public static final double SHOOTER_RPM_TO_POWER = 1 / 5;
+        public static final double SHOOTER_RPM_STEP = 0.000004;
+        public static final double SHOOTER_ON_TARGET = 50;
 
         ////////////////////////// INTAKE //////////////////////////
 

@@ -4,13 +4,17 @@
 
 package frc.robot.subsystems.manipulator.shooter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
+import frc.robot.resources.math.Math;
 
 public class Shooter extends SubsystemBase {
   HighAltitudeMotorGroup shooterMotors;
+  private double currentRPMPowerTop;
+  private double currentRPMPowerBottom;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -53,8 +57,41 @@ public class Shooter extends SubsystemBase {
     shooterMotors.setSpecificMotorSpeed(31, 0);
   }
 
+  public double getShooterTopVel() {
+    return shooterMotors.getSpecificMotor(30).getEncVelocity();
+  }
+
+  public double getShooterBottomVel() {
+    return shooterMotors.getSpecificMotor(31).getEncVelocity();
+  }
+
+  public boolean shooterDriveRPM(int rpm) {
+    double deltaTop = rpm - getShooterTopVel();
+    double deltaBottom = rpm - getShooterBottomVel();
+    this.currentRPMPowerTop += deltaTop * HighAltitudeConstants.SHOOTER_RPM_STEP;
+    this.currentRPMPowerBottom += deltaBottom * HighAltitudeConstants.SHOOTER_RPM_STEP;
+
+    driveTop(currentRPMPowerTop);
+    driveBottom(currentRPMPowerBottom);
+    SmartDashboard.putNumber(" Shooter Drive RPM Top Power", currentRPMPowerTop);
+    SmartDashboard.putNumber(" Shooter Drive RPM Bottom Power", currentRPMPowerBottom);
+    if (Math.abs(deltaBottom) <= HighAltitudeConstants.SHOOTER_ON_TARGET
+        && Math.abs(deltaTop) <= HighAltitudeConstants.SHOOTER_ON_TARGET) {
+      return true;
+    }
+    return false;
+  }
+
+  public void setRPMPower(double power) {
+    currentRPMPowerTop = power;
+    currentRPMPowerBottom = power;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Shooter Top Velocity", getShooterTopVel());
+    SmartDashboard.putNumber("Shooter Bottom Velocity", getShooterBottomVel());
+
   }
 }

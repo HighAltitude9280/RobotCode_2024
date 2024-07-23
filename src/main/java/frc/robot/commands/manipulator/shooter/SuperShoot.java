@@ -25,8 +25,8 @@ public class SuperShoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.driveTop(0.8);
-    shooter.driveBottom(0.8);
+    shooter.driveTop(0.95);
+    shooter.driveBottom(0.95);
   }
 
   // Called once the command ends or is interrupted.

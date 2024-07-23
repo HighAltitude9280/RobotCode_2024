@@ -5,23 +5,31 @@
 package frc.robot.subsystems.swerve;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathfindHolonomic;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
@@ -366,6 +374,18 @@ public class SwerveDriveTrain extends SubsystemBase {
       module.getDirectionMotor().setBrakeMode(doBrake);
       System.out.println("BrakeMode: " + doBrake);
     }
+  }
+
+  public Command onTheFlyTrajectory(Pose2d targetPose) {
+    PathConstraints constraints = new PathConstraints(
+        1.0, 2.0,
+        Units.degreesToRadians(360), Units.degreesToRadians(540));
+
+    Subsystem swerve = this;
+    Command pathCommand = new PathfindHolonomic(targetPose, constraints, this::getPose, this::getChassisSpeeds,
+        this::driveRobotRelative, HighAltitudeConstants.pathFollowerConfig, swerve);
+
+    return pathCommand;
   }
 
   public ChassisSpeeds getChassisSpeeds() {

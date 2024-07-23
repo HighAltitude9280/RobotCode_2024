@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import frc.robot.commands.manipulator.shooter.RollersOut;
+import frc.robot.commands.manipulator.shooter.ShooterDriveRPM;
 import frc.robot.commands.manipulator.shooter.ShooterIntake;
 import frc.robot.commands.manipulator.shooter.SuperShoot;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autonomous.primitiveAutos.MaintainPointAtTarget;
+import frc.robot.commands.autonomous.teleop.AutoAmp;
 import frc.robot.commands.manipulator.compound.IntakeAndRollersOut;
 import frc.robot.commands.manipulator.intake.DriveIntake;
 import frc.robot.commands.manipulator.intake.IntakeIn;
@@ -89,7 +93,8 @@ public class OI {
                 pilot.whileTrue(ButtonType.RB, new IntakeAndRollersOut());
                 pilot.whileTrue(ButtonType.LB, new ShooterIntake());
 
-                pilot.whileTrue(ButtonType.RT, new SuperShoot());
+                // pilot.whileTrue(ButtonType.RT, new SuperShoot());
+                pilot.whileTrue(ButtonType.RT, new ShooterDriveRPM(4000));
                 pilot.whileTrue(ButtonType.LT, new IntakeIn());
 
                 // pilot.whileTrue(ButtonType.A, new followTarget());
@@ -99,14 +104,20 @@ public class OI {
                 // pilot.toggleOnTrue(ButtonType.A, new SwerveDriveAndCenter());
                 // pilot.onTrue(ButtonType.A, new ShooterPivotSetAngleTarget(22));
                 // pilot.whileTrue(ButtonType.A, new ShooterPivotMaintainTarget(0.5));
-                pilot.onTrue(ButtonType.POV_N, new ShooterPivotSetAngleTarget(45));
+                pilot.onTrue(ButtonType.POV_N, new ShooterPivotSetAngleTarget(35));
                 pilot.whileTrue(ButtonType.POV_N, new ShooterPivotMaintainTarget(0.5));
 
-                pilot.onTrue(ButtonType.POV_S, new ShooterPivotSetAngleTarget(45));
+                pilot.onTrue(ButtonType.POV_S, new ShooterPivotSetAngleTarget(35));
                 pilot.whileTrue(ButtonType.POV_S, new ShooterPivotMaintainTarget(0.5));
 
                 pilot.whileTrue(ButtonType.A,
-                        new MaintainPointAtTarget(new Translation3d(0, 1.6, 1.64), 0.8));
+                        new MaintainPointAtTarget(new Translation3d(0, 1.6, 1.64), 0.5, 0.8));
+
+                pilot.onTrue(ButtonType.B, new AutoAmp());
+                pilot.whileTrue(ButtonType.B, new ShooterPivotSetAngleTarget(-30));
+                pilot.whileTrue(ButtonType.B, new ShooterPivotMaintainTarget(0.5));
+                pilot.whileTrue(ButtonType.B, new IntakeOut());
+
                 break;
 
             case MACG:
