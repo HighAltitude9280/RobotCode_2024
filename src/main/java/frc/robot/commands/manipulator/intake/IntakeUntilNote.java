@@ -2,26 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.manipulator.shooter;
+package frc.robot.commands.manipulator.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.manipulator.shooter.Shooter;
 
-public class RollersOut extends Command {
-  Shooter shooter;
-
-  /** Creates a new RollersOut. */
-  public RollersOut() {
-    shooter = Robot.getRobotContainer().getShooter();
-
-    // Use addRequirements() here to declare subsystem dependencies.
+public class IntakeUntilNote extends Command {
+  /** Creates a new IntakeUntilNote. */
+  public IntakeUntilNote() {
+    // Use addRequirements() here to declare subsystem dependencies.}
+    addRequirements(Robot.getRobotContainer().getIntake());
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.rollersOut();
+    Robot.getRobotContainer().getIntake().intakeIn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,12 +28,12 @@ public class RollersOut extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.driveRollers(0);
+    Robot.getRobotContainer().getIntake().stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Robot.getRobotContainer().getIntake().hasNote();
   }
 }

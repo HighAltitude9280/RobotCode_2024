@@ -6,33 +6,28 @@ package frc.robot.commands.manipulator.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.manipulator.shooter.Shooter;
 
-public class RollersOut extends Command {
-  Shooter shooter;
-
-  /** Creates a new RollersOut. */
-  public RollersOut() {
-    shooter = Robot.getRobotContainer().getShooter();
-
+public class ShooterDriveIdealRPM extends Command {
+  /** Creates a new ShooterDriveToIdealRPM. */
+  public ShooterDriveIdealRPM() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Robot.getRobotContainer().getShooter());
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.rollersOut();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Robot.getRobotContainer().getShooter().driveRPMToSpeaker();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.driveRollers(0);
   }
 
   // Returns true when the command should end.

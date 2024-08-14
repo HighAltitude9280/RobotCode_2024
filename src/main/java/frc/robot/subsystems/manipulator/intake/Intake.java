@@ -34,6 +34,14 @@ public class Intake extends SubsystemBase {
     intakeMotors.setAll(speed);
   }
 
+  public void intakeIn() {
+    intakeMotors.setAll(0.5);
+  }
+
+  public void intakeOut() {
+    intakeMotors.setAll(-0.5);
+  }
+
   public void Hold() {
     intakeMotors.setAll(0.25);
   }
@@ -54,10 +62,15 @@ public class Intake extends SubsystemBase {
     return proximitySensor.getAverageValue();
   }
 
+  public boolean hasNote() {
+    return intakeColorSensor.getRawColor().red >= 500;
+  }
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Detected Color", detectedColor().red);
-    SmartDashboard.putNumber("Proximity", getProximity());
+
+    SmartDashboard.putBoolean("IntakeHasNote", hasNote());
+    SmartDashboard.putNumber("Detected red", intakeColorSensor.getRawColor().red);
     // This method will be called once per scheduler run
   }
 }

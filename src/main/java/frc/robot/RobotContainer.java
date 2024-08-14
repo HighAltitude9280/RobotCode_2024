@@ -15,6 +15,7 @@ import frc.robot.commands.autonomous.primitiveAutos.ShootPreloaded;
 import frc.robot.commands.manipulator.intake.IntakeIn;
 import frc.robot.commands.manipulator.pivots.positions.IntakePivotMoveTo;
 import frc.robot.commands.manipulator.pivots.positions.MoveToWithGuitarAxis;
+import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotMaintainTarget;
 /*import frc.robot.commands.manipulator.pivots.positions.ShooterPivotKeepCurrentPosition;*/
 import frc.robot.commands.swerve.DefaultSwerveDrive;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
@@ -91,6 +92,7 @@ public class RobotContainer {
         }
 
         swerveDriveTrain.setDefaultCommand(new DefaultSwerveDriveNew());
+        shooterPivot.setDefaultCommand(new ShooterPivotMaintainTarget(45, 0.3));
         leds.setDefaultCommand(new SetRGB(0, 255, 137));
         // climber.setDefaultCommand(new MaintainClimberPosition());
     }

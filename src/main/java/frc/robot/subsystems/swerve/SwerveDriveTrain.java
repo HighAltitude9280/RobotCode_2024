@@ -20,6 +20,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -160,7 +161,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public double getHeadingCCWPositive() {
-    return -Robot.getRobotContainer().getNavx().getYaw();
+    return Robot.getRobotContainer().getNavx().getYaw();
   }
 
   public Rotation2d getRotation2d() {
@@ -195,6 +196,19 @@ public class SwerveDriveTrain extends SubsystemBase {
     SwerveModuleState[] moduleStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
     setModuleStates(moduleStates);
 
+  }
+
+  /**
+   * Turns the robot until it's heading the given angle using the angle reported
+   * by the odometry.
+   * 
+   * @param angle    The target angle to which the robot is going to turn.
+   * @param maxPower Maximum speed (from 0 to 1).
+   * 
+   * @return True if the robot has arrived to the target.
+   */
+  public boolean turnToAngle(double angle, double maxPower) {
+    return turnToAngle(angle, maxPower, false);
   }
 
   /**
@@ -297,10 +311,16 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public void updateOdometryWithVision() {
-    EstimatedRobotPose pose = Robot.getRobotContainer().getVision().getEstimatedPosition();
-
-    if (pose == null)
+    // EstimatedRobotPose pose =
+    // Robot.getRobotContainer().getVision().getEstimatedPosition();
+    if (!Robot.getRobotContainer().getVision().hasTargets())
       return;
+
+    var pos = Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose());
+
+    if (pos.isEmpty())
+      return;
+    var pose = pos.get();
     swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
   }
 
@@ -402,6 +422,47 @@ public class SwerveDriveTrain extends SubsystemBase {
   public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
     setModuleStates(
         HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
+  }
+
+  public boolean pointToSpeaker(double maxPower) {
+    return pointToTarget(HighAltitudeConstants.SPEAKER.toPose2d(), maxPower);
+  }
+
+  public boolean pointToTarget(Pose2d target, double maxPower) {
+    var pose = getPose();
+
+    double deltaX = target.getX() - pose.getX();
+    double deltaY = target.getY() - pose.getY();
+    double angle = java.lang.Math.signum(deltaY) * 90;
+
+    if (deltaX != 0) {
+      angle = Math.toDegrees(Math.atan(Math.abs(deltaY / deltaX)));
+
+      if (deltaY < 0 && deltaX > 0)
+        angle *= -1;
+      else if (deltaY > 0 && deltaX < 0)
+        angle = 180 - angle;
+      else if (deltaY < 0 && deltaX < 0)
+        angle = angle - 180;
+
+    }
+
+    angle = Math.getOppositeAngle(angle);
+
+    return turnToAngle(angle, maxPower);
+  }
+
+  public void driveToTarget(double yaw, double maxPower) {
+    setIsFieldOriented(false);
+    double turnPower = (yaw / HighAltitudeConstants.SWERVE_TURN_BRAKE_DISTANCE) * maxPower;
+    double speed = Math.cos(Math.toRadians(yaw)) * maxPower;
+    double strafe = Math.sin(Math.toRadians(yaw)) * maxPower;
+
+    defaultDrive(speed, strafe, turnPower);
+  }
+
+  public double distanceToSpeaker() {
+    return getPose().getTranslation().getDistance(HighAltitudeConstants.SPEAKER.toPose2d().getTranslation());
   }
 
   public boolean getIsOnCompetitiveField() {

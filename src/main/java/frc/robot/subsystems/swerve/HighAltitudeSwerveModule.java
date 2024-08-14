@@ -53,6 +53,7 @@ public class HighAltitudeSwerveModule {
         this.isTalonEncoderReversed = isTalonEncoderReversed;
         this.encoderOffsetPulses = encoderOffsetPulses;
         // resetEncoders();
+        // absoluteEncoderController.setPosition(0);
     }
 
     // este es el bueno
@@ -181,6 +182,7 @@ public class HighAltitudeSwerveModule {
         SmartDashboard.putNumber(identifier + "DrivePos", getDriveDistance());
         SmartDashboard.putNumber(identifier + "DirPos", getDirection());
         SmartDashboard.putNumber(identifier + "AbsPos", getAbsoluteEncoderRad());
+        SmartDashboard.putNumber(identifier + "AbsRawPos", absoluteEncoderController.getPosition().getValueAsDouble());
     }
 
     public void putMotorOutputs(String identifier) {

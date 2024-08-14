@@ -5,6 +5,7 @@
 package frc.robot.subsystems.vision;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -12,8 +13,10 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -21,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
-  PhotonCamera photonCamera;
+  PhotonCamera tagsCamera, noteCamera;
   PhotonPipelineResult result;
 
   PhotonPoseEstimator poseEstimator;
@@ -29,20 +32,21 @@ public class Vision extends SubsystemBase {
 
   /** Creates a new vision. */
   public Vision() {
-    photonCamera = new PhotonCamera("TengoHambre");
+    tagsCamera = new PhotonCamera("TengoHambre");
+    noteCamera = new PhotonCamera("NoteCam");
     AprilTagFieldLayout fieldLayout;
 
     try {
       Transform3d cam = new Transform3d(new Translation3d(-0.33, 0, 0.47), new Rotation3d(0f, 0f, Math.PI));
       fieldLayout = new AprilTagFieldLayout(
           "/home/lvuser/deploy/vision/CustomAprilTagFieldLayout.json");
-      poseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCamera,
+      poseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, tagsCamera,
           cam);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    result = photonCamera.getLatestResult();
+    result = tagsCamera.getLatestResult();
   }
 
   public boolean hasTargets() {
@@ -61,22 +65,45 @@ public class Vision extends SubsystemBase {
     return hasTargets() ? result.getBestTarget().getArea() : 0;
   }
 
+  public List<PhotonTrackedTarget> getNoteTargets() {
+    return result.getTargets();
+  }
+
+  public PhotonTrackedTarget getBiggestNoteTarget() {
+
+    if (!hasTargets())
+      return null;
+
+    PhotonTrackedTarget biggest = getNoteTargets().get(0);
+
+    for (PhotonTrackedTarget target : getNoteTargets()) {
+
+      if (target.getArea() > biggest.getArea())
+        biggest = target;
+
+    }
+    return biggest;
+
+  }
+
   public EstimatedRobotPose getEstimatedPosition() {
 
     return estimatedPose;
 
   }
 
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    poseEstimator.setReferencePose(prevEstimatedRobotPose);
+    var pose = poseEstimator.update();
+    if (pose.isPresent())
+      estimatedPose = pose.get();
+    return pose;
+  }
+
   @Override
   public void periodic() {
-    result = photonCamera.getLatestResult();
+    result = noteCamera.getLatestResult();
 
-    Optional<EstimatedRobotPose> pose = poseEstimator.update();
-    if (pose.isPresent()) {
-      estimatedPose = pose.get();
-      SmartDashboard.putNumber("Vision Pose X", estimatedPose.estimatedPose.getX());
-      SmartDashboard.putNumber("Vision Pose Y", estimatedPose.estimatedPose.getY());
-    }
     // System.out.println("getYaw: " + getYaw());
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Pitch", getPitch());

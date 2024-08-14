@@ -132,6 +132,15 @@ public class ShooterPivot extends SubsystemBase {
     driveShooterPivot(power);
   }
 
+  public void pointToSpeaker(double maxPower) {
+    pointToSpeaker(Robot.getRobotContainer().getSwerveDriveTrain().distanceToSpeaker(), maxPower);
+  }
+
+  public void pointToSpeaker(double distance, double maxPower) {
+    setAngleTarget(distanceToAngle(distance));
+    maintainTarget(maxPower);
+  }
+
   public boolean getShooterPivotTopLimitSwitch() {
     if (RobotMap.SHOOTER_PIVOT_TOP_LIMIT_SWITCH_IS_AVAILABLE) {
       return topLimitSwitch.get();
@@ -187,6 +196,20 @@ public class ShooterPivot extends SubsystemBase {
 
   public double getShooterPivotEncoderPosition() {
     return ShooterPivotEncoderPosition;
+  }
+
+  /**
+   * Converts the distance (in meters) from the center of the robot to the speaker
+   * to an ideal shooter pivot position. This should be mapped at each event with
+   * the actual field.
+   * 
+   * @param distance
+   * @return
+   */
+  public static double distanceToAngle(double distance) {
+    if (distance == 0)
+      return 0;
+    return Math.toDegrees(Math.atan(116 / distance));
   }
 
   @Override

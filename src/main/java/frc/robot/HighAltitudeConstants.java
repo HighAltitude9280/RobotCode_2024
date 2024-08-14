@@ -8,6 +8,8 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.Human_Drivers.HumanDrivers;
@@ -49,7 +51,9 @@ public class HighAltitudeConstants {
 
         // Other
 
-        public static final double SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION = 1.0; // antes 4096
+        // public static final double SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION =
+        // 1.0; // antes 4096
+        public static final double SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION = 1f;
         // encoder * this value = radians
         public static final double SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE = (2.0 * Math.PI)
                         / SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION;
@@ -139,7 +143,7 @@ public class HighAltitudeConstants {
         ////////////////////////// SHOOTER //////////////////////////
 
         public static final boolean SHOOTER_MOTORS_BRAKING_MODE = false;
-        public static final double SHOOTER_RPM_TO_POWER = 1 / 5;
+        public static final double SHOOTER_RPM_TO_POWER = 1f / 5000f;
         public static final double SHOOTER_RPM_STEP = 0.000004;
         public static final double SHOOTER_ON_TARGET = 50;
 
@@ -195,8 +199,8 @@ public class HighAltitudeConstants {
 
         public static final double INTAKE_PIVOT_BRAKING_DEGREES = 90;
 
-        public static final double INTAKE_PIVOT_BRAKING_ENC = 5;
-        public static final double INTAKE_PIVOT_ARRIVE_OFFSET = 3;
+        public static final double INTAKE_PIVOT_BRAKING_ENC = 10;
+        public static final double INTAKE_PIVOT_ARRIVE_OFFSET = 1;
 
         public static final double INTAKE_PIVOT_UPPER_LIMIT = 0.0;
         // 168.051662503756 Shuffle Report
@@ -208,4 +212,8 @@ public class HighAltitudeConstants {
 
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.LuisNN;
+
+        ////////////////////////////// TARGETS ////////////////////////
+        public static final Pose3d SPEAKER = new Pose3d(0f, 1.6, 1.64, new Rotation3d());
+
 }

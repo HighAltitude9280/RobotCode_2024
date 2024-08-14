@@ -38,7 +38,6 @@ public class IntakePivotRetractar extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println("23223243");
     return Robot.getRobotContainer().getIntakePivot().intakePivotMoveTo(maxPower, RobotMap.INTAKE_PIVOT_UP_POSITION);
   }
 }

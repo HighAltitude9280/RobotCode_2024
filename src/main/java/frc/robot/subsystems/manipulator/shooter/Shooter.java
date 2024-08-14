@@ -4,65 +4,100 @@
 
 package frc.robot.subsystems.manipulator.shooter;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 import frc.robot.resources.math.Math;
 
 public class Shooter extends SubsystemBase {
-  HighAltitudeMotorGroup shooterMotors;
+  HighAltitudeMotorGroup shooterUpMotors;
+  HighAltitudeMotorGroup shooterDownMotors;
+  HighAltitudeMotorGroup indexerMotors;
   private double currentRPMPowerTop;
   private double currentRPMPowerBottom;
 
+  private boolean rpmOnTarget = false;
+
+  private AnalogInput proximitySensor;
+
   /** Creates a new Shooter. */
   public Shooter() {
-    shooterMotors = new HighAltitudeMotorGroup(RobotMap.SHOOTER_MOTOR_PORTS, RobotMap.SHOOTER_INVERTED_MOTORS_PORTS,
-        RobotMap.SHOOTER_MOTOR_TYPES);
+    shooterUpMotors = new HighAltitudeMotorGroup(RobotMap.SHOOTER_UP_MOTOR_PORTS,
+        RobotMap.SHOOTER_UP__INVERTED_MOTORS_PORTS,
+        RobotMap.SHOOTER_UP_MOTOR_TYPES);
 
-    shooterMotors.setEncoderInverted(RobotMap.SHOOTER_ENCODER_IS_INVERTED);
-    shooterMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_MOTORS_BRAKING_MODE);
+    shooterDownMotors = new HighAltitudeMotorGroup(RobotMap.SHOOTER_DOWN_MOTOR_PORTS,
+        RobotMap.SHOOTER_DOWN__INVERTED_MOTORS_PORTS,
+        RobotMap.SHOOTER_DOWN_MOTOR_TYPES);
+
+    indexerMotors = new HighAltitudeMotorGroup(RobotMap.SHOOTER_INDEXER_MOTOR_PORTS,
+        RobotMap.SHOOTER_INDEXER__INVERTED_MOTORS_PORTS,
+        RobotMap.SHOOTER_INDEXER_MOTOR_TYPES);
+
+    shooterUpMotors.setEncoderInverted(RobotMap.SHOOTER_UP__ENCODER_IS_INVERTED);
+    shooterDownMotors.setEncoderInverted(RobotMap.SHOOTER_DOWN__ENCODER_IS_INVERTED);
+
+    shooterUpMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_MOTORS_BRAKING_MODE);
+    shooterDownMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_MOTORS_BRAKING_MODE);
+    proximitySensor = new AnalogInput(RobotMap.SHOOTER_PROXIMITY_SENSOR_PORT);
   }
 
   public void driveShooter(double speed) {
-    shooterMotors.setAll(speed);
+    shooterUpMotors.setAll(speed);
+    shooterDownMotors.setAll(speed);
   }
 
   public void stopShooter() {
-    shooterMotors.setAll(0);
+    shooterUpMotors.setAll(0);
+    shooterDownMotors.setAll(0);
   }
 
   public void driveRollers(double speed) {
-    shooterMotors.setSpecificMotorSpeed(32, speed);
+    indexerMotors.setAll(speed);
+  }
+
+  public void rollersOut() {
+    indexerMotors.setAll(0.5);
+  }
+
+  /**
+   * Drives the rollers out if the shooter is on its RPM target.
+   */
+  public void autoRollersOutRPMTarget() {
+    if (onRPMTarget())
+      rollersOut();
   }
 
   public void stopRollers() {
-    shooterMotors.setSpecificMotorSpeed(32, 0);
+    indexerMotors.setAll(0);
   }
 
   public void driveTop(double speed) {
-    shooterMotors.setSpecificMotorSpeed(30, speed);
+    shooterUpMotors.setAll(speed);
   }
 
   public void stopTop() {
-    shooterMotors.setSpecificMotorSpeed(30, 0);
+    shooterUpMotors.setAll(0);
   }
 
   public void driveBottom(double speed) {
-    shooterMotors.setSpecificMotorSpeed(31, speed);
+    shooterDownMotors.setAll(speed);
   }
 
   public void stopBottom() {
-    shooterMotors.setSpecificMotorSpeed(31, 0);
+    shooterDownMotors.setAll(0);
   }
 
   public double getShooterTopVel() {
-    return shooterMotors.getSpecificMotor(30).getEncVelocity();
+    return shooterUpMotors.getEncoderVelocity();
   }
 
   public double getShooterBottomVel() {
-    return shooterMotors.getSpecificMotor(31).getEncVelocity();
+    return shooterDownMotors.getEncoderVelocity();
   }
 
   public boolean shooterDriveRPM(int rpm) {
@@ -73,13 +108,23 @@ public class Shooter extends SubsystemBase {
 
     driveTop(currentRPMPowerTop);
     driveBottom(currentRPMPowerBottom);
+
     SmartDashboard.putNumber(" Shooter Drive RPM Top Power", currentRPMPowerTop);
     SmartDashboard.putNumber(" Shooter Drive RPM Bottom Power", currentRPMPowerBottom);
-    if (Math.abs(deltaBottom) <= HighAltitudeConstants.SHOOTER_ON_TARGET
-        && Math.abs(deltaTop) <= HighAltitudeConstants.SHOOTER_ON_TARGET) {
-      return true;
-    }
-    return false;
+
+    rpmOnTarget = (Math.abs(deltaBottom) <= HighAltitudeConstants.SHOOTER_ON_TARGET
+        && Math.abs(deltaTop) <= HighAltitudeConstants.SHOOTER_ON_TARGET);
+
+    return rpmOnTarget;
+  }
+
+  public boolean driveRPMToSpeaker() {
+    return shooterDriveRPM(distanceToRPM(Robot.getRobotContainer().getSwerveDriveTrain().distanceToSpeaker()));
+  }
+
+  public void shootToSpeakerAutoRollers() {
+    if (driveRPMToSpeaker())
+      rollersOut();
   }
 
   public void setRPMPower(double power) {
@@ -87,11 +132,33 @@ public class Shooter extends SubsystemBase {
     currentRPMPowerBottom = power;
   }
 
+  public boolean hasNote() {
+    return proximitySensor.getAverageValue() > 1500;
+  }
+
+  public boolean onRPMTarget() {
+    return rpmOnTarget;
+  }
+
+  /**
+   * Converts distance (in meters) to ideal RPM shooting power. This should be
+   * mapped at each event with the actual field.
+   * 
+   * @param distance
+   * @return
+   */
+  public static int distanceToRPM(double distance) {
+    return 3000;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter Top Velocity", getShooterTopVel());
     SmartDashboard.putNumber("Shooter Bottom Velocity", getShooterBottomVel());
+    SmartDashboard.putNumber("Proximity", proximitySensor.getAverageValue());
+
+    SmartDashboard.putBoolean("ShooterHasNote", hasNote());
 
   }
 }
