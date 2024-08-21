@@ -5,7 +5,10 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -194,5 +197,6 @@ public class RobotContainer {
         m_chooser.addOption("Full Mid", new PathPlannerAuto("FullMid"));
         m_chooser.addOption("Full Mid Test", new PathPlannerAuto("FullMidJustPath"));
         m_chooser.addOption("Turn to 90", new Turn(90, 0.8, false));
+        m_chooser.addOption("PID Test path", new PathPlannerAuto("TestPath"));
     }
 }

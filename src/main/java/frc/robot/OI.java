@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import frc.robot.commands.manipulator.shooter.ControlShooter;
+import frc.robot.commands.manipulator.shooter.RollersIfNotNoteOnShooter;
+import frc.robot.commands.manipulator.shooter.RollersInUntilNoNote;
 import frc.robot.commands.manipulator.shooter.RollersOut;
 import frc.robot.commands.manipulator.shooter.ShooterDriveRPM;
 import frc.robot.commands.manipulator.shooter.ShooterIntake;
@@ -26,6 +29,7 @@ import frc.robot.commands.manipulator.pivots.primitives.IntakePivotDown;
 import frc.robot.commands.manipulator.pivots.primitives.IntakePivotUp;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotDown;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotMaintainTarget;
+import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotMaintainTargetAndRollers;
 import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotUp;
 import frc.robot.commands.manipulator.pivots.primitives.ToggleIntakePivot;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.IntakePivotResetEncoder;
@@ -92,15 +96,19 @@ public class OI {
                 pilot.onTrue(ButtonType.POV_S, new ShooterPivotSetAngleTarget(40));
                 pilot.whileTrue(ButtonType.POV_S, new ShooterPivotMaintainTarget(0.5));
                 pilot.onTrue(ButtonType.POV_S, new IntakePivotExtruir(0.5));
+                // ARREGLAR ESTO
 
                 // pilot.whileTrue(ButtonType.POV_E, new ShooterPivotUp());
                 // pilot.whileTrue(ButtonType.POV_W, new ShooterPivotDown());
 
                 pilot.whileTrue(ButtonType.RB, new IntakeAndRollersOut());
-                pilot.whileTrue(ButtonType.LB, new ShooterIntake());
+                // pilot.whileTrue(ButtonType.LB, new ShooterIntake());
+                pilot.whileTrue(ButtonType.LB, new IntakeOut());
+                pilot.whileTrue(ButtonType.LB, new RollersInUntilNoNote());
 
                 // pilot.whileTrue(ButtonType.RT, new SuperShoot());
-                pilot.whileTrue(ButtonType.RT, new ShooterDriveRPM(5000));
+                // pilot.whileTrue(ButtonType.RT, new ShooterDriveRPM(5000));
+                pilot.whileTrue(ButtonType.RT, new ControlShooter(4000));
                 pilot.whileTrue(ButtonType.LT, new IntakeIn());
 
                 // pilot.whileTrue(ButtonType.A, new followTarget());
@@ -110,11 +118,9 @@ public class OI {
                 // pilot.toggleOnTrue(ButtonType.A, new SwerveDriveAndCenter());
                 // pilot.onTrue(ButtonType.A, new ShooterPivotSetAngleTarget(22));
                 // pilot.whileTrue(ButtonType.A, new ShooterPivotMaintainTarget(0.5));
-                pilot.onTrue(ButtonType.POV_E, new ShooterPivotSetAngleTarget(12));
-                pilot.whileTrue(ButtonType.POV_E, new ShooterPivotMaintainTarget(0.5));
+                pilot.whileTrue(ButtonType.POV_E, new ShooterPivotMaintainTargetAndRollers(0.5, 12));
 
-                pilot.onTrue(ButtonType.POV_W, new ShooterPivotSetAngleTarget(35));
-                pilot.whileTrue(ButtonType.POV_W, new ShooterPivotMaintainTarget(0.5));
+                pilot.whileTrue(ButtonType.POV_W, new ShooterPivotMaintainTargetAndRollers(0.5, 35));
 
                 // pilot.whileTrue(ButtonType.A,new MaintainPointToTarget(0.5, 0.8));
                 pilot.onTrue(ButtonType.A, new IntakeAutoTransition());

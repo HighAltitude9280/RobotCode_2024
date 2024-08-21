@@ -518,5 +518,8 @@ public class SwerveDriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Odometry Degree",
         swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
+    SmartDashboard.putNumber("XSpeed", getChassisSpeeds().vxMetersPerSecond);
+    SmartDashboard.putNumber("YSpeed", getChassisSpeeds().vyMetersPerSecond);
+
   }
 }

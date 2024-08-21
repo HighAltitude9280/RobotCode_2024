@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.manipulator.shooter;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,6 +25,11 @@ public class Shooter extends SubsystemBase {
   private boolean rpmOnTarget = false;
 
   private AnalogInput proximitySensor;
+
+  private PIDController topPidController;
+  private PIDController bottomPidController;
+  private SimpleMotorFeedforward topFeedforward;
+  private SimpleMotorFeedforward bottomFeedforward;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -44,6 +51,18 @@ public class Shooter extends SubsystemBase {
     shooterUpMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_MOTORS_BRAKING_MODE);
     shooterDownMotors.setBrakeMode(HighAltitudeConstants.SHOOTER_MOTORS_BRAKING_MODE);
     proximitySensor = new AnalogInput(RobotMap.SHOOTER_PROXIMITY_SENSOR_PORT);
+
+    topFeedforward = new SimpleMotorFeedforward(HighAltitudeConstants.SHOOTER__TOP_kS,
+        HighAltitudeConstants.SHOOTER__TOP_kV);
+
+    topPidController = new PIDController(HighAltitudeConstants.SHOOTER_TOP_kP,
+        0, HighAltitudeConstants.SHOOTER_TOP_kD);
+
+    bottomFeedforward = new SimpleMotorFeedforward(HighAltitudeConstants.SHOOTER_BOTTOM_kS,
+        HighAltitudeConstants.SHOOTER_BOTTOM_kV);
+
+    bottomPidController = new PIDController(HighAltitudeConstants.SHOOTER_BOTTOM_kP,
+        0, HighAltitudeConstants.SHOOTER_BOTTOM_kD);
   }
 
   public void driveShooter(double speed) {
@@ -61,7 +80,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void rollersOut() {
-    indexerMotors.setAll(0.5);
+    indexerMotors.setAll(0.7);
   }
 
   /**
@@ -118,6 +137,25 @@ public class Shooter extends SubsystemBase {
     return rpmOnTarget;
   }
 
+  public boolean controlShooter(int rpm) {
+    double topOutput = topFeedforward.calculate(rpm);
+    topOutput += topPidController.calculate(getShooterTopVel(), rpm);
+    driveTop(topOutput);
+
+    double bottomOutput = bottomFeedforward.calculate(rpm);
+    bottomOutput += bottomPidController.calculate(getShooterBottomVel(), rpm);
+    driveBottom(bottomOutput);
+
+    double deltaTop = rpm - getShooterTopVel();
+    double deltaBottom = rpm - getShooterBottomVel();
+
+    rpmOnTarget = (Math.abs(deltaBottom) <= HighAltitudeConstants.SHOOTER_ON_TARGET
+        && Math.abs(deltaTop) <= HighAltitudeConstants.SHOOTER_ON_TARGET);
+
+    SmartDashboard.putBoolean("Shooter onTarget", Math.abs(deltaTop) <= HighAltitudeConstants.SHOOTER_ON_TARGET);
+    return rpmOnTarget;
+  }
+
   public boolean driveRPMToSpeaker() {
     return shooterDriveRPM(distanceToRPM(Robot.getRobotContainer().getSwerveDriveTrain().distanceToSpeaker()));
   }
@@ -133,7 +171,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean hasNote() {
-    return proximitySensor.getAverageValue() > 1500;
+    return proximitySensor.getAverageValue() > 1000;
   }
 
   public boolean onRPMTarget() {

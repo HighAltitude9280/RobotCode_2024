@@ -123,13 +123,14 @@ public class ShooterPivot extends SubsystemBase {
         : 1.0) * (angleDegrees - HighAltitudeConstants.SHOOTER_PIVOT_ZERO_ANGLE) / 360;
   }
 
-  public void maintainTarget(double maxPower) {
+  public boolean maintainTarget(double maxPower) {
 
-    double power = (getEncoderTarget()
-        - getShooterPivotEncoderPosition()) * HighAltitudeConstants.SHOOTER_PIVOT_ANGLE_CORRECTION_CONSTANT;
+    double delta = getEncoderTarget() - getShooterPivotEncoderPosition();
+    double power = delta * HighAltitudeConstants.SHOOTER_PIVOT_ANGLE_CORRECTION_CONSTANT;
     power = Math.clamp(power * maxPower, -maxPower, maxPower);
 
     driveShooterPivot(power);
+    return Math.abs(delta) < HighAltitudeConstants.SHOOTER_PIVOT_ARRIVE_OFFSET;
   }
 
   public void pointToSpeaker(double maxPower) {

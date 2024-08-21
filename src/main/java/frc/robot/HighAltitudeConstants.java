@@ -46,8 +46,8 @@ public class HighAltitudeConstants {
         // Arbitrary. Higher numbers will cause the swerve to react more violently to
         // joysitck inputs and may not be ideal. Lower numbers will cause the swerve to
         // have a very slow reaction to joystick inputs, and may not be ideal.
-        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 5.0;
-        public static final double SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = 5.0;
+        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 10.0;
+        public static final double SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = 10.0;
 
         // Other
 
@@ -80,9 +80,8 @@ public class HighAltitudeConstants {
 
         // Use this constant to convert from motor velocity to meters per second
         // encoder velocity * this constant = meters/second
-        public static final double SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS = (1000
-                        * SWERVE_DRIVE_METERS_PER_PULSE)
-                        / SWERVE_DRIVE_VELOCITY_SAMPLE_RATE_MS;
+        public static final double SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS = (SWERVE_DRIVE_METERS_PER_PULSE)
+                        / 60;
 
         // Constant for L3 Configuration
         public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 16.6 * 12 * 0.0254;
@@ -121,7 +120,7 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_KD = 0.0;
 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-                        new PIDConstants(5.0, 0, 0), // Translation constants
+                        new PIDConstants(7, 0, 0.0005), // Translation constants
                         new PIDConstants(2.0, 0, 0), // Rotation constants
                         SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND,
                         Math.hypot(SWERVE_TRACK_WIDTH, SWERVE_WHEEL_BASE), // Drive base radius (distance from center to
@@ -147,6 +146,20 @@ public class HighAltitudeConstants {
         public static final double SHOOTER_RPM_STEP = 0.000004;
         public static final double SHOOTER_ON_TARGET = 50;
 
+        // Order of tuning: feed forward, then PID
+
+        public static final double SHOOTER_TOP_kP = 0.00005;
+        public static final double SHOOTER_TOP_kD = 0.000011;
+
+        public static final double SHOOTER__TOP_kS = 0.0;
+        public static final double SHOOTER__TOP_kV = 0.000177;
+
+        public static final double SHOOTER_BOTTOM_kP = 0.000027;
+        public static final double SHOOTER_BOTTOM_kD = 0.000011;
+
+        public static final double SHOOTER_BOTTOM_kS = 0.0;
+        public static final double SHOOTER_BOTTOM_kV = 0.0001835;
+
         ////////////////////////// INTAKE //////////////////////////
 
         public static final boolean INTAKE_MOTOR_BRAKING_MODE = false;
@@ -166,7 +179,7 @@ public class HighAltitudeConstants {
 
         public static final double SHOOTER_PIVOT_BRAKING_DEGREES = 50;
 
-        public static final double SHOOTER_PIVOT_ARRIVE_OFFSET = 1.0;
+        public static final double SHOOTER_PIVOT_ARRIVE_OFFSET = 0.05;
 
         public static final double SHOOTER_PIVOT_ABSOLUTE_ENCODER_DEGREES_PER_PULSE = 360
                         / SHOOTER_PIVOT_RATIO;
