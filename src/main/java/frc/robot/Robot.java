@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
     getRobotContainer().getShooterPivot().resetZeroValue();
 
     getRobotContainer().generateAutos();
+
   }
 
   @Override

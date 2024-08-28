@@ -8,7 +8,9 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -23,9 +25,9 @@ public class HighAltitudeConstants {
 
         /////////// KINEMATICS
         // Distance left - right (meters)
-        public static final double SWERVE_TRACK_WIDTH = 0.0254 * (26.0 - 2.0 * 2.625);
+        public static final double SWERVE_TRACK_WIDTH = 0.66;
         // Distance front - back (meters)
-        public static final double SWERVE_WHEEL_BASE = 0.0254 * (26.0 - 2.0 * 2.625);
+        public static final double SWERVE_WHEEL_BASE = 0.66;
 
         // FL, FR, BL, BR. Remember these cartesian coordinates consider the x axis to
         // be headed where the robot is pointing to. The y-axis direction could be a
@@ -120,11 +122,12 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_KD = 0.0;
 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-                        new PIDConstants(7, 0, 0.0005), // Translation constants
+                        new PIDConstants(0.9, 0, 0.000025), // Translation constants
                         new PIDConstants(2.0, 0, 0), // Rotation constants
                         SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND,
-                        Math.hypot(SWERVE_TRACK_WIDTH, SWERVE_WHEEL_BASE), // Drive base radius (distance from center to
-                                                                           // furthest module)
+                        Math.hypot(SWERVE_TRACK_WIDTH / 2, SWERVE_WHEEL_BASE / 2), // Drive base radius (distance from
+                                                                                   // center to
+                                                                                   // furthest module)
                         new ReplanningConfig());
 
         //// SpeedReduction constants
@@ -138,6 +141,12 @@ public class HighAltitudeConstants {
         public static final double YAW_OFFSET = 5.72;
 
         public static final double DISTANCE_CORRECTION = 0.5;
+
+        public static final double NOTE_DETECTION_YAW_OFFSET = -2.0;
+        public static final double NOTE_DETECTION_YAW_P = 08.0;
+
+        public static final double NOTE_DETECTION_DRIVE_POWER = 0.3;
+        public static final double NOTE_DETECTION_TURN_POWER = 0.8;
 
         ////////////////////////// SHOOTER //////////////////////////
 
@@ -226,7 +235,14 @@ public class HighAltitudeConstants {
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.LuisNN;
 
-        ////////////////////////////// TARGETS ////////////////////////
+        ////////////////////////////// Pathfinding ////////////////////////}
+
+        public static final double PATHFINDING_MAX_LINEAR_SPEED = 1;
+        public static final double PATHFINDING_MAX_LINEAR_ACCELERATION = 1.5;
+        public static final double PATHFINDING_MAX_ANGULAR_SPEED = Math.PI / 2;
+        public static final double PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION = Math.PI;
+
         public static final Pose3d SPEAKER = new Pose3d(0f, 1.6, 1.64, new Rotation3d());
+        public static final Pose2d AMP_POS = new Pose2d(new Translation2d(3., 4.31), new Rotation2d(-Math.PI / 2));
 
 }

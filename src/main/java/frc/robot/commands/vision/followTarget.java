@@ -30,7 +30,7 @@ public class followTarget extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (vision.hasTargets()) {
+    if (vision.hasNoteTargets()) {
       double yaw = vision.getYaw();
       double area = vision.getArea();
       // Robot.getRobotContainer().getSwerveDriveTrain().followTarget(yaw, area, 1.53,

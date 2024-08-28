@@ -95,7 +95,7 @@ public class RobotMap {
     public static final TypeOfMotor[] SHOOTER_INDEXER_MOTOR_TYPES = { TypeOfMotor.TALON_SRX };
 
     public static final double SHOOTER_HEIGHT = 0.63;
-    public static final int SHOOTER_PROXIMITY_SENSOR_PORT = 0;
+    public static final int SHOOTER_PROXIMITY_SENSOR_PORT = 1;
 
     ////////////////////////// INTAKE //////////////////////////
 

@@ -11,15 +11,16 @@ import frc.robot.subsystems.swerve.SwerveDriveTrain;
 public class DriveToClosestNote extends Command {
   SwerveDriveTrain drivetrain;
   boolean fieldOriented;
-  double maxPower;
+  double maxTurnPower, maxDrivePower;
 
   /** Drives to the closest note detected by the note cam */
-  public DriveToClosestNote(double maxPower) {
+  public DriveToClosestNote(double maxTurnPower, double maxDrivePower) {
 
     drivetrain = Robot.getRobotContainer().getSwerveDriveTrain();
     addRequirements(drivetrain);
 
-    this.maxPower = maxPower;
+    this.maxTurnPower = maxTurnPower;
+    this.maxDrivePower = maxDrivePower;
   }
 
   // Called when the command is initially scheduled.
@@ -32,8 +33,12 @@ public class DriveToClosestNote extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double yaw = Robot.getRobotContainer().getVision().getBiggestNoteTarget().getYaw();
-    drivetrain.driveToTarget(yaw, maxPower);
+
+    var target = Robot.getRobotContainer().getVision().getBiggestNoteTarget();
+    if (target == null)
+      return;
+    double yaw = target.getYaw();
+    drivetrain.driveToTarget(-yaw, maxTurnPower, maxDrivePower);
   }
 
   // Called once the command ends or is interrupted.
@@ -46,6 +51,6 @@ public class DriveToClosestNote extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Robot.getRobotContainer().getIntake().hasNote();
   }
 }

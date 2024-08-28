@@ -35,7 +35,9 @@ import frc.robot.commands.manipulator.pivots.primitives.ToggleIntakePivot;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.IntakePivotResetEncoder;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotResetCanCoder;
 import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotSetAngleTarget;
+import frc.robot.commands.swerve.DefaultSwerveDrive;
 import frc.robot.commands.swerve.TestSwerve;
+import frc.robot.commands.swerve.Primitives.DriveToClosestNote;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.swerveParameters.ToggleIsOnCompetitiveField;
@@ -86,6 +88,7 @@ public class OI {
 
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
                 pilot.whileTrue(ButtonType.X, new DriveIntake(-0.1));
+                pilot.whileTrue(ButtonType.X, new DefaultSwerveDrive());
 
                 // pilot.whileTrue(ButtonType.POV_N, new IntakePivotMoveTo(0.75, 0.0));
                 pilot.whileTrue(ButtonType.POV_S, new IntakePivotMoveTo(0.5, 0));
@@ -102,7 +105,7 @@ public class OI {
                 // pilot.whileTrue(ButtonType.POV_W, new ShooterPivotDown());
 
                 pilot.whileTrue(ButtonType.RB, new IntakeAndRollersOut());
-                // pilot.whileTrue(ButtonType.LB, new ShooterIntake());
+                pilot.whileTrue(ButtonType.LB, new ShooterIntake());
                 pilot.whileTrue(ButtonType.LB, new IntakeOut());
                 pilot.whileTrue(ButtonType.LB, new RollersInUntilNoNote());
 
@@ -122,12 +125,13 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.POV_W, new ShooterPivotMaintainTargetAndRollers(0.5, 35));
 
-                // pilot.whileTrue(ButtonType.A,new MaintainPointToTarget(0.5, 0.8));
                 pilot.onTrue(ButtonType.A, new IntakeAutoTransition());
+                pilot.whileTrue(ButtonType.A, new DriveToClosestNote(
+                        HighAltitudeConstants.NOTE_DETECTION_TURN_POWER,
+                        HighAltitudeConstants.NOTE_DETECTION_DRIVE_POWER));
 
-                // pilot.onTrue(ButtonType.B, new AutoAmp());
-                pilot.whileTrue(ButtonType.B, new ShooterPivotSetAngleTarget(-30));
-                pilot.whileTrue(ButtonType.B, new ShooterPivotMaintainTarget(0.5));
+                pilot.onTrue(ButtonType.B, new AutoAmp());
+                pilot.whileTrue(ButtonType.B, new ShooterPivotMaintainTarget(-30, 0.5));
                 pilot.whileTrue(ButtonType.B, new IntakeOut());
 
                 break;

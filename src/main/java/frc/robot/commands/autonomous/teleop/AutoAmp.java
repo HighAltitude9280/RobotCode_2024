@@ -4,16 +4,15 @@
 
 package frc.robot.commands.autonomous.teleop;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
-import frc.robot.commands.manipulator.shooter.ShooterAmp;
-import frc.robot.commands.manipulator.shooter.ShooterDriveRPM;
+import frc.robot.commands.manipulator.intake.IntakeOut;
+import frc.robot.commands.manipulator.pivots.primitives.ShooterPivotMaintainTarget;
+import frc.robot.commands.manipulator.pivots.primitives.pivotParameters.ShooterPivotSetAngleTarget;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -28,10 +27,13 @@ public class AutoAmp extends InstantCommand {
   public void initialize() {
 
     Command command = Robot.getRobotContainer().getSwerveDriveTrain()
-        .onTheFlyTrajectory(new Pose2d(new Translation2d(2.66, 0.565), new Rotation2d(Math.PI / 2)));
+        .pathfindToPose(HighAltitudeConstants.AMP_POS);
 
-    SequentialCommandGroup group = command.andThen(new ShooterAmp());
-    CommandScheduler.getInstance().schedule(group);
+    // ParallelCommandGroup shooterPos = new ParallelCommandGroup(
+    // new ShooterPivotMaintainTarget(-30, 0.5));
+    // SequentialCommandGroup group = command.andThen(shooterPos);
+
+    command.schedule();
 
   }
 }

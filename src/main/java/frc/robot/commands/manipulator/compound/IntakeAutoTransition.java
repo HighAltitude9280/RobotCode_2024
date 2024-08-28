@@ -24,7 +24,8 @@ public class IntakeAutoTransition extends SequentialCommandGroup {
   public IntakeAutoTransition() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new IntakeUntilNote(), new ShooterPivotSetAngleTarget(35),
+    addCommands(new ParallelRaceGroup(new IntakeUntilNote(),
+        new ShooterPivotMaintainTarget(35, 0.5)),
         new ParallelRaceGroup(new IntakePivotRetractar(0.5), new ShooterPivotMaintainTarget(0.5)),
         new TransitionUntilNote());
   }

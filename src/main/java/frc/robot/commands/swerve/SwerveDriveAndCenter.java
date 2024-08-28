@@ -45,7 +45,7 @@ public class SwerveDriveAndCenter extends Command {
   @Override
   public void execute() {
     double turn;
-    if (Robot.getRobotContainer().getVision().hasTargets()) {
+    if (Robot.getRobotContainer().getVision().hasNoteTargets()) {
       turn = -Robot.getRobotContainer().getVision().getYaw() * kP;
       // System.out.println(turn);
     } else {

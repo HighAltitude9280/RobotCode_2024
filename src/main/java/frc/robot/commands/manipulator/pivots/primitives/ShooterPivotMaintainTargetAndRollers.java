@@ -11,6 +11,7 @@ import frc.robot.Robot;
 public class ShooterPivotMaintainTargetAndRollers extends Command {
   double maxPower;
   double target;
+  boolean shouldStopRollers = true;
 
   /** Creates a new ShooterPivotMaintainTargetAndRollers. */
   public ShooterPivotMaintainTargetAndRollers(double maxPower, double target) {
@@ -42,6 +43,10 @@ public class ShooterPivotMaintainTargetAndRollers extends Command {
         Robot.getRobotContainer().getShooter().stopRollers();
       else
         Robot.getRobotContainer().getShooter().driveRollers(0.5);
+    } else if (shouldStopRollers) {
+      Robot.getRobotContainer().getShooter().stopRollers();
+      shouldStopRollers = false;
+
     }
 
   }

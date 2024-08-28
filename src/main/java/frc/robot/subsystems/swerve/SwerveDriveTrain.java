@@ -262,7 +262,10 @@ public class SwerveDriveTrain extends SubsystemBase {
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
     ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
 
-    SwerveModuleState[] targetStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(targetSpeeds);
+    // SwerveModuleState[] targetStates =
+    // HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(targetSpeeds);
+    SwerveModuleState[] targetStates = HighAltitudeConstants.SWERVE_KINEMATICS
+        .toSwerveModuleStates(robotRelativeSpeeds);
     setModuleStates(targetStates);
   }
 
@@ -313,12 +316,10 @@ public class SwerveDriveTrain extends SubsystemBase {
   public void updateOdometryWithVision() {
     // EstimatedRobotPose pose =
     // Robot.getRobotContainer().getVision().getEstimatedPosition();
-    if (!Robot.getRobotContainer().getVision().hasTargets())
-      return;
 
     var pos = Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose());
 
-    if (pos.isEmpty())
+    if (pos == null || pos.isEmpty())
       return;
     var pose = pos.get();
     swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
@@ -396,10 +397,12 @@ public class SwerveDriveTrain extends SubsystemBase {
     }
   }
 
-  public Command onTheFlyTrajectory(Pose2d targetPose) {
+  public Command pathfindToPose(Pose2d targetPose) {
     PathConstraints constraints = new PathConstraints(
-        1.0, 2.0,
-        Units.degreesToRadians(360), Units.degreesToRadians(540));
+        HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
+        HighAltitudeConstants.PATHFINDING_MAX_LINEAR_ACCELERATION,
+        HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
+        HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
 
     Subsystem swerve = this;
     Command pathCommand = new PathfindHolonomic(targetPose, constraints, this::getPose, this::getChassisSpeeds,
@@ -452,11 +455,11 @@ public class SwerveDriveTrain extends SubsystemBase {
     return turnToAngle(angle, maxPower);
   }
 
-  public void driveToTarget(double yaw, double maxPower) {
+  public void driveToTarget(double yaw, double maxTurnPower, double maxDrivePower) {
     setIsFieldOriented(false);
-    double turnPower = (yaw / HighAltitudeConstants.SWERVE_TURN_BRAKE_DISTANCE) * maxPower;
-    double speed = Math.cos(Math.toRadians(yaw)) * maxPower;
-    double strafe = Math.sin(Math.toRadians(yaw)) * maxPower;
+    double turnPower = (yaw / HighAltitudeConstants.SWERVE_TURN_BRAKE_DISTANCE) * maxTurnPower;
+    double speed = Math.cos(Math.toRadians(yaw)) * maxDrivePower;
+    double strafe = Math.sin(Math.toRadians(yaw)) * maxDrivePower;
 
     defaultDrive(speed, strafe, turnPower);
   }

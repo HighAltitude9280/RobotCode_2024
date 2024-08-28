@@ -31,12 +31,12 @@ public class IntakePivotExtruir extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.getRobotContainer().getIntakePivot().driveIntakePivot(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println("PRSOJF");
     return Robot.getRobotContainer().getIntakePivot().intakePivotMoveTo(maxPower, RobotMap.INTAKE_PIVOT_DOWN_POSITION);
   }
 }

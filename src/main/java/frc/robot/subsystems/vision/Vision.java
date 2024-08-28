@@ -22,13 +22,14 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.HighAltitudeConstants;
 
 public class Vision extends SubsystemBase {
   PhotonCamera tagsCamera, noteCamera;
   PhotonPipelineResult result;
 
   PhotonPoseEstimator poseEstimator;
-  EstimatedRobotPose estimatedPose;
+  Optional<EstimatedRobotPose> estimatedPose;
 
   /** Creates a new vision. */
   public Vision() {
@@ -37,11 +38,13 @@ public class Vision extends SubsystemBase {
     AprilTagFieldLayout fieldLayout;
 
     try {
-      Transform3d cam = new Transform3d(new Translation3d(-0.33, 0, 0.47), new Rotation3d(0f, 0f, Math.PI));
+      Transform3d cam = new Transform3d(new Translation3d(-0.32, -0.20, 0.58),
+          new Rotation3d(0f, Math.toRadians(-10), Math.toRadians(190)));
       fieldLayout = new AprilTagFieldLayout(
           "/home/lvuser/deploy/vision/CustomAprilTagFieldLayout.json");
       poseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, tagsCamera,
           cam);
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -49,20 +52,21 @@ public class Vision extends SubsystemBase {
     result = tagsCamera.getLatestResult();
   }
 
-  public boolean hasTargets() {
+  public boolean hasNoteTargets() {
     return result.hasTargets();
   }
 
   public double getYaw() {
-    return hasTargets() ? result.getBestTarget().getYaw() : 0;
+    return hasNoteTargets() ? result.getBestTarget().getYaw() -
+        HighAltitudeConstants.NOTE_DETECTION_YAW_OFFSET : 0;
   }
 
   public double getPitch() {
-    return hasTargets() ? result.getBestTarget().getPitch() : 0;
+    return hasNoteTargets() ? result.getBestTarget().getPitch() : 0;
   }
 
   public double getArea() {
-    return hasTargets() ? result.getBestTarget().getArea() : 0;
+    return hasNoteTargets() ? result.getBestTarget().getArea() : 0;
   }
 
   public List<PhotonTrackedTarget> getNoteTargets() {
@@ -71,7 +75,7 @@ public class Vision extends SubsystemBase {
 
   public PhotonTrackedTarget getBiggestNoteTarget() {
 
-    if (!hasTargets())
+    if (!hasNoteTargets())
       return null;
 
     PhotonTrackedTarget biggest = getNoteTargets().get(0);
@@ -86,23 +90,26 @@ public class Vision extends SubsystemBase {
 
   }
 
-  public EstimatedRobotPose getEstimatedPosition() {
+  public Optional<EstimatedRobotPose> getEstimatedPosition() {
 
     return estimatedPose;
 
   }
 
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+
     poseEstimator.setReferencePose(prevEstimatedRobotPose);
-    var pose = poseEstimator.update();
-    if (pose.isPresent())
-      estimatedPose = pose.get();
-    return pose;
+    return estimatedPose;
   }
 
   @Override
   public void periodic() {
     result = noteCamera.getLatestResult();
+    estimatedPose = poseEstimator.update();
+
+    var tagsResult = tagsCamera.getLatestResult().getBestTarget();
+    if (tagsResult == null || tagsResult.getPoseAmbiguity() > 0.15)
+      estimatedPose = Optional.empty();
 
     // System.out.println("getYaw: " + getYaw());
     // This method will be called once per scheduler run
