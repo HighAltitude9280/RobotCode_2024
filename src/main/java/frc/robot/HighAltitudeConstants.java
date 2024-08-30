@@ -233,7 +233,7 @@ public class HighAltitudeConstants {
         //////////////////////// DRIVERS ////////////////////////
 
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
-        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.LuisNN;
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Joakin;
 
         ////////////////////////////// Pathfinding ////////////////////////}
 

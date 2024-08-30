@@ -5,10 +5,24 @@
 package frc.robot.subsystems.manipulator.pivots;
 
 import com.ctre.phoenix6.hardware.CANcoder;
+
+import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.MutableMeasure.mutable;
+
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.MutableMeasure;
+import edu.wpi.first.units.Velocity;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -24,6 +38,15 @@ public class ShooterPivot extends SubsystemBase {
   DigitalInput topLimitSwitch;
   DigitalInput bottomLimitSwitch;
 
+  // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
+  private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
+  // Mutable holder for unit-safe linear distance values, persisted to avoid
+  // reallocation.
+  private final MutableMeasure<Angle> m_angle = mutable(Rotations.of(0));
+  // Mutable holder for unit-safe linear velocity values, persisted to avoid
+  // reallocation.
+  private final MutableMeasure<Velocity<Angle>> m_velocity = mutable(RotationsPerSecond.of(0));
+
   CANcoder absoluteEncoderController;
 
   double zeroValue = 0;
@@ -31,6 +54,8 @@ public class ShooterPivot extends SubsystemBase {
   boolean Override;
 
   double encoderTarget = 0.0, angleTarget = 65.0;
+
+  SysIdRoutine routine;
 
   /** Creates a new ShooterPivot. */
   public ShooterPivot() {
@@ -57,6 +82,7 @@ public class ShooterPivot extends SubsystemBase {
     currentTarget = getShooterPivotPositionInDegrees();
 
     Override = false;
+
   }
 
   public double getAbsoluteEncoderDeg() {

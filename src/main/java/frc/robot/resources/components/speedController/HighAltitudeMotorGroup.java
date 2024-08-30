@@ -84,6 +84,12 @@ public class HighAltitudeMotorGroup {
         }
     }
 
+    public void setVoltage(double volts) {
+        for (HighAltitudeMotorController motor : motors) {
+            motor.setVoltage(volts);
+        }
+    }
+
     /**
      * Sets a specific motor to a given speed.
      *

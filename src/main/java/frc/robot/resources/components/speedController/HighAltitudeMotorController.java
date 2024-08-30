@@ -253,4 +253,13 @@ public class HighAltitudeMotorController {
     public boolean isInverted() {
         return inverted;
     }
+
+    public void setVoltage(double volts) {
+        if (phoenix5Motor != null)
+            phoenix5Motor.set(ControlMode.Current, volts);
+        if (frcMotor != null)
+            frcMotor.setVoltage(volts);
+        if (phoenix5Motor == null && frcMotor == null)
+            DriverStation.reportError("That type of motor doesn't exist!", true);
+    }
 }
